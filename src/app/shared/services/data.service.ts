@@ -15,8 +15,9 @@ import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
-//const appUrl = 'http://127.0.0.1:8000/';
-const appUrl = 'http://54.213.228.141:8000/';
+const appUrl = 'http://127.0.0.1:8000/';
+//const appUrl = 'http://54.213.228.141:8000/';
+//const appUrl = 'https://1436-49-206-36-248.ngrok-free.app/';
 
 @Injectable({
   providedIn: 'root'
