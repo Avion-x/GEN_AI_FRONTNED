@@ -1,0 +1,35 @@
+
+<div class="wrapper">
+    <div class="topbar">
+        <div class="logo">
+            <img src="../../assets/images/logo.png">
+        </div>
+        <div class="user-section">
+            <div class="icon">RS</div>
+            <div class="user">
+                <span class="name">Rafi Shaik</span>
+                <span class="email">rafi@mail.com</span>
+            </div>
+            <span class="material-symbols-outlined">
+                arrow_drop_down
+            </span>
+        </div>
+    </div>
+    <div class="page-wrapper">
+        <div class="menu-section">
+            <div class="menu">
+                <button class="menu-btn" *ngFor="let nav of navList" [routerLink]="nav.url" [routerLinkActive]="'active'">
+                    <div class="icon">
+                        <span class="material-symbols-rounded">{{nav.icon}}</span>
+                    </div>
+                    <span>{{nav.name}}</span>
+                </button>
+                
+            </div>
+        </div>
+        <div class="page-container">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    
+</div>
