@@ -88,19 +88,19 @@ export class PagesComponent implements OnInit {
     //     this._router.navigate([currentUrl]);
     // });
     //this.authenticationService.logout();
-    // const hitLogout = {
-    //   action: 'logout',
-    //   method: 'get',
-    //   // params: {
-    //   //   unixid: this.userLogged
-    //   // }
-    // }
-    // this.dataService.apiDelegate(hitLogout).subscribe((result: any) => {
-    //   //this.productCategoryData = result;
-    //   //this.productsLoader = false;
-    //   console.log('logout', result);
+    const hitLogout = {
+      action: 'logout',
+      method: 'get',
+      // params: {
+      //   unixid: this.userLogged
+      // }
+    }
+    this.dataService.apiDelegate(hitLogout).subscribe((result: any) => {
+      //this.productCategoryData = result;
+      //this.productsLoader = false;
+      console.log('logout', result);
       
-    // })
+    })
   }
 
 }

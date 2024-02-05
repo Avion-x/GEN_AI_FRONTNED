@@ -52,6 +52,7 @@ export class ProductDetailsComponent implements OnInit {
     this.productSubCategoryId = this._aRoute.snapshot.params?.['subID'];
     if(this.selectedProduct){
       this.getProductDetails(this.selectedProduct);
+      this.getGeneratedTestCases(this.selectedProduct);
     }
     
     if(this.productSubCategoryId){
@@ -140,6 +141,22 @@ export class ProductDetailsComponent implements OnInit {
       //   this.testTypes.push(item.code)
       // });
       console.log('testTypes', this.testTypes);
+    })
+  }
+
+  getGeneratedTestCases(productId:any){
+    const hitLogout = {
+      action: 'product/test_cases',
+      method: 'get',
+      params: {
+        product_id: productId
+      }
+    }
+    this.dataService.apiDelegate(hitLogout).subscribe((result: any) => {
+      //this.productCategoryData = result;
+      //this.productsLoader = false;
+      console.log('GeneratedTestCases', result);
+      
     })
   }
 

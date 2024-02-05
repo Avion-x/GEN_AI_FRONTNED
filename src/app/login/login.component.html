@@ -12,7 +12,8 @@
                     </div>
                 </div>
                 <div class="p-float-label">                
-                    <input id="password-input" type="password" pInputText formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" />
+                    <!-- <input id="password-input" type="password" pInputText formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" /> -->
+                    <p-password id="password-input" [toggleMask]="true" [feedback]="false" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"></p-password>
                     <label for="password-input">Password</label>
                     <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
                         <div *ngIf="f['password'].errors['required']">Password is required</div>
@@ -27,6 +28,7 @@
                     <!-- <a routerLink="../register" class="btn btn-link">Register</a> -->
                 </div>
             </form>
+            <span class="errorMessage" *ngIf="errorMessage !== ''"><i class="material-symbols-rounded">error</i>{{errorMessage}}</span>
         </div>
     </div>
     <div class="loader-container" *ngIf="loading">

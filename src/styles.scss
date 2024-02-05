@@ -1148,3 +1148,12 @@ input::-ms-input-placeholder {
     }
   }
 }
+
+.form-control{
+  .p-password{
+    width: 100%;
+    .p-inputtext{
+      width: 100%;
+    }
+  }
+}

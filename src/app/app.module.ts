@@ -6,6 +6,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import {InputTextModule} from 'primeng/inputtext';
 import {ButtonModule} from 'primeng/button';
+import {PasswordModule} from 'primeng/password';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +28,7 @@ import { MarkdownModule } from 'ngx-markdown';
     FormsModule,
     InputTextModule,
     ButtonModule,
+    PasswordModule,
     MarkdownModule.forRoot()
   ],
   providers: [
