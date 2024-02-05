@@ -12,7 +12,7 @@ import { DataService } from '../shared/services/data.service';
   styleUrls: ['./pages.component.scss']
 })
 export class PagesComponent implements OnInit {
-
+  userMenuItems!:MenuItem[];
   items!: MenuItem[];
   public navList:any[]=[];
   public currentUser:any;
@@ -23,7 +23,9 @@ export class PagesComponent implements OnInit {
     private _router: Router, 
     private appConfig:AppConfigService) {
       this.authenticationService.user.subscribe((user:any) => this.currentUser = user.user_details);
-      this.userTag = this.currentUser.first_name.charAt(0)+this.currentUser.last_name.charAt(0);
+      if(this.currentUser){
+        this.userTag = this.currentUser.first_name.charAt(0)+this.currentUser.last_name.charAt(0);
+      }      
       console.log(' this.userTag',  this.currentUser);
       console.log('currentUser', this.currentUser);
      }
@@ -34,6 +36,19 @@ export class PagesComponent implements OnInit {
       {label: 'Open', icon: 'pi pi-fw pi-download'},
       {label: 'Undo', icon: 'pi pi-fw pi-refresh'}
     ];
+
+    this.userMenuItems = [{
+      //label: 'Logout',
+      items: [{
+          label: 'Logout',
+          icon: 'pi pi-power-off',
+          command: () => {
+              this.logout();
+          }
+      }
+      ]},
+      
+  ];
 
     this.navList = [
       {
@@ -63,6 +78,29 @@ export class PagesComponent implements OnInit {
       },
     ]
 
+  }
+
+  logout(){
+    //this.productsLoader = true;   
+    this._router.navigateByUrl('login');
+    // let currentUrl = 'login';
+    // this._router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+    //     this._router.navigate([currentUrl]);
+    // });
+    //this.authenticationService.logout();
+    // const hitLogout = {
+    //   action: 'logout',
+    //   method: 'get',
+    //   // params: {
+    //   //   unixid: this.userLogged
+    //   // }
+    // }
+    // this.dataService.apiDelegate(hitLogout).subscribe((result: any) => {
+    //   //this.productCategoryData = result;
+    //   //this.productsLoader = false;
+    //   console.log('logout', result);
+      
+    // })
   }
 
 }

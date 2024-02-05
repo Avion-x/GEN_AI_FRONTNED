@@ -44,6 +44,7 @@ export class AuthService {
           //   email: username,
           //   token: token,
           // };
+          localStorage.removeItem('currentUser');
           localStorage.setItem('currentUser', JSON.stringify(result));
           // this.userSubject.next(user);
           return result;

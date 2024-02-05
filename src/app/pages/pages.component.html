@@ -5,17 +5,18 @@
             
             <img src="../../assets/images/logo-2.png">
         </div>
-        <div class="user-section">
+        <div class="user-section" *ngIf="currentUser" (click)="userMenu.toggle($event)">
             <div class="icon">{{userTag}}</div>
             <div class="user">
-                <span class="name">{{currentUser.first_name + ' ' + currentUser.last_name}}</span>
-                <span class="email">{{currentUser.email}}</span>
+                <span class="name">{{currentUser?.first_name + ' ' + currentUser?.last_name}}</span>
+                <span class="email">{{currentUser?.email}}</span>
             </div>
             <span class="material-symbols-outlined">
                 arrow_drop_down
             </span>
-        </div>
+        </div>       
     </div>
+    <p-menu #userMenu [popup]="true" [model]="userMenuItems"></p-menu>
     <div class="page-wrapper">
         <div class="menu-section">
             <div class="menu">
