@@ -38,14 +38,15 @@ export class AuthService {
     return this.http
       .post<any>(`${apiUrl}/login/`, { username: username, password: password })
       .pipe(
-        map(({token}) => {
-          let user: User = {
-            email: username,
-            token: token,
-          };
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.userSubject.next(user);
-          return user;
+        map((result) => {
+          console.log('result',result);
+          // let user: User = {
+          //   email: username,
+          //   token: token,
+          // };
+          localStorage.setItem('currentUser', JSON.stringify(result));
+          // this.userSubject.next(user);
+          return result;
         })
       );
   }

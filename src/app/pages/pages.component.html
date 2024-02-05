@@ -2,13 +2,14 @@
 <div class="wrapper">
     <div class="topbar">
         <div class="logo">
-            <img src="../../assets/images/logo.png">
+            
+            <img src="../../assets/images/logo-2.png">
         </div>
         <div class="user-section">
-            <div class="icon">RS</div>
+            <div class="icon">{{userTag}}</div>
             <div class="user">
-                <span class="name">Rafi Shaik</span>
-                <span class="email">rafi@mail.com</span>
+                <span class="name">{{currentUser.first_name + ' ' + currentUser.last_name}}</span>
+                <span class="email">{{currentUser.email}}</span>
             </div>
             <span class="material-symbols-outlined">
                 arrow_drop_down

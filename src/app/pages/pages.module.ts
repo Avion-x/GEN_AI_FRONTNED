@@ -11,8 +11,9 @@ import {InputTextModule} from 'primeng/inputtext';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {MenuModule} from 'primeng/menu';
 import {SelectButtonModule} from 'primeng/selectbutton';
-
-
+import {TabViewModule} from 'primeng/tabview';
+import { ButtonModule } from 'primeng/button';
+import {DialogModule} from 'primeng/dialog';
 
 import { ProductsComponent } from './products/products.component';
 import { ProductSubCategoryComponent } from './product-sub-category/product-sub-category.component';
@@ -26,6 +27,9 @@ import { CreateCategoryComponent } from './device-management/create-category/cre
 import { DeviceListComponent } from './device-management/device-list/device-list.component';
 import { TestCasesManagementComponent } from './testcases-management/test-cases-management/test-cases-management.component';
 import {SidebarModule} from 'primeng/sidebar';
+import { UsersListComponent } from './user-management/users-list/users-list.component';
+import { AddUserComponent } from './user-management/add-user/add-user.component';
+import { TestDeviceListComponent } from './test-execution/test-device-list/test-device-list.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +41,10 @@ import {SidebarModule} from 'primeng/sidebar';
     CategoryListComponent,
     CreateCategoryComponent,
     DeviceListComponent,
-    TestCasesManagementComponent
+    TestCasesManagementComponent,
+    UsersListComponent,
+    AddUserComponent,
+    TestDeviceListComponent
   ],
   imports: [
     CommonModule,
@@ -51,6 +58,9 @@ import {SidebarModule} from 'primeng/sidebar';
     MenuModule,
     SidebarModule,
     SelectButtonModule,
+    TabViewModule,
+    ButtonModule,
+    DialogModule,
     MarkdownModule.forRoot()
   ]
 })

@@ -243,6 +243,94 @@ input::-ms-input-placeholder {
   }
 
 
+  .table-title-with-search,
+  .header-section{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .right-section{
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        width: 70%;
+        .btn{
+          margin-left: 10px;
+        }
+    }
+    .title{
+        font-weight: 600;
+        font-size: 14px;
+        color: vars.$titleClr;
+        @include vars.fontFamilySecondary;
+    }
+    .table-tabs{
+        .tab{
+            background: #fff;
+            margin-right: 10px;
+            border-radius: 4px;
+            color: #000444;
+            font-size: 14px;
+            font-weight: 400;
+            &.active{
+                background: vars.$primary-color;
+                color: #fff;                            
+            }
+        }
+    }
+    .search-box{
+        width: 50%;
+        position: relative;
+        .pi-search{
+            font-size: 15px;
+            position: absolute;
+            top: 8px;
+            left: 10px;
+            color: vars.$fontclr;
+        }
+        input{
+            border-radius: 20px;
+            height: 31px;
+            padding-left: 31px;
+            font-size: 12px;
+            border: 1px solid vars.$cardBorderColor;
+            width: 100%;
+            &:focus{
+                border: 1px solid vars.$primary-color;
+                outline: 0px;
+                box-shadow: none;
+            }
+        }
+    }
+    .header-right-section {
+        display: flex;
+        align-items: center;
+        &.has-xl-searchbar {
+          width: 50%;
+          .search-box {
+            width: calc(100% - 50px);
+            input {
+              width: 100%;
+              &::-webkit-input-placeholder {
+                color: var(--fontclr);
+                font-size: 12px;
+                opacity: 0.7;
+              }
+              &:-ms-input-placeholder {
+                color: var(--fontclr);
+                font-size: 12px;
+                opacity: 0.7;
+              }
+              &::placeholder {
+                color: var(--fontclr);
+                font-size: 12px;
+                opacity: 0.7;
+              }
+            }
+          }
+        }
+      }
+}
+
 
   .table-container{
     background: transparent;
@@ -311,92 +399,7 @@ input::-ms-input-placeholder {
             padding: 5px;
             border-top: 0px;
             border-bottom: 1px solid vars.$cardBorderColor;
-            .table-title-with-search{
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                .right-section{
-                    display: flex;
-                    align-items: center;
-                    justify-content: flex-end;
-                    width: 70%;
-                    .btn{
-                      margin-left: 10px;
-                    }
-                }
-                .title{
-                    font-weight: 600;
-                    font-size: 15px;
-                    color: vars.$titleClrLight;
-                    @include vars.fontFamilySecondary;
-                }
-                .table-tabs{
-                    .tab{
-                        background: #fff;
-                        margin-right: 10px;
-                        border-radius: 4px;
-                        color: #000444;
-                        font-size: 14px;
-                        font-weight: 400;
-                        &.active{
-                            background: vars.$primary-color;
-                            color: #fff;                            
-                        }
-                    }
-                }
-                .search-box{
-                    width: 50%;
-                    position: relative;
-                    .pi-search{
-                        font-size: 15px;
-                        position: absolute;
-                        top: 8px;
-                        left: 10px;
-                        color: vars.$fontclr;
-                    }
-                    input{
-                        border-radius: 20px;
-                        height: 31px;
-                        padding-left: 31px;
-                        font-size: 12px;
-                        border: 1px solid vars.$cardBorderColor;
-                        width: 100%;
-                        &:focus{
-                            border: 1px solid vars.$primary-color;
-                            outline: 0px;
-                            box-shadow: none;
-                        }
-                    }
-                }
-                .header-right-section {
-                    display: flex;
-                    align-items: center;
-                    &.has-xl-searchbar {
-                      width: 50%;
-                      .search-box {
-                        width: calc(100% - 50px);
-                        input {
-                          width: 100%;
-                          &::-webkit-input-placeholder {
-                            color: var(--fontclr);
-                            font-size: 12px;
-                            opacity: 0.7;
-                          }
-                          &:-ms-input-placeholder {
-                            color: var(--fontclr);
-                            font-size: 12px;
-                            opacity: 0.7;
-                          }
-                          &::placeholder {
-                            color: var(--fontclr);
-                            font-size: 12px;
-                            opacity: 0.7;
-                          }
-                        }
-                      }
-                    }
-                  }
-            }
+            
         }
         
         .p-datatable-scrollable-header-box{
@@ -598,6 +601,12 @@ input::-ms-input-placeholder {
                     padding: 10px 15px;
                     font-size: 13px;
                     color: vars.$td-color;
+                    &.td-clr-primary{
+                      color: vars.$primary-color;
+                    }
+                    &.tb-bold{
+                      font-weight: 600;
+                    }
                     // box-shadow: 2px 2px 5px 2px rgba(0,0,0,1);
                     position: relative;
                     &.count-td{
@@ -710,8 +719,8 @@ input::-ms-input-placeholder {
 
 .main-title{
   font-size: 14px;
-  //color: vars.$titleClr;
-  color: vars.$titleClrLight;
+  color: vars.$titleClr;
+  //color: vars.$titleClrLight;
   font-weight: 600;
   margin-top: 20px;
 }
@@ -1010,4 +1019,132 @@ input::-ms-input-placeholder {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.sidepanelContainer{
+  display: flex;
+  gap: 15px;
+  &.showSidePanel{
+    .mainContainer{
+      width: calc(100% - 400px);
+    }
+  }
+  .mainContainer {
+    width: 100%;
+  }
+  .sideBarContainer {
+    width: 400px;
+    position: relative;
+    .sideBar{
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 400px;
+      background: #fff;
+      .header{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        .title{
+          font-size: 12px;
+        }
+        .closeBtn{
+          border: 0px;
+          background: transparent;
+          padding: 10px;
+          font-size: 21px;
+          color: vars.$titleClr;
+        }
+      }
+    }
+  }
+}
+
+.custom-nav-tabs-container{
+  .p-tabview{
+    .p-tabview-nav-container{
+      display: none;
+    }
+    .p-tabview-panels{
+      background: transparent;
+      padding: 0px;
+    }
+  }
+}
+
+.custom-nav-tabs-header{
+  padding-top: 15px;
+  .nav-tabs-container{
+    margin-bottom: 10px;
+    .nav-tab{
+      border: 0px;
+      border-radius: 30px;
+      padding: 10px 15px;
+      margin-right: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      background: #fff;
+      color: vars.$titleClr;
+      &.active{
+        background: vars.$primary-color;
+        box-shadow: vars.$primary-box-shoadow;
+        color: #fff;
+      }
+    }
+  }
+}
+
+.clr-primary{
+  color: vars.$primary-color;
+}
+
+.testConformationDialog{
+  .p-dialog{
+    width: 30%;
+    min-height: 50vh;
+  }
+  
+}
+
+.field-checkbox{
+  margin-bottom: 10px;
+  label{
+    color: vars.$fontclr;
+    font-size: 12px;
+    text-transform: capitalize;
+  }
+  p-checkbox{
+    margin-right: 5px;
+    .p-checkbox {
+      width: 20px;
+      height: 20px;
+      .p-checkbox-box {
+        width: 20px;
+        height: 20px;
+        .p-checkbox-icon {
+          font-size: 11px;
+        }
+      }
+    }
+    .p-checkbox .p-checkbox-box.p-highlight {
+      border-color: vars.$primary-color;
+      background: vars.$primary-color;
+    }
+    .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover {
+      border-color: vars.$primary-color;
+    }
+    .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus {
+      outline: 0 none;
+      outline-offset: 0;
+      box-shadow: none;
+      border-color: vars.$primary-color;
+    }
+    .p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-highlight:hover {
+      border-color: vars.$primary-color;
+      background: vars.$primary-color;
+      color: #ffffff;
+    }
+  }
 }

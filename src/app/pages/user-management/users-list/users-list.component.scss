@@ -1,0 +1,156 @@
+@use '/src/assets/styles/vars';
+.usersListHeader{
+    margin-top: 15px;
+}
+.usersListContainer{
+    padding-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    .user{
+        width: 24%;
+        cursor: pointer;
+        background: #fff;
+        border-radius: 10px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        .avatarHolder{
+            padding-right: 15px;
+            padding-left: 5px;
+            .avatar{
+                background-color: vars.$primary-color;
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                width: 60px;
+                height: 60px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                font-size: 21px;
+                color: #fff;
+                font-weight: 600;
+            }
+        }
+        .userDetails{
+            .fullname{
+                font-size: 13px;
+                color: vars.$titleClr;
+            }
+            .userName{
+                font-size: 10px;
+                color: vars.$fontclr;
+            }
+            .email{
+                font-size: 10px;
+                color: vars.$fontclr;
+            }
+            .permissions{
+                font-size: 13px;
+                font-weight: 600;
+                color: vars.$titleClr;
+                margin-top: 5px;
+            }
+        }
+        &:hover, &.active{
+            background: vars.$primary-color;
+            .avatarHolder{
+                .avatar{
+                    background-color: vars.$primary-dark;
+                }
+            }
+            .userDetails{
+                .fullname{
+                    color: #fff;
+                }
+                .userName{
+                    color: #fff;
+                }
+                .email{
+                    color: #fff;
+                }
+                .permissions{
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+.sidepanelContainer{
+    &.showSidePanel{
+      .mainContainer{
+        .usersListContainer{
+            .user{
+                min-width: 32%;
+            }
+        }
+      }
+    }
+}
+
+.sideBarContent{
+    display: flex;
+    flex-direction: column;
+    .avatarSection{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .avatar{
+            background-color: vars.$primary-color;
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+                width: 80px;
+                height: 80px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                font-size: 21px;
+                color: #fff;
+                font-weight: 600;
+                margin-bottom: 10px;
+                border: 1px solid vars.$devider;
+        }
+        .fullname{
+            font-size: 14px;
+            font-weight: 600;
+            color: vars.$titleClr;
+        }
+        .email{
+            font-size: 11px;
+            color: vars.$fontclr;
+            display: flex;
+            align-items: center;
+            .icon{
+                font-size: 16px;
+                margin-right: 5px;
+            }
+        }
+    }
+    .userInfosection{
+        padding: 15px;
+        .field{
+            border-bottom: 1px solid #eff2fa;
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0;
+            label{
+                font-size: 10px;
+                color: vars.$fontclr;
+
+            }
+            span{
+                font-size: 12px;
+                color: vars.$titleClr;
+            }
+        }
+    }
+}

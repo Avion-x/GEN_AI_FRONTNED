@@ -15,11 +15,18 @@ export class PagesComponent implements OnInit {
 
   items!: MenuItem[];
   public navList:any[]=[];
+  public currentUser:any;
+  public userTag:string = '';
 
   constructor(private authenticationService:AuthService, 
     private dataService:DataService, 
     private _router: Router, 
-    private appConfig:AppConfigService) { }
+    private appConfig:AppConfigService) {
+      this.authenticationService.user.subscribe((user:any) => this.currentUser = user.user_details);
+      this.userTag = this.currentUser.first_name.charAt(0)+this.currentUser.last_name.charAt(0);
+      console.log(' this.userTag',  this.currentUser);
+      console.log('currentUser', this.currentUser);
+     }
 
   ngOnInit(): void {
     this.items = [
@@ -35,6 +42,11 @@ export class PagesComponent implements OnInit {
         'url':this.appConfig.urlProductCategory
       },
       {
+        'name':'Test Execution',
+        'icon':'bug_report',
+        'url':this.appConfig.urlTestExecution
+      },
+      {
         'name':'Device Management',
         'icon':'router',
         'url':this.appConfig.urlDeviceManagement
@@ -43,6 +55,11 @@ export class PagesComponent implements OnInit {
         'name':'Testcases Settings',
         'icon':'psychology',
         'url':this.appConfig.urlTestCasesManagement
+      },
+      {
+        'name':'User Management',
+        'icon':'manage_accounts',
+        'url':this.appConfig.urlUsersList
       },
     ]
 
