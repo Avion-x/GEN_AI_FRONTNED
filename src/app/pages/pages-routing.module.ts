@@ -44,7 +44,7 @@ const routes: Routes = [
         //canActivate : [AuthGuard]
       },
       {
-        path: 'deviceManagement/:subId/addNewDevices', component: DeviceListComponent,
+        path: 'deviceManagement/:subId/deviceList', component: DeviceListComponent,
         //canActivate : [AuthGuard]
       },
       {

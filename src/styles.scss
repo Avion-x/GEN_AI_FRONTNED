@@ -250,6 +250,7 @@ input::-ms-input-placeholder {
     justify-content: space-between;
     .right-section{
         display: flex;
+        flex-direction: row;
         align-items: center;
         justify-content: flex-end;
         width: 70%;
@@ -718,7 +719,7 @@ input::-ms-input-placeholder {
 }
 
 .main-title{
-  font-size: 14px;
+  font-size: 16px;
   color: vars.$titleClr;
   //color: vars.$titleClrLight;
   font-weight: 600;
@@ -799,7 +800,7 @@ input::-ms-input-placeholder {
   markdown{
     margin: 0px;
     font-size: smaller;
-    color: #757575;
+    color: vars.$fontclr;
     font-size: 12px;
     @include vars.fontFamilyPrimary;
     h1,h2,h3,h4,h5,h6{
@@ -1019,6 +1020,10 @@ input::-ms-input-placeholder {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  .right-section{
+    display: flex;
+    gap: 10px;
+  }
 }
 
 .sidepanelContainer{
@@ -1154,6 +1159,212 @@ input::-ms-input-placeholder {
     width: 100%;
     .p-inputtext{
       width: 100%;
+    }
+  }
+}
+
+.product-details-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px 15px;
+  padding: 20px 0;
+  .item {
+      border: 1px solid vars.$fieldBorderColor;
+      display: flex;
+      flex-direction: column;
+      padding: 10px 20px;
+      position: relative;
+      border-radius: 30px;
+      min-width: 190px;
+      label{
+          color: vars.$primary-color;
+          font-size: 10px;
+          font-weight: 500;
+          position: absolute;
+          margin-top: -18px;
+          margin-left: -5px;
+          background: #f5f6fa;
+          white-space: nowrap;
+          padding: 0 5px;
+      }   
+      span{
+          font-size: 12px;
+          color: vars.$fontclr;
+      }
+  }
+}
+
+
+.products-wrapper{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+  .product-item{
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      min-width: 200px;
+      .header{
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .title{
+            display: flex;
+            align-items: center;
+          }
+          .icon{
+              width: 30px;
+              height: 30px;
+              border-radius: 50%;
+              background: vars.$primary-color;
+              color: #fff;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-weight: 600;
+              font-size: 14px;
+              margin-right: 10px;
+          }
+          .title{
+              font-size: 14px;
+              margin: 0px;
+              color: vars.$primary-color;
+          }            
+      }
+      .content{
+          display: flex;
+          flex-direction: column;
+          margin-top: 20px;
+          span{
+              font-size: 11px;
+              color: vars.$fontclr;
+          }
+      }
+      &.item-selection:hover{
+          background: vars.$primary-color;
+          cursor: pointer;
+          .header{
+              .icon{
+                  color: #fff;
+                  background: vars.$primary-light;
+              }
+              .title{
+                  color: #fff;
+              }
+          }
+          .content{
+              span{
+                  color: #fff;
+              }
+          }
+      }
+  }
+}
+
+.products-container{
+  width: 100%;
+}
+
+.checkbox-group{
+  display: flex;
+  &.show-in-row{
+    flex-direction: row;
+    gap: 15px 25px;
+    flex-wrap: wrap;
+  }
+}
+
+.testCasesAccordian{
+  .p-accordion{
+    .p-accordion-tab {
+      .p-accordion-header:not(.p-disabled){
+        .p-accordion-header-link{
+          width: 30%;
+          background: #fff;
+          color: vars.$titleClr;
+          border: 0px;
+          padding: 12px 15px;
+          border-radius: 30px;
+          font-weight: 600;
+          font-size: 14px;
+          @include vars.fontFamilySecondary;
+          .pi{
+            font-size: 14px;
+          }
+          &:focus{
+            outline: 0px;
+            box-shadow: none;
+          }
+        }
+        &:hover,
+        &.p-highlight{
+          .p-accordion-header-link{
+            background: vars.$primary-color;
+            color: #fff;
+            box-shadow: vars.$primary-box-shoadow;
+          }
+        }
+      }
+      .p-toggleable-content {
+        .p-accordion-content {
+          border: 0px;
+          border-radius: 0px 10px 10px 10px;
+          margin-top: -20px;
+          padding: 40px 15px 15px;
+          background: vars.$body-bg-dark;
+          .mainTitle {
+            font-size: 14px;
+            color: vars.$titleClr;
+            font-weight: 600;
+            margin-bottom: 10px;
+            @include vars.fontFamilySecondary;
+          }
+          .testCaseCard {
+            background: #fff;
+            border: 0px;
+            padding: 0px 15px 20px;
+            margin-bottom: 20px;
+            .testCaseCard-header{
+              border-bottom: 1px solid vars.$border;
+              padding: 15px 0;
+              font-size: 14px;
+              color: vars.$titleClr;
+              font-weight: 600;
+              margin-bottom: 15px;
+              @include vars.fontFamilySecondary;
+            }
+            .card-container {
+              .title {
+                margin-top: 0px;
+                margin-bottom: 10px;
+                font-size: 14px;
+                @include vars.fontFamilySecondary;
+              }
+              .subTitle{
+                font-size: 13px;
+                margin-top: 0px;
+                color: vars.$fontclr;
+                @include vars.fontFamilySecondary;
+              }
+              .steps {
+                .list {
+                  padding-left: 30px;
+                  margin-top: 0px;
+                  li {
+                    font-size: 12px;
+                    color: vars.$fontclr;
+                    @include vars.fontFamilyPrimary;
+                  }
+                }                
+              }
+              .markdownContainer{
+                padding: 0px;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

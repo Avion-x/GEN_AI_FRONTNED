@@ -35,7 +35,7 @@
     <p-menu #subActionMenu [popup]="true" [model]="subCatActionMenuItems"></p-menu>
     <p-sidebar [(visible)]="subCategoryFormSidebar"  class="sidebar-section" [style]="{width:'85%'}" position="right">
         <ng-template pTemplate="header">Create Sub Category</ng-template>
-        <ng-template pTemplate="content" [styleClass]="'sidebar-content-section'">
+        <ng-template pTemplate="content">
             <div class="card">
                 <form [formGroup]="subCategoryForm" class="form-container">
                     <div class="field p-float-label">
@@ -74,7 +74,7 @@
                 <p-table #subProductsTable class="selectableTable" [value]="productSubCategoryCreationData" [globalFilterFields]="['product_category','sub_category','created_at','customer', 'valid_till', 'comments']">
                     <ng-template pTemplate="caption">
                         <div class="table-title-with-search">
-                            <div class="title">Sub Categories List<div class="count">{{productSubCategoryCreationData.length}}</div></div>
+                            <div class="title">Sub Categories<div class="count">{{productSubCategoryCreationData.length}}</div></div>
                             <div class="right-section">   
                                 <div class="search-box">
                                     <i class="pi pi-search"></i>
@@ -121,14 +121,14 @@
 
     <div class="content-loader" *ngIf="productsLoader">
         <i class="pi pi-spin pi-spinner"></i>
-        <span>Loading Product Categories List...</span>
+        <span>Loading Product Categories...</span>
     </div>
 
     <div class="table-container table-selection-list mt-30"  *ngIf="!productsLoader">
         <p-table #productsTable class="selectableTable" [value]="productCategoryData" [globalFilterFields]="['id','category','created_at','customer', 'valid_till', 'comments']">
             <ng-template pTemplate="caption">
                 <div class="table-title-with-search">
-                    <div class="title">Categories List <div class="count">{{productCategoryData.length}}</div></div>
+                    <div class="title">Categories <div class="count">{{productCategoryData.length}}</div></div>
                     <div class="right-section">   
                         <div class="search-box">
                             <i class="pi pi-search"></i>
@@ -172,7 +172,7 @@
                         <div class="expanded-table">
                             <div class="content-loader" *ngIf="productSubCategoryLoader">
                                 <i class="pi pi-spin pi-spinner"></i>
-                                <span>Loading Product Sub Categories List...</span>
+                                <span>Loading Product Sub Categories...</span>
                             </div>
                                                     
                             <div class="table-container table-selection-list" *ngIf="!productSubCategoryLoader">

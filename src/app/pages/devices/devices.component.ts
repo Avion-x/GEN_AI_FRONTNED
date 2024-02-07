@@ -47,7 +47,7 @@ export class DevicesComponent implements OnInit {
     //this.clearRoutePath();
     this.selectedMainCategory = this._aRoute.snapshot.params?.['mainID'];
     this.getProductsCat();
-    this.breadcrumblist.push({'name':'Home', 'url':this.appConfig.urlHome, 'disabled':false}, {'name':'Product Categories','url':'', 'disabled':true});
+    this.breadcrumblist.push({'name':'Home', 'url':this.appConfig.urlHome, 'disabled':false},{'name':'Test Generation','url':'', 'disabled':true}, {'name':'Product Categories','url':'', 'disabled':true});
     this.showMainCategory = true;
     this.backUrl = this.appConfig.urlHome;
     if(this.selectedMainCategory){

@@ -4,13 +4,13 @@
                 <span class="material-symbols-rounded">arrow_back</span>
             </button>
             <div class="title-container">
-                <h1 class="title">
-                    Add New Product
+                <h1 class="title" *ngIf="productSubCategory">
+                    {{productSubCategory.sub_category}}   
                 </h1>
                 <h2 class="sub-title">
-                    <span>Device Management</span>
-                    <!-- <span *ngIf="productSubCategory"><i class="icofont-simple-right"></i></span>
-                    <span *ngIf="productSubCategory">{{productSubCategory.sub_category}}</span> -->
+                    <span *ngIf="productSubCategory">{{productSubCategory.category_name}}</span>
+                    <span *ngIf="productSubCategory"><i class="icofont-simple-right"></i></span>
+                    <span *ngIf="productSubCategory">{{productSubCategory.sub_category}}</span>
                 </h2>
             </div>
     </div>
@@ -30,11 +30,53 @@
 </ul>
 
 <div class="content-wrapper">
+    <!-- <h1 class="main-title">Add New Product</h1> -->
+
+    <h1 class="main-title">
+        Details
+    </h1>
+    
+    <div class="product-details-section" *ngIf="productSubCategory">
+        
+        <div class="item">
+            <label>Category</label>
+            <span>{{productSubCategory.category_name}}</span>
+        </div>
+        <div class="item">
+            <label>Sub Category</label>
+            <span>{{productSubCategory.sub_category}}</span>
+        </div>
+        <div class="item">
+            <label>Customer Name</label>
+            <span>{{productSubCategory.customer_name}}</span>
+        </div>
+        <div class="item">
+            <label>Last Updated At</label>
+            <span>{{productSubCategory.last_updated_at}}</span>
+        </div>
+        <div class="item">
+            <label>Valid Till</label>
+            <span>{{productSubCategory.valid_till}}</span>
+        </div>
+        <div class="item">
+            <label>Description</label>
+            <span>{{productSubCategory.description}}</span>
+        </div>
+        <div class="item">
+            <label>Comments</label>
+            <span>{{productSubCategory.comments}}</span>
+        </div>
+    </div>
+
     <div class="header-with-btns">
         <div class="title-section">
-            <h1 class="main-title">Add New Product</h1>
+            <h1 class="main-title">Product List</h1>
         </div>
         <div class="right-section">
+            <button class="btn primary-btn">
+                <span class="material-symbols-rounded icon">add</span>
+                Add New Product
+            </button>
             <button class="btn primary-btn">
                 <span class="material-symbols-rounded icon">attach_file</span>
                 Upload Products
@@ -42,7 +84,7 @@
         </div>
     </div>
     
-    <div class="card">
+    <!-- <div class="card">
         <form [formGroup]="productsForm" class="form-container">
             <div class="field p-float-label">
                 <input id="float-input-1" formControlName="deviceName" type="text" pInputText> 
@@ -75,9 +117,35 @@
                 Add
             </button>
         </div> 
+    </div> -->
+
+    <div class="content-loader" *ngIf="productsLoader">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Loading Products...</span>
     </div>
 
-    <div class="table-container mt-30 mb-30" *ngIf="productsData.length !== 0">
+    <div class="products-container" *ngIf="!productsLoader">
+        <p-menu #deviceActionMenu [popup]="true" [model]="deviceActionMenuItems"></p-menu>
+        <div class="products-wrapper">
+            <div class="product-item" *ngFor="let item of productsData">
+                <div class="header">
+                    <div class="title">
+                        <div class="icon">{{item.product_code.slice(0, 1)}}</div>
+                        <h2 class="title">{{item.product_code}}</h2>
+                    </div>
+                    <div class="right-section">
+                        <button class="deviceActionsBtn" (click)="deviceActionMenu.toggle($event); seDeciveActionMenu(item)"><i class="material-symbols-rounded"> more_vert</i></button>
+                    </div>
+                </div>
+                <div class="content">
+                    <span>ID: <b>{{item.id}}</b></span>
+                    <span>Valid Till: <b>{{item.valid_till}}</b></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="table-container mt-30 mb-30" *ngIf="!productsLoader">
         <p-table #productsTable class="selectableTable" [value]="productsData" [globalFilterFields]="['deviceName','series','customer', 'validTill', 'comments', 'description']">
             <ng-template pTemplate="caption">
                 <div class="table-title-with-search">
@@ -85,7 +153,6 @@
                     <div class="right-section">   
                         <div class="search-box">
                             <i class="pi pi-search"></i>
-                            <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
                             <input pInputText type="text" #filter (input)="productsTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
                         </div>
                     </div>
@@ -93,8 +160,7 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <!-- <th>Id</th> -->
-                    <!-- <th>Product Category</th> -->
+                  
                     <th>Device Name</th>
                     <th>Series</th>
                     <th>Customer</th>
@@ -105,8 +171,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-product>
                 <tr>
-                    <!-- <td>{{product.id}}</td> -->
-                    <td>{{product.deviceName}}</td>
+                    <td>{{product.product_code}}</td>
                     <td>{{product.series}}</td>
                     <td>{{product.customer}}</td>
                     <td>{{product.validTill}}</td>
@@ -115,11 +180,11 @@
                 </tr>
             </ng-template>
         </p-table>
-    </div>
+    </div> -->
 </div>
 
-<div class="pageActions">
+<!-- <div class="pageActions">
     <button class="btn secondary-btn">Cancel</button>
     <button class="btn primary-btn">Submit</button>
-</div>
+</div> -->
 

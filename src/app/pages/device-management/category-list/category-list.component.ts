@@ -203,7 +203,7 @@ export class CategoryListComponent implements OnInit {
 
   navigateToProducts(selectedSubCat:any){
     this.selectedSubCategory = selectedSubCat;
-    const url = this.appConfig.urlDeviceManagement + '/' + selectedSubCat + '/addNewDevices';
+    const url = this.appConfig.urlDeviceManagement + '/' + selectedSubCat + '/deviceList';
     // console.log('url', url)
     this._router.navigateByUrl(url);
   }

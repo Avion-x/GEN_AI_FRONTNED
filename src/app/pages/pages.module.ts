@@ -14,6 +14,7 @@ import {SelectButtonModule} from 'primeng/selectbutton';
 import {TabViewModule} from 'primeng/tabview';
 import { ButtonModule } from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
+import {AccordionModule} from 'primeng/accordion';
 
 import { ProductsComponent } from './products/products.component';
 import { ProductSubCategoryComponent } from './product-sub-category/product-sub-category.component';
@@ -61,6 +62,7 @@ import { TestDeviceListComponent } from './test-execution/test-device-list/test-
     TabViewModule,
     ButtonModule,
     DialogModule,
+    AccordionModule,
     MarkdownModule.forRoot()
   ]
 })

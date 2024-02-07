@@ -71,34 +71,85 @@
         </div>
 
 
-        <h1 class="main-title">
+        <!-- <h1 class="main-title">
             Generate Test Cases
-        </h1>
+        </h1> -->
         
-        <div class="test-cases-container" *ngIf="productData && testTypes">
-            <!-- <div *ngFor="let test of testTypes" class="field-checkbox">
-                <p-checkbox name="group2" value="category" [value]="test"  [(ngModel)]="selectedTestTypes" [inputId]="test"></p-checkbox>
-                <label [for]="test">{{test}}</label>
-            </div> -->
+        <!-- <div class="test-cases-container" *ngIf="productData && testTypes">
+            
             <div class="p-float-label primeNgField" *ngIf="testTypes">
                 <p-multiSelect class="multiSelectField" [options]="testTypes" [(ngModel)]="selectedTestTypes" optionLabel="code" display="chip"></p-multiSelect>
                 <label for="multiselect">Select Test Types</label>
             </div>            
             <button class="btn btn-primary" (click)="generateTestCases()">Generate Test Cases</button>
+        </div> -->
+
+        <!-- <h1 class="main-title">
+            Test Cases
+        </h1>         -->
+
+        <div class="header-with-btns">
+            <div class="title-section">
+                <h1 class="main-title">Test Cases</h1>
+            </div>
+            <div class="right-section">
+                <button class="btn secondary-btn">
+                    <span class="material-symbols-rounded icon">history</span>
+                    Previous Test Cases
+                </button>
+                <button class="btn primary-btn" (click)="showGenerateTestCasesSection()">
+                    <span class="material-symbols-rounded icon">smart_toy</span>
+                    Generate New Test Cases
+                </button>
+            </div>
         </div>
 
-        <h1 class="main-title">
-            Test Cases
-        </h1>        
+        <div class="testCasesAccordian">
+            <p-accordion *ngIf="testCategorys">
+                <p-accordionTab *ngFor="let category of testCategorys; index as i" [header]="category.name" [selected]="i == 0" (click)="getTestCasesOfCategory(category.test_category_id, category.request_id)">
+                    <div class="testCaseCard">
+                        <div class="testCaseCard-header">Test Cases</div>
+                        <div class="card-container">
+                            <div *ngFor="let testcase of generatedTestCases?.test_cases">
+                                <h1 class="title">
+                                   {{testcase.testname}}
+                                </h1>
+                                <h3 class="subTitle">{{testcase.objective}}</h3>
+                                <div class="steps">
+                                    <ul class="list">
+                                        <li *ngFor="let step of testcase.steps">{{step}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-        <div class="testCasesDataContainer">
-            
-            <div class="markdownContainer">         
-                <div class="content-loader" *ngIf="generateTestcasesLoader">
+                    <div class="testCaseCard mb-0">
+                        <div class="testCaseCard-header">Test Scripts</div>
+                        <div class="card-container">
+                            <div *ngFor="let testscripts of generatedTestCases?.test_scripts">
+                                <h1 class="title">
+                                   {{testscripts.testname}}
+                                </h1>
+                                <h3 class="subTitle">{{testscripts.objective}}</h3>
+                                <div class="markdownContainer"> 
+                                    <markdown [data]="testscripts.script"></markdown>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p-accordionTab>
+            </p-accordion>
+        </div>        
+
+        <!-- <div class="testCasesDataContainer">         
+            <div class="markdownContainer"> 
+                <div class="content-loader" *ngIf="loadingTestCases">
                     <i class="pi pi-spin pi-spinner"></i>
-                    <span>Generating test cases, Please Wait...</span>
+                    <span>Loading test cases, Please Wait...</span>
                 </div>   
-                <markdown [data]="testCasesData" *ngIf="!generateTestcasesLoader"></markdown>
+                <div class="noTestcasesMessage" *ngIf="!loadingTestCases && testCasesData == ''">No Test Cases Has Been Generated!</div> 
+                <markdown [data]="testCasesData" *ngIf="!loadingTestCases"></markdown>
             </div>
     
             <h1 class="main-title">
@@ -112,9 +163,33 @@
                 </div>  
                 <markdown [data]="testScriptsData" *ngIf="!generateTestcasesLoader"></markdown>
             </div>
-        </div>
+        </div> -->
         
         
         
     </div>
 </div>
+
+<p-sidebar [(visible)]="generateTestCasesFormSidebar"  class="sidebar-section" [style]="{width:'85%'}" position="right">
+    <ng-template pTemplate="header">Generate New Test Cases</ng-template>
+    <ng-template pTemplate="content">
+        
+        <div class="card" *ngIf="testTypes">
+            <h1 class="main-title">Select Test Type</h1>
+            <div class="checkbox-group show-in-row">
+                <div *ngFor="let test of testTypes" class="field-checkbox">
+                    <p-checkbox name="group2" [value]="test.code"  [(ngModel)]="selectedTestTypes" [inputId]="test.id"></p-checkbox>
+                    <label [for]="test.id">{{test.description}}</label>
+                </div>
+            </div>            
+        </div>
+        
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="pageActions">
+            <button class="btn secondary-btn">Cancel</button>
+            <button class="btn primary-btn">Submit</button>
+        </div>
+    </ng-template>
+    
+</p-sidebar>

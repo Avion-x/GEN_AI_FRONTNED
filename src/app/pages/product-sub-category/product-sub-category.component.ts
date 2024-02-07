@@ -74,7 +74,7 @@ export class ProductSubCategoryComponent implements OnInit {
       this.productMainCategory = result[0];    
       const mainCategoryName = this.productMainCategory.category + '-' + this.productMainCategory.id;
       this.backUrl = this.appConfig.urlProductCategory;
-    this.breadcrumblist.push({'name':'Home', 'url':this.appConfig.urlHome, 'disabled':false}, {'name':'Product Categories', 'url':this.appConfig.urlProductCategory, 'disabled':false}, {'name':mainCategoryName, 'disabled':true});  
+    this.breadcrumblist.push({'name':'Home', 'url':this.appConfig.urlHome, 'disabled':false},{'name':'Test Generation','url':'', 'disabled':true}, {'name':'Product Categories', 'url':this.appConfig.urlProductCategory, 'disabled':false}, {'name':mainCategoryName, 'disabled':true});  
       console.log('productMainCategory', this.productMainCategory);
     })
   }

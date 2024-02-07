@@ -1,0 +1,19 @@
+@use '/src/assets/styles/vars';
+.deviceActionsBtn{
+    border: 0px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    &:hover{
+        cursor: pointer;
+        background: vars.$bg-light;
+    }
+    i{
+        font-size: 21px;
+        color: vars.$titleClr;
+    }
+}

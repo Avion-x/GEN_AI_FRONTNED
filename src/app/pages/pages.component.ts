@@ -52,7 +52,7 @@ export class PagesComponent implements OnInit {
 
     this.navList = [
       {
-        'name':'Products',
+        'name':'Test Generation',
         'icon':'category',
         'url':this.appConfig.urlProductCategory
       },

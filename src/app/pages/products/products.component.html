@@ -41,10 +41,13 @@
         </h1>
     
         <div class="products-wrapper">
-            <div class="product-item" *ngFor="let item of productsData" (click)="navigateToProductDetails(item.id)">
+            <div class="product-item item-selection" *ngFor="let item of productsData" (click)="navigateToProductDetails(item.id)">
                 <div class="header">
-                    <div class="icon">{{item.product_code.slice(0, 1)}}</div>
-                    <h2 class="title">{{item.product_code}}</h2>
+                    <div class="title">
+                        <div class="icon">{{item.product_code.slice(0, 1)}}</div>
+                        <h2 class="title">{{item.product_code}}</h2>
+                    </div>
+                    <div class="right-section"></div>
                 </div>
                 <div class="content">
                     <span>ID: <b>{{item.id}}</b></span>
