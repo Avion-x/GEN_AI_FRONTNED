@@ -66,13 +66,123 @@
     <div class="custom-nav-tabs-header">
         <!-- <h1 class="main-title">Tabs List</h1> -->
         <div class="nav-tabs-container">
-            <button class="nav-tab btn" (click)="tabActiveIndex = 0" [ngClass]="tabActiveIndex === 0 ? 'active':''">Ready To Test Devices</button>
-            <button class="nav-tab btn" (click)="tabActiveIndex = 1" [ngClass]="tabActiveIndex === 1 ? 'active':''">All Devices</button>
+            <button class="nav-tab btn" (click)="tabActiveIndex = 0" [ngClass]="tabActiveIndex === 0 ? 'active':''">All Devices</button>
+            <button class="nav-tab btn" (click)="tabActiveIndex = 1" [ngClass]="tabActiveIndex === 1 ? 'active':''">Ready To Test Devices</button>
         </div>        
     </div>
     
     <div class="custom-nav-tabs-container">
         <p-tabView [(activeIndex)]="tabActiveIndex">
+            <p-tabPanel header="All Devices">
+                <div class="content-loader" *ngIf="productsLoader">
+                    <i class="pi pi-spin pi-spinner"></i>
+                    <span>Loading All Devices List...</span>
+                </div>
+                <div class="table-container table-selection-list">
+
+                    <p-table #allDevicesTable class="selectableTable" [value]="productsData" (onFilter)="onFiltering($event)" [globalFilterFields]="['id','product_code','main_category_name','sub_category_name','customer_name', 'valid_till']">
+                        <ng-template pTemplate="caption">
+                            <div class="table-title-with-search">
+                                <div class="title">                                    
+                                        All Devices
+                                        <div class="count">{{productsData.length}}</div>
+                                </div>
+                                <div class="right-section">   
+                                    <!-- <p-columnFilter field="main_category_name" matchMode="equals" display="menu" [showMatchModes]="false"
+                                        [showOperator]="false" [showAddButton]="false">
+                                        <ng-template pTemplate="header">
+                                            <div class="p-px-3 p-pt-3 p-pb-0">
+                                                <span class="p-text-bold">Main Category</span>
+                                            </div>
+                                        </ng-template>
+                                        <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                            <p-multiSelect [ngModel]="value" [options]="productCategoryData" placeholder="Any"
+                                                (onChange)="filter($event.value); selectedFilter($event.value)" optionLabel="category">
+                                                <ng-template let-option pTemplate="item">
+                                                    <div class="p-multiselect-representative-option">
+                                                        <span class="p-ml-1">{{option.category}}</span>
+                                                    </div>
+                                                </ng-template>
+                                            </p-multiSelect>
+                                        </ng-template>
+                                    </p-columnFilter>  -->
+                                    <div class="filtersSection">
+                                        <p-columnFilter field="main_category_name" matchMode="equals">
+                                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                                <div class="filterField p-float-label p-input-icon-left">                                                    
+                                                    <p-dropdown class="field" id="filter1" [ngModel]="value" [options]="productCategoryData"  placeholder="Select a Category" optionLabel="category" optionValue="category"
+                                                        (onChange)="filter($event.value); getProductsSubCategory($event.value)" [showClear]="true">
+                                                        <ng-template let-item pTemplate="item">
+                                                            <div class="flex align-items-center">                                                        
+                                                                <span>{{item.category}}</span>
+                                                            </div>
+                                                        </ng-template>
+                                                    </p-dropdown>
+                                                    <i class="pi pi-filter-fill icon"></i>
+                                                    <label for="filter1">Category</label>
+                                                </div>                                            
+                                            </ng-template>
+                                        </p-columnFilter>
+    
+                                        <p-columnFilter *ngIf="showSubCategoryFilter" field="sub_category_name" matchMode="equals">
+                                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                                <div class="filterField p-float-label p-input-icon-left">                                                    
+                                                    <p-dropdown [ngModel]="value" [options]="productSubCategoryData" optionLabel="sub_category" optionValue="sub_category"
+                                                        (onChange)="filter($event.value)" placeholder="Select a Sub Category" [showClear]="true">
+                                                    </p-dropdown>
+                                                    <i class="pi pi-filter-fill icon"></i>
+                                                    <label for="filter1">Sub Category</label>
+                                                </div>
+                                                
+                                            </ng-template>
+                                        </p-columnFilter>
+                                    </div>
+                                    
+                                    
+                                    <div class="search-box">
+                                        <i class="pi pi-search"></i>
+                                        <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
+                                        <input pInputText type="text" #filter (input)="allDevicesTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
+                                    </div>                                   
+                                </div>
+                            </div>                
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Id</th>
+                                <th>Product Code</th>
+                                <th>Category Name</th>
+                                <th>Sub Category Name</th>
+                                <th>Customer Name</th>
+                                <th>Valid Till</th>
+                                <th>Available Test Type</th>
+                                <th style="width: 110px; min-width: 110px; max-width: 110px;"></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-device>
+                            <tr (click)="navigateToProductDetails(device)">
+                                <td>{{device.id}}</td>
+                                <td class="td-clr-primary tb-bold">{{device.product_code}}</td>
+                                <td>{{device.main_category_name}}</td>
+                                <td>{{device.sub_category_name}}</td>
+                                <td>{{device.customer_name}}</td>
+                                <td>{{device.valid_till}}</td>
+                                <td class="testTypesList">
+                                    <!-- <div class="chip" *ngFor="let test of device.test_types">{{test.description}}</div>
+                                    <button *ngIf="device.test_types.length == 0" type="button" class="testNowBtn" (click)="showGenerateTestcasesDialog(device)">
+                                        Generate Test Cases
+                                    </button>  -->
+                                </td>
+                                <td style="width: 110px; min-width: 110px; max-width: 110px;">
+                                    <!-- <button *ngIf="device.test_types.length != 0" type="button" class="testNowBtn" (click)="showTestDialog(device)">
+                                        Test Now
+                                    </button>                         -->
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </p-tabPanel>
             <p-tabPanel header="Ready to test Devices">
                 <div class="table-container table-selection-list">
                     <p-table #readyToTestTable [value]="readyToTestDevices" [globalFilterFields]="['product_category','sub_category','created_at','customer', 'valid_till', 'comments']">
@@ -82,7 +192,7 @@
                                         Ready To Test Devices
                                         <div class="count">{{readyToTestDevices.length}}</div>
                                 </div>
-                                <div class="right-section">   
+                                <div class="right-section">
                                     <div class="search-box">
                                         <i class="pi pi-search"></i>
                                         <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
@@ -124,68 +234,7 @@
                         </ng-template>
                     </p-table>
                 </div>
-            </p-tabPanel>
-            <p-tabPanel header="All Devices">
-                <div class="content-loader" *ngIf="productsLoader">
-                    <i class="pi pi-spin pi-spinner"></i>
-                    <span>Loading All Devices List...</span>
-                </div>
-                <div class="table-container table-selection-list">
-
-                    <p-table #allDevicesTable [value]="allDevices" [globalFilterFields]="['product_category','sub_category','created_at','customer', 'valid_till', 'comments']">
-                        <ng-template pTemplate="caption">
-                            <div class="table-title-with-search">
-                                <div class="title">                                    
-                                        All Devices
-                                        <div class="count">{{allDevices.length}}</div>
-                                </div>
-                                <div class="right-section">   
-                                    <div class="search-box">
-                                        <i class="pi pi-search"></i>
-                                        <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
-                                        <input pInputText type="text" #filter (input)="allDevicesTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
-                                    </div>                                   
-                                </div>
-                            </div>                
-                        </ng-template>
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th>Id</th>
-                                <th>Product Code</th>
-                                <th>Category Name</th>
-                                <th>Sub Category Name</th>
-                                <th>Customer Name</th>
-                                <th>Valid Till</th>
-                                <th>Available Test Type</th>
-                                <th style="width: 110px; min-width: 110px; max-width: 110px;"></th>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-device>
-                            <tr>
-                                <td>{{device.id}}</td>
-                                <td class="td-clr-primary tb-bold">{{device.product_code}}</td>
-                                <td>{{device.category_name}}</td>
-                                <td>{{device.sub_category_name}}</td>
-                                <td>{{device.customer_name}}</td>
-                                <td>{{device.valid_till}}</td>
-                                <td class="testTypesList">
-                                    <div class="chip" *ngFor="let test of device.test_types">{{test.description}}</div>
-                                    <button *ngIf="device.test_types.length == 0" type="button" class="testNowBtn" (click)="showGenerateTestcasesDialog(device)">
-                                        Generate Test Cases
-                                        <!-- <span class="material-symbols-rounded icon">more_vert</span> -->
-                                    </button> 
-                                </td>
-                                <td style="width: 110px; min-width: 110px; max-width: 110px;">
-                                    <button *ngIf="device.test_types.length != 0" type="button" class="testNowBtn" (click)="showTestDialog(device)">
-                                        Test Now
-                                        <!-- <span class="material-symbols-rounded icon">more_vert</span> -->
-                                    </button>                        
-                                </td>
-                            </tr>
-                        </ng-template>
-                    </p-table>
-                </div>
-            </p-tabPanel>
+            </p-tabPanel>            
         </p-tabView>
     </div>    
 </div>

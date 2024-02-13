@@ -804,12 +804,12 @@ input::-ms-input-placeholder {
     font-size: 12px;
     @include vars.fontFamilyPrimary;
     h1,h2,h3,h4,h5,h6{
-      @include vars.fontFamilyPrimary;
+      @include vars.fontFamilySecondary;
       font-weight: 600;
       color: vars.$secondary-color;
     }
     h1{
-      font-size: 21px;
+      font-size: 14px;
       color: vars.$primary-color;
     }
     :not(pre) > code[class*="language-"], pre[class*="language-"]{
@@ -1163,6 +1163,19 @@ input::-ms-input-placeholder {
   }
 }
 
+.categoryDetails {
+  .product-details-section{
+    background: #fff;
+    padding: 20px 15px 15px;
+    border-radius: 10px;
+    gap: 25px 10px;
+    .item {
+      label{
+        background: #fff;
+      }
+    }
+  }
+}
 .product-details-section {
   display: flex;
   flex-wrap: wrap;
@@ -1360,11 +1373,80 @@ input::-ms-input-placeholder {
               }
               .markdownContainer{
                 padding: 0px;
+                margin-bottom: 30px;
               }
             }
           }
         }
       }
+    }
+  }
+}
+
+.filterField{
+  .icon{
+    z-index: 1;
+    font-size: 12px;
+    margin-top: -5.5px;
+  }
+  &.p-float-label {
+    .p-inputwrapper-focus ~ label,
+    .p-inputwrapper-filled ~ label{
+      background: vars.$primary-color;
+      color: #fff;
+      font-size: 11px;
+      left: 24px;
+      padding: 2px 5px;
+    }
+    .p-inputwrapper-focus ~ .icon,
+    .p-inputwrapper-filled ~ .icon{
+      color: vars.$primary-color;
+    }
+    label{
+      font-size: 12px;
+      font-weight: 600;
+      margin-top: -6px;      
+      border-radius: 30px;
+    } 
+    &.p-input-icon-left{
+      left: 24px;
+    }
+  }
+  .p-dropdown{
+    border-radius: 30px;
+    border: 1px solid vars.$cardBorderColor;
+    height: 31px;
+    align-items: center;
+    .p-dropdown-label{
+      min-width: 130px;
+      font-size: 13px;
+      padding-left: 30px;
+      padding-top: 1px;
+      padding-bottom: 1px;
+    }
+    &:not(.p-disabled).p-focus {
+      box-shadow: none;
+      outline: 0px;
+    }
+    &:not(.p-disabled).p-focus,
+    &:not(.p-disabled):hover {
+      border-color: vars.$primary-color;
+    }
+    &:not(.p-disabled):hover ~ .icon {
+      color: vars.$primary-color;
+    }    
+  }    
+}
+
+.filtersSection{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding-right:35px;
+  p-columnfilter{
+    .p-column-filter-menu-button,
+    .p-column-filter-clear-button{
+      display: none;
     }
   }
 }

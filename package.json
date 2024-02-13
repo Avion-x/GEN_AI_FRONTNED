@@ -18,6 +18,8 @@
     "@angular/platform-browser": "^14.2.0",
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
+    "@types/lodash": "^4.14.202",
+    "lodash": "^4.17.21",
     "marked": "^9.0.0",
     "ngx-markdown": "^14.0.0",
     "primeicons": "^5.0.0",

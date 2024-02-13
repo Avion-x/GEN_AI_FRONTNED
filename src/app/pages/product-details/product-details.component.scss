@@ -48,3 +48,25 @@
     padding: 10px;
     border-radius: 5px;
 }
+
+.testCasesTabs{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    .testCaseTab{
+        display: flex;
+        align-items: center;
+        border: 0px;
+        padding: 10px 15px;
+        font-size: 12px;
+        background: #fff;
+        font-weight: 600;
+        border-radius: 4px;
+        color: vars.$titleClr;
+        &.active{
+            background: vars.$primary-color;
+            color: #fff;
+        }
+    }
+}

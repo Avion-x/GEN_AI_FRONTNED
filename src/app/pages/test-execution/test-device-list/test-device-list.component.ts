@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfigService } from 'src/app/shared/services/app-config.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DataService } from 'src/app/shared/services/data.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-test-device-list',
@@ -28,6 +29,17 @@ export class TestDeviceListComponent implements OnInit {
   public dialogTitle:string = '';
   public selectedTestTypes:any[] = [];
   public selectedDeviceTestTypes:any[] = [];
+
+  public productCategoryData:any[] = [];
+  public productCatrgorysLoader:boolean = false;
+
+  public selectedMainCategory:any;
+  public productSubCategoryLoader:boolean = false;
+  public productSubCategoryData:any[] = [];
+  public showSubCategoryFilter:boolean = false;
+
+  public selectedMainCategoryId:string = '';
+  public selectedSubCategoryId:string = '';
 
   public readyToTestDevices:any[] = [
     {
@@ -258,6 +270,7 @@ export class TestDeviceListComponent implements OnInit {
     this.backUrl = this.appConfig.urlHome;
     this.getProducts();
     this.getTestTypes();
+    this.getProductsCat();
   }
 
   public showTestDialog(selectedDevice:any){
@@ -277,6 +290,15 @@ export class TestDeviceListComponent implements OnInit {
     console.log('this.testTypes', this.testTypes);
     this.dialogTitle = selectedDevice.product_code;
     this.confirmTestTypeDialog = true;
+  }
+
+  onFiltering(event: any) {
+    console.log('-------------',event)
+    console.log('Filtered value: '+ JSON.stringify(event.filters));
+  }
+
+  selectedFilter(event:any){
+    console.log('------selectedFilter-------',event)
   }
 
   getProducts() {
@@ -314,6 +336,58 @@ export class TestDeviceListComponent implements OnInit {
     })
   }
 
+
+  getProductsCat(){
+    if(!_.isEmpty(this.productSubCategoryData)){
+      this.showSubCategoryFilter = true;
+    }
+    this.productCatrgorysLoader = true;
+    const getProductCategory = {
+      action: 'product/productcategory/',
+      method: 'get',
+      // params: {
+      //   unixid: this.userLogged
+      // }
+    }
+    this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
+      this.productCategoryData = result;
+      this.productCatrgorysLoader = false;
+      console.log('this.productCategoryData', this.productCategoryData);
+    }, error => {
+      console.log('error', error);
+      this.productCatrgorysLoader = false;
+    })
+  }
+
+  getProductsSubCategory(selectedCategory:any){    
+    console.log('selectedproduct', selectedCategory);
+    this.selectedMainCategory = _.filter(this.productCategoryData, {category: selectedCategory});
+    console.log('selectedMainCategory', this.selectedMainCategory);
+    this.productSubCategoryLoader = true;
+    this.productSubCategoryData=[];  
+    const getProductCategory = {
+      action: 'product/productsubcategory/',
+      method: 'get',
+      params: {
+        product_category: this.selectedMainCategory[0].id
+      }
+    }
+    this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
+      this.productSubCategoryData = result.data;
+      this.productSubCategoryLoader = false;      
+      console.log('productSubCategoryData', this.productSubCategoryData);
+      if(!_.isEmpty(this.productSubCategoryData)){
+        this.showSubCategoryFilter = true;
+      }
+    })
+  }
+
+  navigateToProductDetails(selectedProduct:any){
+    console.log('selectedProduct', selectedProduct);
+    const url = 'home/productCategories/'+ selectedProduct.main_category_id + '/' + selectedProduct.sub_category_id + '/products/' + selectedProduct.id;
+    console.log('url', url)
+    this._router.navigateByUrl(url);
+  }
   
 
 }
