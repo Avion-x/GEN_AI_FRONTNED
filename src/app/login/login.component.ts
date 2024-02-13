@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
 //         });
 // }
 
-onSubmit(){
+onSubmit() {
   this.submitted = true;
   if (this.loginForm.invalid) {
       return;
@@ -97,6 +97,8 @@ onSubmit(){
   this.dataService.apiDelegate(loginData).subscribe((result: any) => {
     console.log('result', result);
     if(result.token){
+      localStorage.removeItem('currentUser');
+      localStorage.setItem('currentUser', JSON.stringify(result));
       const returnUrl = '/home'
       this.router.navigateByUrl(returnUrl);
     } else {

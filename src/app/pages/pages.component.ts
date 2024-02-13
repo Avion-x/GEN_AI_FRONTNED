@@ -80,9 +80,9 @@ export class PagesComponent implements OnInit {
 
   }
 
-  logout(){
-    //this.productsLoader = true;   
-    this._router.navigateByUrl('login');
+  logout() {
+    //this.productsLoader = true; 
+    localStorage.removeItem('currentUser');  
     // let currentUrl = 'login';
     // this._router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
     //     this._router.navigate([currentUrl]);
@@ -100,7 +100,8 @@ export class PagesComponent implements OnInit {
       //this.productsLoader = false;
       console.log('logout', result);
       
-    })
+    });
+    this._router.navigateByUrl('login');
   }
 
 }
