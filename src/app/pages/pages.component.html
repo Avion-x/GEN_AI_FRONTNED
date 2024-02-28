@@ -5,52 +5,57 @@
             <!-- <h1 class="logo-text">Alice</h1> -->
             <img src="../../assets/images/logo.png">
         </div>
-        <div *ngIf="showClientLogo" class="client-logo">
-            <img src="../../assets/images/clients/juniper_black-rgb-header.webp">
-        </div>
-        <!-- <div class="user-section" *ngIf="currentUser" (click)="userMenu.toggle($event)">
-            <div class="icon">{{userTag}}</div>
-            <div class="user">
-                <span class="name">{{currentUser?.first_name + ' ' + currentUser?.last_name}}</span>
-                <span class="email">{{currentUser?.email}}</span>
+        <div class="topbar-right-section">
+            <div *ngIf="showClientLogo" class="client-logo">
+                <img src="../../assets/images/clients/juniper_black-rgb-header.webp">
             </div>
-            <span class="material-symbols-outlined">
-                arrow_drop_down
-            </span>
-        </div>        -->
+            <div class="user-section" *ngIf="currentUser" (click)="userMenu.toggle($event)">
+                <div class="icon">{{userTag}}</div>
+                <!-- <div class="user">
+                    <span class="name">{{currentUser?.first_name + ' ' + currentUser?.last_name}}</span>
+                    <span class="email">{{currentUser?.email}}</span>
+                </div> -->
+                <!-- <span class="material-symbols-outlined">
+                    arrow_drop_down
+                </span> -->
+            </div> 
+        </div>
+              
     </div>
     <p-menu #userMenu [popup]="true" [model]="userMenuItems"></p-menu>
     <div class="page-wrapper">
         <div class="menu-section">
-            <div class="menu">
-                <button class="menu-btn" *ngFor="let nav of navList" [routerLink]="nav.url" [routerLinkActive]="'active'">
-                    <div class="icon">
-                        <span class="material-symbols-rounded">{{nav.icon}}</span>
-                    </div>
-                    <span>{{nav.name}}</span>
-                </button>                
-            </div>
-            <div>
-                <div class="user-section" *ngIf="currentUser" (click)="userMenuToggle()">
-                    <div class="icon">{{userTag}}</div>
-                    <div class="user">
-                        <span class="name">{{currentUser?.first_name + ' ' + currentUser?.last_name}}</span>
-                        <span class="email">{{currentUser?.email}}</span>
-                    </div>
-                    <!-- <span class="material-symbols-outlined">
-                        arrow_drop_down
-                    </span> -->
-                </div> 
-                <div class="userMenuSection" *ngIf="userMenuActiveState">
-                    <button class="user-menu-item" (click)="logout()">
-                        <span class="material-symbols-rounded icon">
-                            power_settings_new
-                            </span>
-                        Logout
-                    </button>
+            <p-scrollPanel [style]="{width: '100%', height:'calc(100vh - 120px)'}" styleClass="menu-scrollbar-panel">
+                <div class="menu">
+                    <button class="menu-btn" *ngFor="let nav of navList" [routerLink]="nav.url" [routerLinkActive]="'active'">
+                        <div class="icon">
+                            <span class="material-symbols-rounded">{{nav.icon}}</span>
+                        </div>
+                        <span>{{nav.name}}</span>
+                    </button>                
                 </div>
-            </div>
-           
+                <!-- <div>
+                    
+                </div> -->
+            </p-scrollPanel>  
+            <!-- <div class="user-section" *ngIf="currentUser" (click)="userMenuToggle()">
+                <div class="icon">{{userTag}}</div>
+                <div class="user">
+                    <span class="name">{{currentUser?.first_name + ' ' + currentUser?.last_name}}</span>
+                    <span class="email">{{currentUser?.email}}</span>
+                </div>
+                <span class="material-symbols-outlined">
+                    arrow_drop_down
+                </span>
+            </div> 
+            <div class="userMenuSection" *ngIf="userMenuActiveState">
+                <button class="user-menu-item" (click)="logout()">
+                    <span class="material-symbols-rounded icon">
+                        power_settings_new
+                        </span>
+                    Logout
+                </button>
+            </div>   -->
         </div>
         <div class="page-container">
             <router-outlet></router-outlet>

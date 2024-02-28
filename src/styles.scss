@@ -1530,3 +1530,23 @@ input::-ms-input-placeholder {
     }
   }
 }
+
+.p-scrollpanel {
+  &.menu-scrollbar-panel{
+    .p-scrollpanel-wrapper {
+      border-right: 5px solid transparent;
+    }
+
+    .p-scrollpanel-bar {
+        background-color: vars.$primary-color;
+        opacity: 1;
+        transition: background-color .2s;
+        &.p-scrollpanel-bar-y{
+          width: 5px
+        }
+        &:hover {
+            background-color: vars.$primary-dark;
+        }
+    }
+  }
+}

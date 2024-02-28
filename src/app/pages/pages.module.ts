@@ -19,6 +19,7 @@ import {AccordionModule} from 'primeng/accordion';
 import {DropdownModule} from 'primeng/dropdown';
 import {ToastModule} from 'primeng/toast';
 import {RadioButtonModule} from 'primeng/radiobutton';
+import {ScrollPanelModule} from 'primeng/scrollpanel';
 
 
 import { ProductsComponent } from './products/products.component';
@@ -78,6 +79,7 @@ import { AddNewEnterpriseComponent } from './enterprise/add-new-enterprise/add-n
     DropdownModule,
     ToastModule,
     RadioButtonModule,
+    ScrollPanelModule,
     MarkdownModule.forRoot()
   ]
 })

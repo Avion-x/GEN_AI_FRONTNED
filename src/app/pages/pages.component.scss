@@ -1,5 +1,5 @@
 @use '/src/assets/styles/vars';
-$topnav-height:70px;
+$topnav-height:60px;
 .logo {
     display: flex;
     align-items: center;
@@ -25,7 +25,8 @@ $topnav-height:70px;
     .topbar{
         width: 100%;
         height: $topnav-height;
-        background: vars.$body-bg;
+        //background: vars.$body-bg;
+        background: #fff;
         padding: 0px 10px;
         display: flex;
         align-items: center;
@@ -33,12 +34,15 @@ $topnav-height:70px;
         h1.logo{
             margin: 0px;
         }
-        
+        .topbar-right-section{
+            display: flex;
+        }
     }
     .page-wrapper{
         width: 100%;
         height: calc(100vh - $topnav-height);
         display: flex;
+        padding-top: 10px;
         padding-left: 10px;
         //background: #f5f6fa;
         background: vars.$body-bg;
@@ -132,6 +136,9 @@ $topnav-height:70px;
     display: flex;
     align-items: center;
     cursor: pointer;
+    padding-left: 10px;
+    border-left: 1px solid vars.$border_2;
+    margin-left: 15px;
     .icon{
         width: 35px;
         height: 35px;
@@ -191,4 +198,3 @@ $topnav-height:70px;
                 }
     }
 }
-
