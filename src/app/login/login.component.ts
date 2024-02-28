@@ -99,6 +99,7 @@ onSubmit() {
     if(result.token){
       localStorage.removeItem('currentUser');
       localStorage.setItem('currentUser', JSON.stringify(result));
+     // this.authenticationService.userSubject = JSON.stringify(result);
       const returnUrl = '/home'
       this.router.navigateByUrl(returnUrl);
     } else {

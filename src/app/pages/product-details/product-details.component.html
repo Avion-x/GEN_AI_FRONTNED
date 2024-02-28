@@ -16,7 +16,10 @@
     </div>
     
     <div class="header-right-section">
-        <!-- <button class="btn" (click)="generateTestCases()">Generate Test Cases</button> -->
+        <button class="btn primary-btn">
+            <span class="material-symbols-rounded icon">speed</span>
+            Run Test
+        </button>
     </div>
 </div>
 
@@ -34,124 +37,122 @@
     <div class="content-loader" *ngIf="productsLoader">
         <i class="pi pi-spin pi-spinner"></i>
         <span>Loading Products Details...</span>
-    </div>
-
-    
+    </div> 
 
     <div class="products-container" *ngIf="!productsLoader">
+        <p-tabView class="productDetailTabs">
+            <p-tabPanel header="Category Details">
+                <div class="content-loader" *ngIf="mainCategoryLoader">
+                    <i class="pi pi-spin pi-spinner"></i>
+                    <span>Loading Category Details...</span>
+                </div>
+                <div class="product-details-section" *ngIf="!mainCategoryLoader"> 
+                    <div class="item">
+                        <label>Category</label>
+                        <span>{{productMainCategory?.category}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Customer Name</label>
+                        <span>{{productMainCategory?.customer_name}}</span>
+                    </div>            
+                    <div class="item">
+                        <label>Created At</label>
+                        <span>{{productMainCategory?.created_at}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Last Updated At</label>
+                        <span>{{productMainCategory?.last_updated_at}}</span>
+                    </div>      
+                    <div class="item">
+                        <label>Description</label>
+                        <span>{{productMainCategory?.description}}</span>
+                    </div>      
+                    <div class="item">
+                        <label>Comments</label>
+                        <span>{{productMainCategory?.comments}}</span>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Sub Category Details">
+                <div class="content-loader" *ngIf="subCategoryLoader">
+                    <i class="pi pi-spin pi-spinner"></i>
+                    <span>Loading Sub Category Details...</span>
+                </div>
+                
+                <div class="product-details-section" *ngIf="!subCategoryLoader">  
+                    <div class="item">
+                        <label>Sub Category</label>
+                        <span>{{productSubCategory?.sub_category}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Customer Name</label>
+                        <span>{{productSubCategory?.customer_name}}</span>
+                    </div>            
+                    <div class="item">
+                        <label>Created At</label>
+                        <span>{{productSubCategory?.created_at}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Last Updated At</label>
+                        <span>{{productSubCategory?.last_updated_at}}</span>
+                    </div>      
+                    <div class="item">
+                        <label>Description</label>
+                        <span>{{productSubCategory?.description}}</span>
+                    </div>      
+                    <div class="item">
+                        <label>Comments</label>
+                        <span>{{productSubCategory?.comments}}</span>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Product Details" [selected]="true">
+                <div class="product-details-section" *ngIf="productData">                
+                    <div class="item">
+                        <label>Product Code</label>
+                        <span>{{productData?.product_code}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Category</label>
+                        <span>{{productData?.category_name}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Sub Category</label>
+                        <span>{{productData?.sub_category_name}}</span>
+                    </div>            
+                    <div class="item">
+                        <label>Created At</label>
+                        <span>{{productData?.created_at}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Last Updated At</label>
+                        <span>{{productData?.last_updated_at}}</span>
+                    </div>            
+                    <div class="item">
+                        <label>Comments</label>
+                        <span>{{productData?.comments}}</span>
+                    </div>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
 
-        <div class="categoryDetails">
+        <!-- <div class="categoryDetails">
             <h1 class="main-title">
                 Category Details
             </h1>
-    
-            <div class="content-loader" *ngIf="mainCategoryLoader">
-                <i class="pi pi-spin pi-spinner"></i>
-                <span>Loading Category Details...</span>
-            </div>
-            
-            <div class="product-details-section" *ngIf="productMainCategory">            
-                
-                <div class="item">
-                    <label>Category</label>
-                    <span>{{productMainCategory?.category}}</span>
-                </div>
-                <div class="item">
-                    <label>Customer Name</label>
-                    <span>{{productMainCategory?.customer_name}}</span>
-                </div>            
-                <div class="item">
-                    <label>Created At</label>
-                    <span>{{productMainCategory?.created_at}}</span>
-                </div>
-                <div class="item">
-                    <label>Last Updated At</label>
-                    <span>{{productMainCategory?.last_updated_at}}</span>
-                </div>      
-                <div class="item">
-                    <label>Description</label>
-                    <span>{{productMainCategory?.description}}</span>
-                </div>      
-                <div class="item">
-                    <label>Comments</label>
-                    <span>{{productMainCategory?.comments}}</span>
-                </div>
-            </div>
-        </div>
-    
+        </div>   
     
         <div class="categoryDetails">
             <h1 class="main-title">
                Sub Category Details
             </h1>
-    
-            <div class="content-loader" *ngIf="subCategoryLoader">
-                <i class="pi pi-spin pi-spinner"></i>
-                <span>Loading Sub Category Details...</span>
-            </div>
-            
-            <div class="product-details-section" *ngIf="!subCategoryLoader">            
-                
-                <div class="item">
-                    <label>Sub Category</label>
-                    <span>{{productSubCategory?.sub_category}}</span>
-                </div>
-                <div class="item">
-                    <label>Customer Name</label>
-                    <span>{{productSubCategory?.customer_name}}</span>
-                </div>            
-                <div class="item">
-                    <label>Created At</label>
-                    <span>{{productSubCategory?.created_at}}</span>
-                </div>
-                <div class="item">
-                    <label>Last Updated At</label>
-                    <span>{{productSubCategory?.last_updated_at}}</span>
-                </div>      
-                <div class="item">
-                    <label>Description</label>
-                    <span>{{productSubCategory?.description}}</span>
-                </div>      
-                <div class="item">
-                    <label>Comments</label>
-                    <span>{{productSubCategory?.comments}}</span>
-                </div>
-            </div>
         </div>
 
         <div class="categoryDetails">
             <h1 class="main-title">
                 Product Details
             </h1>
-            
-            <div class="product-details-section" *ngIf="productData">
-                
-                <div class="item">
-                    <label>Product Code</label>
-                    <span>{{productData?.product_code}}</span>
-                </div>
-                <div class="item">
-                    <label>Category</label>
-                    <span>{{productData?.category_name}}</span>
-                </div>
-                <div class="item">
-                    <label>Sub Category</label>
-                    <span>{{productData?.sub_category_name}}</span>
-                </div>            
-                <div class="item">
-                    <label>Created At</label>
-                    <span>{{productData?.created_at}}</span>
-                </div>
-                <div class="item">
-                    <label>Last Updated At</label>
-                    <span>{{productData?.last_updated_at}}</span>
-                </div>            
-                <div class="item">
-                    <label>Comments</label>
-                    <span>{{productData?.comments}}</span>
-                </div>
-            </div>
-        </div>       
+        </div>        -->
 
 
         <!-- <h1 class="main-title">
@@ -176,11 +177,11 @@
                 <h1 class="main-title">Generated Test Cases</h1>
             </div>
             <div class="right-section">
-                <button class="btn secondary-btn">
+                <!-- <button class="btn secondary-btn">
                     <span class="material-symbols-rounded icon">history</span>
                     Previous Test Cases
-                </button>
-                <button class="btn primary-btn" (click)="showGenerateTestCasesSection()">
+                </button> -->
+                <button *ngIf="showGenerateTestCase" class="btn primary-btn" (click)="showGenerateTestCasesSection()">
                     <span class="material-symbols-rounded icon">smart_toy</span>
                     Generate New Test Cases
                 </button>
@@ -189,17 +190,21 @@
 
         <div class="testCasesTabs">
             
-            <button class="testCaseTab" *ngFor="let testcase of latestTestCases"  [ngClass]="testcase.id == selectedTestCase.id?'active':''" (click)="getTestCategories(testcase)">
-              {{testcase.test_type_name}}
+            <button class="testCaseTab" *ngFor="let testcase of productTestTypes"  [ngClass]="testcase.test_type_id == selectedTestCase.test_type_id?'active':''" (click)="getGeneratedTestCategories(testcase, productData.id)">
+              {{testcase.name}}
             </button>
         </div>
 
         <div class="testCasesAccordian">
             <p-accordion *ngIf="testCategorys">
-                <p-accordionTab *ngFor="let category of testCategorys; index as i" [header]="category.name" [selected]="i == 0" (click)="getTestCasesOfCategory(category.test_category_id, category.request_id)">
+                <p-accordionTab *ngFor="let category of testCategorys; index as i" [header]="category.category_name" [selected]="i == 0" (click)="getTestCasesOfCategory(productData.id, selectedTestTypeId, category.test_category_id)">
                     <div class="testCaseCard">
                         <div class="testCaseCard-header">Test Cases</div>
                         <div class="card-container">
+                            <div class="content-loader" *ngIf="testCaseCategoryLoader">
+                                <i class="pi pi-spin pi-spinner"></i>
+                                <span>Loading Test Cases...</span>
+                            </div>
                             <div *ngFor="let testcase of generatedTestCases?.test_cases">
                                 <h1 class="title">
                                    {{testcase.testname}}
@@ -217,6 +222,10 @@
                     <div class="testCaseCard mb-0">
                         <div class="testCaseCard-header">Test Scripts</div>
                         <div class="card-container">
+                            <div class="content-loader" *ngIf="testCaseCategoryLoader">
+                                <i class="pi pi-spin pi-spinner"></i>
+                                <span>Loading Test Scripts...</span>
+                            </div>
                             <div *ngFor="let testscripts of generatedTestCases?.test_scripts">
                                 <h1 class="title">
                                    {{testscripts.testname}}
@@ -266,10 +275,31 @@
         
         <div class="card" *ngIf="testTypes">
             <h1 class="main-title">Select Test Type</h1>
-            <div class="checkbox-group show-in-row">
-                <div *ngFor="let test of testTypes" class="field-checkbox">
-                    <p-checkbox name="group2" [value]="test.code"  [(ngModel)]="selectedTestTypes" [inputId]="test.id"></p-checkbox>
-                    <label [for]="test.id">{{test.description}}</label>
+            <div class="checkbox-group">
+                <div class="radioButtonGroup show-in-row" >
+                    <div class="field-radioBtn" *ngFor="let test of testTypes">
+                        <!-- <p-checkbox name="group2" [value]="test.code" (onChange)="showTestCategories(test)" [(ngModel)]="selectedTestTypes" [inputId]="test.id"></p-checkbox>
+                        <label [for]="test.id">{{test.description}}</label> -->
+                        <p-radioButton [inputId]="test.id" name="category" [value]="test.code" (onClick)="showTestCategories(test)" [(ngModel)]="selectedTestTypes"></p-radioButton>
+                        <label [for]="test.id">{{test.description}}</label>
+                    </div>                    
+                </div>
+                <div class="content-loader" *ngIf="testCategoriesListLoader">
+                    <i class="pi pi-spin pi-spinner"></i>
+                    <span>Loading Test Categories of {{selectedTestType.description}}...</span>
+                </div>
+                <div class="checkBoxChildGroup" *ngIf="testCategoriesOfSelectedTestType.length !== 0">
+                    <div class="title">
+                        Categories of <span>{{selectedTestType.description}}</span>
+                    </div>
+                    <div class="field-checkbox" *ngFor="let category of testCategoriesOfSelectedTestType">
+                        <p-checkbox name="group2" [value]="category.name"  [(ngModel)]="selectedTestTypeCategories" [inputId]="category.id"></p-checkbox>
+                        <label [for]="category.id">{{category.name}}</label>
+                    </div>
+                </div>
+                
+                <div>
+                    
                 </div>
             </div>            
         </div>
@@ -277,9 +307,10 @@
     </ng-template>
     <ng-template pTemplate="footer">
         <div class="pageActions">
-            <button class="btn secondary-btn">Cancel</button>
-            <button class="btn primary-btn">Submit</button>
+            <button class="btn secondary-btn" (click)="closeGenerateTestCasesSection()">Cancel</button>
+            <button class="btn primary-btn" (click)="generateTestCases()">Submit</button>
         </div>
     </ng-template>
     
 </p-sidebar>
+<p-toast></p-toast>

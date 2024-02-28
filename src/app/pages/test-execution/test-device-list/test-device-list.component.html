@@ -168,8 +168,8 @@
                                 <td>{{device.customer_name}}</td>
                                 <td>{{device.valid_till}}</td>
                                 <td class="testTypesList">
-                                    <!-- <div class="chip" *ngFor="let test of device.test_types">{{test.description}}</div>
-                                    <button *ngIf="device.test_types.length == 0" type="button" class="testNowBtn" (click)="showGenerateTestcasesDialog(device)">
+                                    <div class="chip" *ngFor="let test of device.test_types">{{test.name}}</div>
+                                    <!-- <button *ngIf="device.test_types.length == 0" type="button" class="testNowBtn" (click)="showGenerateTestcasesDialog(device)">
                                         Generate Test Cases
                                     </button>  -->
                                 </td>

@@ -870,6 +870,7 @@ input::-ms-input-placeholder {
   font-size: 10px;
   font-weight: 600;
   height: 30px;
+  box-shadow: vars.$primary-box-shoadow;
   .icon{
     font-size: 21px;
     margin-right: 5px;
@@ -1278,10 +1279,48 @@ input::-ms-input-placeholder {
 .products-container{
   width: 100%;
 }
-
+.radioButtonGroup{
+  display: flex;
+  margin-bottom: 20px;
+  .field-radioBtn{
+    label{
+      color: vars.$fontclr;
+      margin-left: 5px;
+      font-size: 12px;
+    }
+  }
+}
 .checkbox-group{
   display: flex;
-  &.show-in-row{
+  flex-direction: column;
+  .checkboxParentGroup{
+    display: flex;
+  }  
+  .checkBoxChildGroup{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    border: 1px solid vars.$cardBorderColor;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 15px;
+    position: relative;
+    .field-checkbox{
+      width: 25%;
+    }
+    .title{
+      position: absolute;
+      top: -10px;
+      font-size: 14px;
+      color: vars.$titleClr;
+      @include vars.fontFamilySecondary;
+      font-weight: 600;
+      background: #fff;
+      padding: 0 5px;
+    }
+  }
+  .show-in-row{
     flex-direction: row;
     gap: 15px 25px;
     flex-wrap: wrap;
@@ -1291,6 +1330,7 @@ input::-ms-input-placeholder {
 .testCasesAccordian{
   .p-accordion{
     .p-accordion-tab {
+      margin-bottom: 10px;
       .p-accordion-header:not(.p-disabled){
         .p-accordion-header-link{
           width: 30%;
@@ -1336,11 +1376,11 @@ input::-ms-input-placeholder {
           .testCaseCard {
             background: #fff;
             border: 0px;
-            padding: 0px 15px 20px;
+            padding: 0px 5px 20px;
             margin-bottom: 20px;
             .testCaseCard-header{
               border-bottom: 1px solid vars.$border;
-              padding: 15px 0;
+              padding: 15px 10px;
               font-size: 14px;
               color: vars.$titleClr;
               font-weight: 600;
@@ -1348,6 +1388,9 @@ input::-ms-input-placeholder {
               @include vars.fontFamilySecondary;
             }
             .card-container {
+              padding:0 10px;
+              max-height: 300px;
+              overflow-x: auto;
               .title {
                 margin-top: 0px;
                 margin-bottom: 10px;
@@ -1447,6 +1490,43 @@ input::-ms-input-placeholder {
     .p-column-filter-menu-button,
     .p-column-filter-clear-button{
       display: none;
+    }
+  }
+}
+
+.productDetailTabs{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: block;
+  .p-tabview{
+    .p-tabview-nav-container{
+      .p-tabview-nav-content{
+        border-radius: 5px 5px 0 0;
+        .p-tabview-nav{
+          li{
+            .p-tabview-nav-link{
+              padding: 12px 20px;
+              font-size: 12px;
+              font-weight: 600;
+              color: vars.$titleClr;
+              @include vars.fontFamilySecondary;
+              &:focus{
+                outline: 0px;
+                box-shadow: none;
+              }
+            }
+            &.p-highlight,
+            &:focus{
+              .p-tabview-nav-link{
+                color: vars.$primary-color;
+              }
+            }
+          }
+          .p-tabview-ink-bar{
+            background: vars.$primary-color;
+          }
+        }
+      }
     }
   }
 }

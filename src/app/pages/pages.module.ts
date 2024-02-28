@@ -10,12 +10,15 @@ import {CheckboxModule} from 'primeng/checkbox';
 import {InputTextModule} from 'primeng/inputtext';
 import {MultiSelectModule} from 'primeng/multiselect';
 import {MenuModule} from 'primeng/menu';
+import {PanelMenuModule} from 'primeng/panelmenu';
 import {SelectButtonModule} from 'primeng/selectbutton';
 import {TabViewModule} from 'primeng/tabview';
 import { ButtonModule } from 'primeng/button';
 import {DialogModule} from 'primeng/dialog';
 import {AccordionModule} from 'primeng/accordion';
 import {DropdownModule} from 'primeng/dropdown';
+import {ToastModule} from 'primeng/toast';
+import {RadioButtonModule} from 'primeng/radiobutton';
 
 
 import { ProductsComponent } from './products/products.component';
@@ -33,6 +36,9 @@ import {SidebarModule} from 'primeng/sidebar';
 import { UsersListComponent } from './user-management/users-list/users-list.component';
 import { AddUserComponent } from './user-management/add-user/add-user.component';
 import { TestDeviceListComponent } from './test-execution/test-device-list/test-device-list.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { EnterpriseManagementComponent } from './enterprise/enterprise-management/enterprise-management.component';
+import { AddNewEnterpriseComponent } from './enterprise/add-new-enterprise/add-new-enterprise.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +53,10 @@ import { TestDeviceListComponent } from './test-execution/test-device-list/test-
     TestCasesManagementComponent,
     UsersListComponent,
     AddUserComponent,
-    TestDeviceListComponent
+    TestDeviceListComponent,
+    DashboardComponent,
+    EnterpriseManagementComponent,
+    AddNewEnterpriseComponent
   ],
   imports: [
     CommonModule,
@@ -59,6 +68,7 @@ import { TestDeviceListComponent } from './test-execution/test-device-list/test-
     FormsModule,
     ReactiveFormsModule,
     MenuModule,
+    PanelMenuModule,
     SidebarModule,
     SelectButtonModule,
     TabViewModule,
@@ -66,6 +76,8 @@ import { TestDeviceListComponent } from './test-execution/test-device-list/test-
     DialogModule,
     AccordionModule,
     DropdownModule,
+    ToastModule,
+    RadioButtonModule,
     MarkdownModule.forRoot()
   ]
 })

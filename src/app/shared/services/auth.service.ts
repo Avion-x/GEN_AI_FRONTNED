@@ -20,19 +20,23 @@ export class AuthService {
   private userSubject: BehaviorSubject<User>;
   public user: Observable<User>;
 
-  constructor(private http: HttpClient, private router: Router) {
-
-    this.userSubject = new BehaviorSubject<User> (
+   constructor(private http: HttpClient, private router: Router) {
+    this.userSubject =  new BehaviorSubject<User> (
       JSON.parse(localStorage.getItem('currentUser') || '{}')
     );
     this.user = this.userSubject.asObservable();
-
   }
 
   public get userValue(): User {
    // console.log('this.userSubject.value;', this.userSubject.value);
     return this.userSubject.value;
   }
+
+  // async getUserInfo(){
+  //   const userInfo =  await JSON.parse(localStorage.getItem('currentUser') || '{}');
+  //   return userInfo
+  // }
+
 
   login(username: string, password: string) {
     return this.http

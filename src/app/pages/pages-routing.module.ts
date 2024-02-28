@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { CategoryListComponent } from './device-management/category-list/category-list.component';
 import { CreateCategoryComponent } from './device-management/create-category/create-category.component';
 import { DeviceListComponent } from './device-management/device-list/device-list.component';
 import { DevicesComponent } from './devices/devices.component';
+import { AddNewEnterpriseComponent } from './enterprise/add-new-enterprise/add-new-enterprise.component';
+import { EnterpriseManagementComponent } from './enterprise/enterprise-management/enterprise-management.component';
 import { PagesComponent } from './pages.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductSubCategoryComponent } from './product-sub-category/product-sub-category.component';
@@ -17,7 +20,11 @@ const routes: Routes = [
   { path: '', component: PagesComponent,
     children: [
       {
-        path: '', redirectTo: 'productCategories', pathMatch: 'full'
+        path: '', redirectTo: 'dashboard', pathMatch: 'full'
+      },
+      {
+        path: 'dashboard', component: DashboardComponent,
+        //canActivate : [AuthGuard]
       },
       {
         path: 'productCategories', component: DevicesComponent,
@@ -56,12 +63,21 @@ const routes: Routes = [
         //canActivate : [AuthGuard]
       },
       {
-        path: 'addUser', component: AddUserComponent,
+        path: 'usersList/addUser', component: AddUserComponent,
         //canActivate : [AuthGuard]
       },
       {
-        path:'testExecution', component: TestDeviceListComponent,
-      }
+        path:'testCaseManagement', component: TestDeviceListComponent,
+      },
+      {
+        path:'testCaseManagement/:mainID/:subID/products/:productID', component: ProductDetailsComponent,
+      },
+      {
+        path:'enterpriseManagement', component: EnterpriseManagementComponent,
+      },
+      {
+        path:'enterpriseManagement/addNewEnterprise', component: AddNewEnterpriseComponent,
+      },
     ]
   },
 ];

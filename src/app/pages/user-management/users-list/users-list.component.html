@@ -61,15 +61,17 @@
             <div class="usersListContainer">
                 <div class="user" *ngFor="let user of usersList" (click)="showUserDetails(user)" [ngClass]="user.username == selectedUserId ? 'active':''">
                     <div class="avatarHolder">
-                        <div class="avatar" [style.background-image]="'url(' + user.avatar + ')'">
-                            <span *ngIf="!user.avatar">{{setTagName(user.fullname)}}</span>
+                        <!-- <div class="avatar" [style.background-image]="'url(' + user.avatar + ')'"> -->
+                        <div class="avatar">
+                            <!-- <span *ngIf="!user.avatar">{{setTagName(user.first_name, user.last_name)}}</span> -->
+                            <span>{{setTagName(user.first_name, user.last_name)}}</span>
                         </div>
                     </div>
                     <div class="userDetails">
-                        <div class="fullname">{{user.fullname}}</div>
+                        <div class="fullname">{{user.first_name + ' ' + user.last_name}}</div>
                         <div class="userName">{{user.username}}</div>
                         <div class="email">{{user.email}}</div>
-                        <div class="permissions">{{user.permissions}}</div>
+                        <div class="permissions">{{user.role_name}}</div>
                     </div>
                 </div>
             </div>
@@ -85,10 +87,12 @@
                 </div>
                 <div class="sideBarContent">
                     <div class="avatarSection">
-                        <div class="avatar" [style.background-image]="'url(' + this.selectedUser.avatar + ')'">
-                            <span *ngIf="!selectedUser.avatar">{{setTagName(selectedUser.fullname)}}</span>
+                        <div class="avatar">
+                        <!-- <div class="avatar" [style.background-image]="'url(' + this.selectedUser.avatar + ')'"> -->
+                            <!-- <span *ngIf="!selectedUser.avatar">{{setTagName(this.selectedUser.first_name, this.selectedUser.last_name)}}</span> -->
+                            <span>{{setTagName(this.selectedUser.first_name, this.selectedUser.last_name)}}</span>
                         </div>
-                        <div class="fullname">{{selectedUser.fullname}}</div>
+                        <div class="fullname">{{this.selectedUser.first_name + ' ' + this.selectedUser.last_name}}</div>
                         <div class="email"> <span class="material-symbols-rounded icon">
                             mail
                             </span> {{this.selectedUser.email}}</div>
@@ -100,11 +104,31 @@
                         </div>
                         <div class="field">
                             <label for="">Permissions</label>
-                            <span>{{selectedUser.permissions}}</span>
+                            <span>{{selectedUser.role_name}}</span>
                         </div>
                         <div class="field">
                             <label for="">Phone</label>
-                            <span>-</span>
+                            <span>{{selectedUser.role_name}}</span>
+                        </div>
+                        <div class="field">
+                            <label for="">Date Joined</label>
+                            <span>{{selectedUser.date_joined}}</span>
+                        </div>
+                        <div class="field">
+                            <label for="">Created At</label>
+                            <span>{{selectedUser.created_at}}</span>
+                        </div>
+                        <div class="field">
+                            <label for="">Last Logged In at</label>
+                            <span>{{selectedUser.last_login}}</span>
+                        </div>
+                        <div class="field">
+                            <label for="">Valid Till</label>
+                            <span>{{selectedUser.valid_till}}</span>
+                        </div>
+                        <div class="field">
+                            <label for="">Comments</label>
+                            <span>{{selectedUser.comments}}</span>
                         </div>
                     </div>
                 </div>

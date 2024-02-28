@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfigService } from 'src/app/shared/services/app-config.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DataService } from 'src/app/shared/services/data.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-users-list',
@@ -18,92 +19,94 @@ export class UsersListComponent implements OnInit {
   public selectedUser:any;
   public userTagName:string  = '';
   public selectedUserId:string = '';
-  public usersList:any[] = [
-    {
-      avatar:'',
-      fullname:'Anju Goel',
-      email:'anju@avion-x.com',
-      username:'anjug',
-      permissions:'Super Admin',
-    },
-    {
-      avatar:'',
-      fullname:'Deepak Agrawal',
-      email:'deepak@avion-x.com',
-      username:'deepaka',
-      permissions:'Super Admin',
-    },
-    {
-      avatar:'../../../../assets/avatars/premalatha.webp',
-      fullname:'Premalatha Nair',
-      email:'Premanair@avion-x.com',
-      username:'muraleep',
-      permissions:'Admin',
-    },
-    {
-      avatar:'../../../../assets/avatars/rafi.webp',
-      fullname:'Rafi Shaik',
-      email:'rafi@avion-x.com',
-      username:'rafis5',
-      permissions:'Admin',
-    },
-    {
-      avatar:'../../../../assets/avatars/abdullah.webp',
-      fullname:'Abdullah Shaik',
-      email:'abdullah@avion-x.com',
-      username:'shaikm3',
-      permissions:'Admin',
-    },
-    {
-      avatar:'',
-      fullname:'Damodar Reddy',
-      email:'Damodar@avion-x.com',
-      username:'damodar',
-      permissions:'Admin',
-    },
-    {
-      avatar:'../../../../assets/avatars/priyabrata.webp',
-      fullname:'Priyabrata Parhi',
-      email:'priyabrata@avion-x.com',
-      username:'parhip',
-      permissions:'Admin',
-    },
-    {
-      avatar:'../../../../assets/avatars/harsha.webp',
-      fullname:'Sree Harsha Bhardwaj',
-      email:'harsha@avion-x.com',
-      username:'sreehars',
-      permissions:'User',
-    },
-    {
-      avatar:'../../../../assets/avatars/dinesh.webp',
-      fullname:'Dinesh Vemuri',
-      email:'dinesh@avion-x.com',
-      username:'chandv10',
-      permissions:'User',
-    },
-    {
-      avatar:'../../../../assets/avatars/prem.webp',
-      fullname:'Prem Kumar',
-      email:'prem@avion-x.com',
-      username:'rsp1',
-      permissions:'User',
-    },
-    {
-      avatar:'../../../../assets/avatars/venkaiah.webp',
-      fullname:'Venkaiah Valluru',
-      email:'venkaiah@avion-x.com',
-      username:'valluruv',
-      permissions:'User',
-    },
-    {
-      avatar:'',
-      fullname:'Shubham Ramapure',
-      email:'shubham@avion-x.com',
-      username:'shubham',
-      permissions:'User',
-    }
-  ]
+  public loadingUsersList:boolean = false;
+  public usersList:any[] = [];
+  // public usersList:any[] = [
+  //   {
+  //     avatar:'',
+  //     fullname:'Anju Goel',
+  //     email:'anju@avion-x.com',
+  //     username:'anjug',
+  //     permissions:'Super Admin',
+  //   },
+  //   {
+  //     avatar:'',
+  //     fullname:'Deepak Agrawal',
+  //     email:'deepak@avion-x.com',
+  //     username:'deepaka',
+  //     permissions:'Super Admin',
+  //   },
+  //   {
+  //     avatar:'../../../../assets/avatars/premalatha.webp',
+  //     fullname:'Premalatha Nair',
+  //     email:'Premanair@avion-x.com',
+  //     username:'muraleep',
+  //     permissions:'Admin',
+  //   },
+  //   {
+  //     avatar:'../../../../assets/avatars/rafi.webp',
+  //     fullname:'Rafi Shaik',
+  //     email:'rafi@avion-x.com',
+  //     username:'rafis5',
+  //     permissions:'Admin',
+  //   },
+  //   {
+  //     avatar:'../../../../assets/avatars/abdullah.webp',
+  //     fullname:'Abdullah Shaik',
+  //     email:'abdullah@avion-x.com',
+  //     username:'shaikm3',
+  //     permissions:'Admin',
+  //   },
+  //   {
+  //     avatar:'',
+  //     fullname:'Damodar Reddy',
+  //     email:'Damodar@avion-x.com',
+  //     username:'damodar',
+  //     permissions:'Admin',
+  //   },
+  //   {
+  //     avatar:'../../../../assets/avatars/priyabrata.webp',
+  //     fullname:'Priyabrata Parhi',
+  //     email:'priyabrata@avion-x.com',
+  //     username:'parhip',
+  //     permissions:'Admin',
+  //   },
+  //   {
+  //     avatar:'../../../../assets/avatars/harsha.webp',
+  //     fullname:'Sree Harsha Bhardwaj',
+  //     email:'harsha@avion-x.com',
+  //     username:'sreehars',
+  //     permissions:'User',
+  //   },
+  //   {
+  //     avatar:'../../../../assets/avatars/dinesh.webp',
+  //     fullname:'Dinesh Vemuri',
+  //     email:'dinesh@avion-x.com',
+  //     username:'chandv10',
+  //     permissions:'User',
+  //   },
+  //   {
+  //     avatar:'../../../../assets/avatars/prem.webp',
+  //     fullname:'Prem Kumar',
+  //     email:'prem@avion-x.com',
+  //     username:'rsp1',
+  //     permissions:'User',
+  //   },
+  //   {
+  //     avatar:'../../../../assets/avatars/venkaiah.webp',
+  //     fullname:'Venkaiah Valluru',
+  //     email:'venkaiah@avion-x.com',
+  //     username:'valluruv',
+  //     permissions:'User',
+  //   },
+  //   {
+  //     avatar:'',
+  //     fullname:'Shubham Ramapure',
+  //     email:'shubham@avion-x.com',
+  //     username:'shubham',
+  //     permissions:'User',
+  //   }
+  // ]
 
   constructor(private authenticationService:AuthService, 
     private dataService:DataService, 
@@ -114,6 +117,7 @@ export class UsersListComponent implements OnInit {
   ngOnInit(): void {
     this.breadcrumblist.push({'name':'Home', 'url':this.appConfig.urlHome, 'disabled':false}, {'name':'Users Management','url':'', 'disabled':true}, {'name':'Users List','url':'', 'disabled':true});
     this.backUrl = this.appConfig.urlHome;
+    this.getUsers();
   }
 
   addNewUser(){
@@ -144,15 +148,42 @@ export class UsersListComponent implements OnInit {
     }
   }
 
-  setTagName(userFullName:string){
-    const nameArr = userFullName.split(' ');
-    const tagName = nameArr[0].charAt(0) + nameArr[1].charAt(0);
+  // setTagName(userFullName:string){
+  //   const nameArr = userFullName.split(' ');
+  //   const tagName = nameArr[0].charAt(0) + nameArr[1].charAt(0);
+  //   return tagName;
+  // }
+
+  setTagName(firstName:string, lastName:string){
+    //const nameArr = userFullName.split(' ');
+    const tagName = firstName.charAt(0) + lastName.charAt(0);
     return tagName;
   }
 
   navigateToAddUser(){
     const url = this.appConfig.urlAddUser;
     this._router.navigateByUrl(url);
+  }
+
+  getUsers() {
+    this.loadingUsersList = true;
+    const getUsers = {
+      action: 'users/',
+      method: 'get',
+      // params: {
+      //   ordering: '-id'
+      // }
+    }
+    this.dataService.apiDelegate(getUsers).subscribe((result: any) => {
+      console.log('getUsers', result);
+      if(!_.isEmpty(result)){        
+          this.usersList = result;
+      }
+      this.loadingUsersList = false;
+    }, error => {
+      this.loadingUsersList = false;
+      console.log('error',error);
+    })
   }
 
 }

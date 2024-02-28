@@ -384,7 +384,7 @@ export class TestDeviceListComponent implements OnInit {
 
   navigateToProductDetails(selectedProduct:any){
     console.log('selectedProduct', selectedProduct);
-    const url = 'home/productCategories/'+ selectedProduct.main_category_id + '/' + selectedProduct.sub_category_id + '/products/' + selectedProduct.id;
+    const url = this.appConfig.urlTestCaseManagement + '/'+ selectedProduct.main_category_id + '/' + selectedProduct.sub_category_id + '/products/' + selectedProduct.id;
     console.log('url', url)
     this._router.navigateByUrl(url);
   }
