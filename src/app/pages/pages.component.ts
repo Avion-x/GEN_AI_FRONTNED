@@ -63,7 +63,7 @@ export class PagesComponent implements OnInit {
             'url':this.appConfig.urlEnterpriseManagement
           },
         ]
-      } else if (this.currentUser.role_name === 'ADMIN'){
+      } else if (this.currentUser.role_name === 'ADMIN' || this.currentUser.role_name === 'Admin'){
         this.navList = [
           {
             'name':'Dashboard',
