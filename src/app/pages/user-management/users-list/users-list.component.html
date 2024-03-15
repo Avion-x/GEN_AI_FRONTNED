@@ -33,12 +33,14 @@
                 </li>    
                 <!-- <li><button class="btn" disabled> Devices </button></li> -->
             </ul>
+
+            <div class="content-loader" *ngIf="loadingUsersList">
+                <i class="pi pi-spin pi-spinner"></i>
+                <span>Loading Users List...</span>
+            </div>
             
             <div class="content-wrapper">
-                <div class="content-loader" *ngIf="loadingUsersList">
-                    <i class="pi pi-spin pi-spinner"></i>
-                    <span>Loading Users List...</span>
-                </div>
+                
             <div class="usersListHeader">
                 <div class="header-section">
                     <div class="title">Users List
