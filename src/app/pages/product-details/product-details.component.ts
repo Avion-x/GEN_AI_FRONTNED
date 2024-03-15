@@ -23,6 +23,8 @@ export class ProductDetailsComponent implements OnInit {
   public productSubCategory:any;
   public testCasesData:string = '';
   public testScriptsData:string = '';
+  public successResponcePopup:boolean=false;
+  public generateTestCaseResponceData:string = '';
 
   public selectedTestTypeId:string = '';
   
@@ -294,6 +296,10 @@ export class ProductDetailsComponent implements OnInit {
     })
   }
 
+  showSelectedCategories(){
+    console.log('selectedTestTypeCategories', this.selectedTestTypeCategories);
+  }
+
 
   getGeneratedTestCategories(selectedTestCase:any, productId:any) {
     this.selectedTestCase = {}
@@ -403,34 +409,44 @@ export class ProductDetailsComponent implements OnInit {
 
   generateTestCases(){
     console.log('selectedTestTypes', this.selectedTestTypes);
-    this.generateTestCasesFormSidebar = false;
-    this.messageService.add({severity:'success', summary: 'Success', detail: 'Test Case Generation has submitted successfully!'});
-    // this.generateTestcasesLoader = true;
-    // const testTypesData:any[] = [];
+    console.log('selectedTestTypeCategories', this.selectedTestTypeCategories);
+    
+    this.generateTestcasesLoader = true;
+    const testTypesData:any[] = [
+      {
+       "test_type_id":this.selectedTestTypes,
+       "test_category_ids":this.selectedTestTypeCategories
+      }
+    ];
     // this.selectedTestTypes.forEach((item:any) => {
     //   testTypesData.push(item.id)
     // });
-    // const productData:any = {
-    //   'device_id': this.productData.id,
-    //   'test_type_id':testTypesData,
-    //   'ai_model':'anthropic.claude-v2'
-    // }
-    // const getProductCategory = {
-    //   action: 'product/generate_test_cases/',
-    //   method: 'post',
-    //   data: productData
-    // }
-    // this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
-    //   this.generateTestcasesLoader = false;
-    //   console.log('result', result);
-    //   if(!_.isEmpty(result)){
-    //     const responceData = result.response.Regression;
-    //   this.testCasesData = responceData.TestCases;
-    //   }     
-      
-    //   //this.testScriptsData = responceData.TestScripts;
+    const productData:any = {
+      'device_id': this.productData.id,
+      'test_type_data':testTypesData,
+      'ai_model':'anthropic.claude-v2'
+    }
+    const getProductCategory = {
+      action: 'product/generate_test_cases/',
+      method: 'post',
+      data: productData
+    }
+    this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
+      this.generateTestcasesLoader = false;
+      console.log('result', result);
+      if(!_.isEmpty(result)){
+        this.successResponcePopup = true;
+        this.generateTestCaseResponceData = result.response.Message;
+        // this.testCasesData = responceData.TestCases;        
+      }     
+      //this.testScriptsData = responceData.TestScripts;
+    });
+  }
 
-    // })
+  afterSuccess(){
+    this.successResponcePopup = false;
+    this.generateTestCasesFormSidebar = false;
+    this.messageService.add({severity:'success', summary: 'Success', detail: 'Test Case Generation has submitted successfully!'});
   }
 
   showGenerateTestCasesSection(){

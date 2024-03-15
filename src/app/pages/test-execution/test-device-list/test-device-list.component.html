@@ -153,9 +153,10 @@
                                 <th>Product Code</th>
                                 <th>Category Name</th>
                                 <th>Sub Category Name</th>
-                                <th>Customer Name</th>
-                                <th>Valid Till</th>
                                 <th>Available Test Type</th>
+                                <!-- <th>Customer Name</th> -->
+                                <th>Valid Till</th>
+                               
                                 <th style="width: 110px; min-width: 110px; max-width: 110px;"></th>
                             </tr>
                         </ng-template>
@@ -165,14 +166,15 @@
                                 <td class="td-clr-primary tb-bold">{{device.product_code}}</td>
                                 <td>{{device.main_category_name}}</td>
                                 <td>{{device.sub_category_name}}</td>
-                                <td>{{device.customer_name}}</td>
-                                <td>{{device.valid_till}}</td>
                                 <td class="testTypesList">
                                     <div class="chip" *ngFor="let test of device.test_types">{{test.name}}</div>
                                     <!-- <button *ngIf="device.test_types.length == 0" type="button" class="testNowBtn" (click)="showGenerateTestcasesDialog(device)">
                                         Generate Test Cases
                                     </button>  -->
                                 </td>
+                                <!-- <td>{{device.customer_name}}</td> -->
+                                <td>{{device.valid_till}}</td>
+                                
                                 <td style="width: 110px; min-width: 110px; max-width: 110px;">
                                     <!-- <button *ngIf="device.test_types.length != 0" type="button" class="testNowBtn" (click)="showTestDialog(device)">
                                         Test Now
@@ -207,9 +209,10 @@
                                 <th>Product Code</th>
                                 <th>Category Name</th>
                                 <th>Sub Category Name</th>
-                                <th>Customer Name</th>
-                                <th>Valid Till</th>
+                                <!-- <th>Customer Name</th> -->
                                 <th>Available Test Type</th>
+                                <th>Valid Till</th>
+                                
                                 <th style="width: 110px; min-width: 110px; max-width: 110px;"></th>
                             </tr>
                         </ng-template>
@@ -219,11 +222,12 @@
                                 <td class="td-clr-primary tb-bold">{{device.product_code}}</td>
                                 <td>{{device.category_name}}</td>
                                 <td>{{device.sub_category_name}}</td>
-                                <td>{{device.customer_name}}</td>
-                                <td>{{device.valid_till}}</td>
+                                <!-- <td>{{device.customer_name}}</td> -->
                                 <td class="testTypesList">
                                     <div class="chip" *ngFor="let test of device.test_types">{{test.description}}</div>
                                 </td>
+                                <td>{{device.valid_till}}</td>
+                               
                                 <td style="width: 110px; min-width: 110px; max-width: 110px;">
                                     <button type="button" class="testNowBtn" (click)="showTestDialog(device)">
                                         Test Now

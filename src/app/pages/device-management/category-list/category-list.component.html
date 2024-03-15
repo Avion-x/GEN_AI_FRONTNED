@@ -33,26 +33,38 @@
 
     <p-menu #mainActionMenu [popup]="true" [model]="mainCatActionMenuItems"></p-menu>
     <p-menu #subActionMenu [popup]="true" [model]="subCatActionMenuItems"></p-menu>
-    <p-sidebar [(visible)]="subCategoryFormSidebar"  class="sidebar-section" [style]="{width:'85%'}" position="right">
+    <p-sidebar [(visible)]="mainCategoryFormSidebar"  class="sidebar-section" [style]="{width:'30%'}" position="right">
         <ng-template pTemplate="header">Create Sub Category</ng-template>
         <ng-template pTemplate="content">
             <div class="card">
-                <form [formGroup]="subCategoryForm" class="form-container">
+                <form [formGroup]="mainCategoryForm" class="form-container display-column">
                     <div class="field p-float-label">
-                        <input id="float-input" formControlName="subCategoryName" type="text" pInputText> 
-                        <label for="float-input">Sub Category Name</label>
+                        <input id="float-input" formControlName="category" type="text" pInputText> 
+                        <label for="float-input">Category Name</label>
                     </div>
+                    <!-- <div class="field p-float-label">
+                        <input id="float-input" formControlName="status" type="text" pInputText> 
+                        <label for="float-input">Status</label>
+                    </div> -->
                     <div class="field p-float-label">
-                        <input id="float-input" formControlName="customer" type="text" pInputText> 
-                        <label for="float-input">Customer</label>
+                        <!-- <input id="isActive" formControlName="is_active" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                        <p-dropdown [options]="statusOptions" formControlName="status" optionLabel="name" optionValue="value" placeholder="Select an Option"></p-dropdown>
+                        <label for="isActive">Status</label>
+                        <!-- <div *ngIf="submitted && f['is_active'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="f['is_active'].errors['required']">Is Active is required</div>
+                        </div> -->
                     </div>
-                    <div class="field p-float-label">
-                        <input id="float-input" formControlName="validTill" type="text" pInputText> 
+                    <!-- <div class="field p-float-label">
+                        <input id="float-input" formControlName="valid_till" type="text" pInputText> 
                         <label for="float-input">Valid Till</label>
-                    </div>
-                    <div class="field p-float-label">
-                        <input id="float-input" formControlName="createdAt" type="text" pInputText> 
-                        <label for="float-input">Created At</label>
+                    </div> -->
+                    <div class="field p-float-label position-relative">
+                        <p-calendar formControlName="valid_till" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker"></p-calendar>
+                        <!-- <input id="validTill" formControlName="valid_till" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                        <label for="validTill">Valid Till</label>
+                        <!-- <div *ngIf="submitted && f['valid_till'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="f['valid_till'].errors['required']">Valid Till is required</div>
+                        </div> -->
                     </div>
                     <div class="field p-float-label">
                         <input id="float-input" formControlName="comments" type="text" pInputText> 
@@ -62,6 +74,63 @@
                         <input id="float-input" formControlName="description" type="text" pInputText> 
                         <label for="float-input">Description</label>
                     </div>  
+                </form>   
+            </div>
+            
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="pageActions">
+                <button class="btn secondary-btn">Cancel</button>
+                <button class="btn primary-btn" (click)="createNewCategory()">Submit</button>
+            </div>
+        </ng-template>
+        
+    </p-sidebar>
+    <p-sidebar [(visible)]="subCategoryFormSidebar"  class="sidebar-section" [style]="{width:'85%'}" position="right">
+        <ng-template pTemplate="header">Create Sub Category</ng-template>
+        <ng-template pTemplate="content">
+            <div class="card">
+                <form [formGroup]="subCategoryForm" class="form-container">
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="product_category" type="text" pInputText> 
+                        <label for="float-input">Category Name</label>
+                    </div>
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="sub_category" type="text" pInputText> 
+                        <label for="float-input">Sub Category Name</label>
+                    </div>
+                    <!-- <div class="field p-float-label">
+                        <input id="float-input" formControlName="status" type="text" pInputText> 
+                        <label for="float-input">Status</label>
+                    </div> -->
+                    <div class="field p-float-label">
+                        <!-- <input id="isActive" formControlName="is_active" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                        <p-dropdown [options]="statusOptions" formControlName="status" optionLabel="name" optionValue="value" placeholder="Select an Option"></p-dropdown>
+                        <label for="isActive">Status</label>
+                        <!-- <div *ngIf="submitted && f['is_active'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="f['is_active'].errors['required']">Is Active is required</div>
+                        </div> -->
+                    </div>
+                    <!-- <div class="field p-float-label">
+                        <input id="float-input" formControlName="valid_till" type="text" pInputText> 
+                        <label for="float-input">Valid Till</label>
+                    </div> -->
+                    <div class="field p-float-label position-relative">
+                        <p-calendar formControlName="valid_till" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker"></p-calendar>
+                        <!-- <input id="validTill" formControlName="valid_till" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                        <label for="validTill">Valid Till</label>
+                        <!-- <div *ngIf="submitted && f['valid_till'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="f['valid_till'].errors['required']">Valid Till is required</div>
+                        </div> -->
+                    </div>
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="comments" type="text" pInputText> 
+                        <label for="float-input">Comments</label>
+                    </div>
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="description" type="text" pInputText> 
+                        <label for="float-input">Description</label>
+                    </div>
                 </form>      
                 <div class="card-actions">
                     <button class="btn primary-btn" (click)="addSubCaterory()">
@@ -90,7 +159,7 @@
                             <!-- <th>Product Category</th> -->
                             <th>Sub category</th>
                             <th>Created At</th>
-                            <th>Customer</th>
+                            <!-- <th>Customer</th> -->
                             <th>Valid till</th>
                             <th>Comments</th>
                             <th>Description</th>
@@ -101,7 +170,7 @@
                             <!-- <td>{{product.id}}</td> -->
                             <td>{{product.subCategoryName}}</td>
                             <td>{{product.createdAt}}</td>
-                            <td>{{product.customer}}</td>
+                            <!-- <td>{{product.customer}}</td> -->
                             <td>{{product.validTill}}</td>
                             <td>{{product.comments}}</td>
                             <td>{{product.description}}</td>
@@ -135,7 +204,7 @@
                             <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
                             <input pInputText type="text" #filter (input)="productsTable.filterGlobal(filter.value, 'contains')" placeholder="Main Category Search" />
                         </div>
-                        <button class="btn primary-btn" (click)="navigateToCreateNewCategory()">
+                        <button class="btn primary-btn" (click)="showCreateNewCategory()">
                             <span class="material-symbols-rounded icon">add</span>
                             Create Category
                         </button>
@@ -147,7 +216,7 @@
                     <th>Id</th>
                     <th>Category</th>
                     <th>Created At</th>
-                    <th>Customer</th>
+                    <!-- <th>Customer</th> -->
                     <th>Valid till</th>
                     <th>Comments</th>
                     <th style="width: 50px; min-width: 50px; max-width: 50px;"></th>
@@ -158,7 +227,7 @@
                     <td (click)="getProductsSubCategory(product.id)">{{product.id}}</td>
                     <td (click)="getProductsSubCategory(product.id)">{{product.category}}</td>
                     <td (click)="getProductsSubCategory(product.id)">{{product.created_at}}</td>
-                    <td (click)="getProductsSubCategory(product.id)">{{product.customer}}</td>
+                    <!-- <td (click)="getProductsSubCategory(product.id)">{{product.customer}}</td> -->
                     <td (click)="getProductsSubCategory(product.id)">{{product.valid_till}}</td>
                     <td (click)="getProductsSubCategory(product.id)">{{product.comments}}</td>
                     <td style="width: 50px; min-width: 50px; max-width: 50px;">
@@ -186,7 +255,7 @@
                                                     <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
                                                     <input pInputText type="text" #filter (input)="subProductsTable.filterGlobal(filter.value, 'contains')" placeholder="Sub Category Search" />
                                                 </div>
-                                                <button class="btn primary-btn" (click)="showCreateSubCategory(product.id)">
+                                                <button class="btn primary-btn" (click)="showCreateSubCategory(product.category)">
                                                     <span class="material-symbols-rounded icon">add</span>
                                                     Add Sub Category
                                                 </button>
@@ -199,7 +268,7 @@
                                             <th>Product Category</th>
                                             <th>Sub category</th>
                                             <th>Created At</th>
-                                            <th>Customer</th>
+                                            <!-- <th>Customer</th> -->
                                             <th>Valid till</th>
                                             <th>Comments</th>
                                             <th></th>
@@ -211,7 +280,7 @@
                                             <td (click)="navigateToProducts(subProduct.id)">{{subProduct.product_category}}</td>
                                             <td (click)="navigateToProducts(subProduct.id)">{{subProduct.sub_category}}</td>
                                             <td (click)="navigateToProducts(subProduct.id)">{{subProduct.created_at}}</td>
-                                            <td (click)="navigateToProducts(subProduct.id)">{{subProduct.customer}}</td>
+                                            <!-- <td (click)="navigateToProducts(subProduct.id)">{{subProduct.customer}}</td> -->
                                             <td (click)="navigateToProducts(subProduct.id)">{{subProduct.valid_till}}</td>
                                             <td (click)="navigateToProducts(subProduct.id)">{{subProduct.comments}}</td>
                                             <td style="width: 50px; min-width: 50px; max-width: 50px;">
@@ -231,3 +300,5 @@
         </p-table>
     </div>
 </div>
+
+<p-toast></p-toast>

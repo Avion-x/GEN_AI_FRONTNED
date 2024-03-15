@@ -6,11 +6,15 @@ import { DataService } from 'src/app/shared/services/data.service';
 
 import {MenuItem} from 'primeng/api';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import * as moment from 'moment';
+import * as _ from 'lodash';
+import {Message,MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-category-list',
   templateUrl: './category-list.component.html',
-  styleUrls: ['./category-list.component.scss']
+  styleUrls: ['./category-list.component.scss'],
+  providers: [MessageService]
 })
 export class CategoryListComponent implements OnInit {
 
@@ -19,6 +23,8 @@ export class CategoryListComponent implements OnInit {
   public showMainCategory:boolean = false;
   public selectedMainCategory:any;
   public selectedSubCategory:any;
+  public mainCategoryFormSidebar:boolean = false;
+  public createCategoryLoader:boolean = false;
 
   public productSubCategoryData:any[] = [];
 
@@ -30,6 +36,7 @@ export class CategoryListComponent implements OnInit {
   public productSubCategoryLoader:boolean = false;
  
   public backUrl:string = '';
+  public statusOptions:any[] = [{name:'Active', value:true}, {name:'Inactive', value:false}];
 
   public showSubCat:boolean=false;
   public selectedRowId:string = '';
@@ -40,11 +47,13 @@ export class CategoryListComponent implements OnInit {
   subCatActionMenuItems!:MenuItem[];
 
   public subCategoryForm!: FormGroup;
+  public mainCategoryForm!:FormGroup;
 
   constructor(private authenticationService:AuthService, 
     private dataService:DataService, 
     private _router: Router, 
     private appConfig:AppConfigService,
+    private messageService: MessageService,
     public fb: FormBuilder) {
       this.authenticationService.user.subscribe(user => this.currentUser = user);
     //console.log('currentUser', this.currentUser)
@@ -57,16 +66,27 @@ export class CategoryListComponent implements OnInit {
     this.getProductsCat();
     this.showMainCategory = true;
     //this.setMainCatMenu();
+    this.setMainCategoryForm();
     this.setSubForm();
+  }
+
+  setMainCategoryForm(){
+    this.mainCategoryForm = this.fb.group({
+      category: ['', [Validators.required]],
+      description:[''],
+      status:['', [Validators.required]],
+      comments:[''],
+      valid_till:['', [Validators.required]]
+    })
   }
 
   setSubForm(){
     this.subCategoryForm = this.fb.group({
-      subCategoryName: ['', [Validators.required]],
-      customer:['', [Validators.required]],
-      validTill:['', [Validators.required]],
-      createdAt:['', [Validators.required]],
+      product_category: ['', [Validators.required]],
+      sub_category: ['', [Validators.required]],
+      status:['', [Validators.required]],
       comments:['', [Validators.required]],
+      valid_till:['', [Validators.required]],
       description:['', [Validators.required]]
     })
   }
@@ -74,8 +94,76 @@ export class CategoryListComponent implements OnInit {
   addSubCaterory(){
     //console.log('subCategoryForm', this.subCategoryForm.value)
     //this.productSubCategoryData.push({'sub_category':'', 'created_at':'', 'customer':'', 'valid_till':'', 'comments':'', 'description':'description'})
-    this.productSubCategoryCreationData.push(this.subCategoryForm.value);
+    //this.productSubCategoryCreationData.push(this.subCategoryForm.value);
+
+    this.subCategoryForm.patchValue({
+      //product_category:this.subCategoryForm.get('valid_till')?.value,
+      valid_till: this.subCategoryForm.get('valid_till')?.value ? moment(this.subCategoryForm.get('valid_till')?.value).format('YYYY-MM-DD') : '',
+      //last_updated_by: this.loggedInUserName ? this.loggedInUserName : '',
+      //confirmPassword:this.userForm.get('confirmPassword')?.disable()
+    })
+    //console.log(JSON.stringify(this.userForm.value));
+    const setUser = {
+        action: 'product/productsubcategory/',
+        method: 'post',
+        data: this.subCategoryForm.value
+      }
+      this.dataService.apiDelegate(setUser).subscribe((result: any) => {
+        this.createCategoryLoader = false;        
+        //this.successResponce = result;
+        console.log('successResponce', result);
+        if(!_.isEmpty(result)) {
+          //this.afterSuccess();          
+          this.messageService.add({severity:'success', summary:'Success', detail:'Category created successfully'});
+          this.mainCategoryFormSidebar = false;
+          this.getProductsCat();
+          //this.messageService.add({severity:'success', summary: 'Success', detail: 'User added successfully'});          
+          //const responceData = result.response.Regression;
+          //this.testCasesData = responceData.TestCases;
+        }      
+        //this.testScriptsData = responceData.TestScripts;
+      })
     this.subCategoryForm.reset();
+  }
+
+  showCreateNewCategory(){
+    this.mainCategoryFormSidebar = true;
+  }
+
+  createNewCategory(){
+    console.log('mainCategoryForm',this.mainCategoryForm.value);
+    this.createCategoryLoader = true;
+    //this.submitted = true;
+    // console.log('this.userForm.invalid', this.mainCategoryForm.invalid);
+    // if (this.mainCategoryForm.invalid) {
+    //   return;
+    // } 
+    this.mainCategoryForm.patchValue({
+      valid_till: this.mainCategoryForm.get('valid_till')?.value ? moment(this.mainCategoryForm.get('valid_till')?.value).format('YYYY-MM-DD') : '',
+      //last_updated_by: this.loggedInUserName ? this.loggedInUserName : '',
+      //confirmPassword:this.userForm.get('confirmPassword')?.disable()
+    })
+    //console.log(JSON.stringify(this.userForm.value));
+    const setUser = {
+        action: 'product/productcategory/',
+        method: 'post',
+        data: this.mainCategoryForm.value
+      }
+      this.dataService.apiDelegate(setUser).subscribe((result: any) => {
+        this.createCategoryLoader = false;        
+        //this.successResponce = result;
+        console.log('successResponce', result);
+        if(!_.isEmpty(result)) {
+          //this.afterSuccess();          
+          this.messageService.add({severity:'success', summary:'Success', detail:'Category created successfully'});
+          this.mainCategoryFormSidebar = false;
+          this.getProductsCat();
+          //this.messageService.add({severity:'success', summary: 'Success', detail: 'User added successfully'});          
+          //const responceData = result.response.Regression;
+          //this.testCasesData = responceData.TestCases;
+        }      
+        //this.testScriptsData = responceData.TestScripts;
+      })
   }
 
   public setMainCatMenu(selectedProduct:any){
@@ -147,6 +235,8 @@ export class CategoryListComponent implements OnInit {
   showCreateSubCategory(selectedMainProduct:any) {
     this.subCategoryFormSidebar = true;
     console.log('selectedMainProduct', selectedMainProduct);
+    this.subCategoryForm.get('product_category')?.setValue(selectedMainProduct);
+    console.log('subCategoryForm', this.subCategoryForm.value);
   }
 
   navigateToCreateNewCategory(){

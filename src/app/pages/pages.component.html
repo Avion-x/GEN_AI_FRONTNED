@@ -1,26 +1,27 @@
 
 <div class="wrapper">
     <div class="topbar">
-        <div class="logo">
-            <!-- <h1 class="logo-text">Alice</h1> -->
-            <img src="../../assets/images/logo.png">
-        </div>
-        <div class="topbar-right-section">
-            <div *ngIf="showClientLogo" class="client-logo">
-                <img src="../../assets/images/clients/juniper_black-rgb-header.webp">
+        <div class="topbar-container">
+            <div class="logo">
+                <!-- <h1 class="logo-text">Alice</h1> -->
+                <img src="../../assets/images/logo.png">
             </div>
-            <div class="user-section" *ngIf="currentUser" (click)="userMenu.toggle($event)">
-                <div class="icon">{{userTag}}</div>
-                <!-- <div class="user">
-                    <span class="name">{{currentUser?.first_name + ' ' + currentUser?.last_name}}</span>
-                    <span class="email">{{currentUser?.email}}</span>
-                </div> -->
-                <!-- <span class="material-symbols-outlined">
-                    arrow_drop_down
-                </span> -->
-            </div> 
-        </div>
-              
+            <div class="topbar-right-section">
+                <div *ngIf="showClientLogo" class="client-logo">
+                    <img src="../../assets/images/clients/juniper_black-rgb-header.webp">
+                </div>
+                <div class="user-section" *ngIf="currentUser" (click)="userMenu.toggle($event)">
+                    <div class="icon">{{userTag}}</div>
+                    <!-- <div class="user">
+                        <span class="name">{{currentUser?.first_name + ' ' + currentUser?.last_name}}</span>
+                        <span class="email">{{currentUser?.email}}</span>
+                    </div> -->
+                    <!-- <span class="material-symbols-outlined">
+                        arrow_drop_down
+                    </span> -->
+                </div> 
+            </div>
+        </div>  
     </div>
     <p-menu #userMenu [popup]="true" [model]="userMenuItems"></p-menu>
     <div class="page-wrapper">

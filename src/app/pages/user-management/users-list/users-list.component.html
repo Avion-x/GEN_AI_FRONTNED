@@ -64,7 +64,7 @@
                         <!-- <div class="avatar" [style.background-image]="'url(' + user.avatar + ')'"> -->
                         <div class="avatar">
                             <!-- <span *ngIf="!user.avatar">{{setTagName(user.first_name, user.last_name)}}</span> -->
-                            <span>{{setTagName(user.first_name, user.last_name)}}</span>
+                            <span class="tag">{{setTagName(user.first_name, user.last_name)}}</span>
                         </div>
                     </div>
                     <div class="userDetails">
@@ -90,7 +90,7 @@
                         <div class="avatar">
                         <!-- <div class="avatar" [style.background-image]="'url(' + this.selectedUser.avatar + ')'"> -->
                             <!-- <span *ngIf="!selectedUser.avatar">{{setTagName(this.selectedUser.first_name, this.selectedUser.last_name)}}</span> -->
-                            <span>{{setTagName(this.selectedUser.first_name, this.selectedUser.last_name)}}</span>
+                            <span class="tag">{{setTagName(this.selectedUser.first_name, this.selectedUser.last_name)}}</span>
                         </div>
                         <div class="fullname">{{this.selectedUser.first_name + ' ' + this.selectedUser.last_name}}</div>
                         <div class="email"> <span class="material-symbols-rounded icon">

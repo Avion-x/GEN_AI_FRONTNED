@@ -20,7 +20,17 @@ import {DropdownModule} from 'primeng/dropdown';
 import {ToastModule} from 'primeng/toast';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import {ScrollPanelModule} from 'primeng/scrollpanel';
+import {CalendarModule} from 'primeng/calendar';
+import {PasswordModule} from 'primeng/password';
+import {ChartModule} from 'primeng/chart';
+import {FileUploadModule} from 'primeng/fileupload';
+import {HttpClientModule} from '@angular/common/http'
 
+import { ImageCropperModule } from 'ngx-image-cropper';
+import {MessagesModule} from 'primeng/messages';
+import {MessageModule} from 'primeng/message';
+
+//import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { ProductsComponent } from './products/products.component';
 import { ProductSubCategoryComponent } from './product-sub-category/product-sub-category.component';
@@ -40,6 +50,9 @@ import { TestDeviceListComponent } from './test-execution/test-device-list/test-
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EnterpriseManagementComponent } from './enterprise/enterprise-management/enterprise-management.component';
 import { AddNewEnterpriseComponent } from './enterprise/add-new-enterprise/add-new-enterprise.component';
+
+import {ConfirmDialogModule} from 'primeng/confirmdialog';
+import {ConfirmationService} from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -80,6 +93,15 @@ import { AddNewEnterpriseComponent } from './enterprise/add-new-enterprise/add-n
     ToastModule,
     RadioButtonModule,
     ScrollPanelModule,
+    CalendarModule,
+    PasswordModule,
+    ChartModule,
+    ImageCropperModule,
+    FileUploadModule,
+    HttpClientModule,
+    MessagesModule,
+    MessageModule,
+    //NgxChartsModule,
     MarkdownModule.forRoot()
   ]
 })

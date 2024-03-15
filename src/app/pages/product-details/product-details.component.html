@@ -280,7 +280,7 @@
                     <div class="field-radioBtn" *ngFor="let test of testTypes">
                         <!-- <p-checkbox name="group2" [value]="test.code" (onChange)="showTestCategories(test)" [(ngModel)]="selectedTestTypes" [inputId]="test.id"></p-checkbox>
                         <label [for]="test.id">{{test.description}}</label> -->
-                        <p-radioButton [inputId]="test.id" name="category" [value]="test.code" (onClick)="showTestCategories(test)" [(ngModel)]="selectedTestTypes"></p-radioButton>
+                        <p-radioButton [inputId]="test.id" name="category" [value]="test.id" (onClick)="showTestCategories(test)" [(ngModel)]="selectedTestTypes"></p-radioButton>
                         <label [for]="test.id">{{test.description}}</label>
                     </div>                    
                 </div>
@@ -293,7 +293,7 @@
                         Categories of <span>{{selectedTestType.description}}</span>
                     </div>
                     <div class="field-checkbox" *ngFor="let category of testCategoriesOfSelectedTestType">
-                        <p-checkbox name="group2" [value]="category.name"  [(ngModel)]="selectedTestTypeCategories" [inputId]="category.id"></p-checkbox>
+                        <p-checkbox name="group2" [value]="category.id" (onChange)="showSelectedCategories()"  [(ngModel)]="selectedTestTypeCategories" [inputId]="category.id"></p-checkbox>
                         <label [for]="category.id">{{category.name}}</label>
                     </div>
                 </div>
@@ -311,6 +311,12 @@
             <button class="btn primary-btn" (click)="generateTestCases()">Submit</button>
         </div>
     </ng-template>
-    
 </p-sidebar>
+
 <p-toast></p-toast>
+<p-dialog header="Success" [modal]="true" [style]="{width: '30vw'}" [(visible)]="successResponcePopup">
+    <p>{{generateTestCaseResponceData}}</p>
+    <ng-template pTemplate="footer">
+      <p-button icon="pi pi-check" (click)="afterSuccess()" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>

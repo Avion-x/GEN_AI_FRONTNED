@@ -77,6 +77,10 @@ h1,h2,h3,h4,h5,h6{
   padding-top: 15px !important;
 }
 
+.position-relative{
+  position: relative;
+}
+
 input::placeholder{
   color: vars.$fontclr;
   opacity: 0.8;
@@ -871,6 +875,12 @@ input::-ms-input-placeholder {
   font-weight: 600;
   height: 30px;
   box-shadow: vars.$primary-box-shoadow;
+  &.submitBtn{
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 5px 15px;
+  }
   .icon{
     font-size: 21px;
     margin-right: 5px;
@@ -947,9 +957,28 @@ input::-ms-input-placeholder {
   display: flex;
   gap: 15px;
   flex-wrap: wrap;
+  &.display-column{
+    flex-direction: column;
+  }
+  &.col4{
+    .field{
+      max-width: calc(25% - 10px);
+    }
+  }
   .field{
     flex-grow: 1;
     min-width: 20%;
+    .p-calendar,
+    .p-password{
+      width: 100%;
+    }
+    .p-disabled, 
+    .p-component:disabled {
+      opacity: 0.5;
+      ~label{
+        opacity: 0.5;
+      }
+    }
     input{
       width: 100%;
       border-radius: 30px;
@@ -957,11 +986,49 @@ input::-ms-input-placeholder {
       font-size: 13px;
       height: 40px;
       color: vars.$fontclr;
-      &:focus{
+      &:focus,
+      &:not(disabled):hover {
         box-shadow: none;
         outline: 0px;
         border-color: vars.$primary-color;
       }
+    }
+    .p-dropdown{
+      width: 100%;
+      border-radius: 30px;
+      padding: 5px 20px;
+      font-size: 13px;
+      height: 40px;
+      color: vars.$fontclr;
+      .p-dropdown-trigger{
+        width: 10px;
+        .pi{
+          font-size: 11px;
+          color: vars.$fontclr;
+        }
+      }
+      .p-inputtext.p-placeholder{
+        padding: 7px 5px 0px;
+        font-size: 13px;
+        color: vars.$fontclr;
+      }
+      .p-dropdown-label {
+        padding: 5px 5px;
+        font-size: 13px;
+        color: vars.$fontclr;
+      }
+      &:not(.p-disabled).p-focus {
+        box-shadow: none !important;
+        outline: 0px;
+        border-color: vars.$primary-color;
+      }
+      &:not(.p-disabled).p-focus,
+      &:not(.p-disabled):hover {
+        border-color: vars.$primary-color;
+      }
+      &:not(.p-disabled):hover ~ .icon {
+        color: vars.$primary-color;
+      }  
     }
     label{
       font-size: 13px;
@@ -1010,6 +1077,8 @@ input::-ms-input-placeholder {
     .p-sidebar-content{
       padding: 0px;
       background: vars.$body-bg;
+      height: calc(100vh - 172px);
+      overflow-y: auto;
       .table-container{
         padding: 1.25rem;
       }
@@ -1468,8 +1537,9 @@ input::-ms-input-placeholder {
       padding-bottom: 1px;
     }
     &:not(.p-disabled).p-focus {
-      box-shadow: none;
+      box-shadow: none !important;
       outline: 0px;
+      border-color: vars.$primary-color;
     }
     &:not(.p-disabled).p-focus,
     &:not(.p-disabled):hover {
@@ -1547,6 +1617,68 @@ input::-ms-input-placeholder {
         &:hover {
             background-color: vars.$primary-dark;
         }
+    }
+  }
+}
+
+.p-error{
+  font-size: 11px;
+}
+.invalid-feedback{
+  padding-left: 20px;
+}
+
+.customDatePicker{
+  .p-calendar{
+    .p-datepicker-trigger{
+      position: absolute;
+      right: 3px;
+      top: 3px;
+      border-radius: 50%;
+      width: 34px;
+      height: 34px;
+      background: vars.$primary-color;
+      box-shadow: vars.$primary-box-shoadow;
+      border: 1px solid vars.$primary-color;
+      &:focus{
+        outline: none;
+      }
+    }
+  }
+  .p-datepicker{
+    .p-datepicker-group-container{
+      .p-datepicker-group{
+        .p-datepicker-header{
+          padding: 0px 0px 0px;
+          .p-datepicker-prev,
+          .p-datepicker-next{
+            width: 25px;
+            height: 25px;
+          }
+        }
+        .p-datepicker-calendar-container{
+          table.p-datepicker-calendar{
+            margin: 0px;
+            th {
+              span{
+                width: 25px;
+                height: 25px;
+                font-size: 13px;
+                font-weight: 700;
+              }
+            }
+            td {
+              padding: 5px;
+              span{
+                width: 25px;
+                height: 25px;
+                font-size: 13px;
+                font-weight: 400;
+              }
+            } 
+          }
+        }
+      }
     }
   }
 }

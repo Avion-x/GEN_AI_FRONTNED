@@ -66,9 +66,10 @@
                 <tr>
                     <th>Id</th>
                     <th>Name</th>
-                    <th>Code</th>
-                    <th>Created At</th>
+                    <!-- <th>Code</th> -->
+                   
                     <th>Status</th>
+                    <th>Created At</th>
                     <th>Last Updated By</th>
                     <th>Last updated At</th>
                     <th>Valid Till</th>
@@ -79,9 +80,10 @@
                 <tr (click)="getTestTypeCategory(testType.id)" [ngClass]="{'active': selectedTestId === testType.id}">
                     <td>{{testType.id}}</td>
                     <td>{{testType.description}}</td>
-                    <td>{{testType.code}}</td>
-                    <td>{{testType.created_at}}</td>
+                    <!-- <td>{{testType.code}}</td> -->
+                    
                     <td>{{testType.status}}</td>
+                    <td>{{testType.created_at}}</td>
                     <td>{{testType.last_updated_by}}</td>
                     <td>{{testType.last_updated_at}}</td>
                     <td>{{testType.valid_till}}</td>

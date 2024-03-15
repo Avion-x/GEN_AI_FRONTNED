@@ -1,1 +1,44 @@
-<p>dashboard works!</p>
+<div class="dashboard-page-wrapper">
+    <!-- <div class="singleBoxRow">
+        <div class="item" *ngFor="let item of widgetsTopSection">
+            <div class="icon">
+                <span class="material-symbols-rounded">router</span>
+            </div>
+            <div class="itemContent">
+                <div class="title">{{item.title}}</div>
+                <div class="itemCount">{{item.count}}</div>
+            </div>            
+        </div>
+    </div> -->
+    <div class="small-widgets-section">
+        <div class="card small-widget mb-sm-0" *ngFor="let item of widgetsTopSection">
+            <div class="card-body">
+                <span class="title">{{item.title}}</span>
+                <div class="itemCount">
+                    <h4>{{item.count}}</h4>
+                    <!-- <span class="f-14 f-w-600 font-primary"><i class="icon-arrow-up"></i><span>+50%</span></span> -->
+                </div>
+                <div class="bg-gradient">
+                    <span class="material-symbols-rounded icon">router</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chart-section">
+        <div class="card">
+            <h5 class="title">Todays Test Results</h5>
+            <p-chart type="bar" [data]="todaysTestData" [options]="basicOptions"></p-chart>
+        </div>
+        <div class="card">
+            <h5 class="title">Approved Test Cases</h5>
+            <!-- <p-chart type="bar" [data]="basicData" [options]="basicOptions"></p-chart> -->
+            <div class="pieChartHolder">
+                <p-chart type="doughnut" [data]="approvedChartData" [options]="approvedChartOptions" [style]="{'width': '100%'}"></p-chart>
+            </div>
+            
+        </div>
+    </div>
+    
+    
+</div>

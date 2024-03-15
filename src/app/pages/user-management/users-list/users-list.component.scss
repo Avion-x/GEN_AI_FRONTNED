@@ -36,12 +36,16 @@
                 font-size: 21px;
                 color: #fff;
                 font-weight: 600;
+                .tag{
+                    text-transform: uppercase;
+                }
             }
         }
         .userDetails{
             .fullname{
                 font-size: 13px;
                 color: vars.$titleClr;
+                text-transform: capitalize;
             }
             .userName{
                 font-size: 10px;
@@ -118,11 +122,15 @@
                 font-weight: 600;
                 margin-bottom: 10px;
                 border: 1px solid vars.$devider;
+                .tag{
+                    text-transform: uppercase;
+                }
         }
         .fullname{
             font-size: 14px;
             font-weight: 600;
             color: vars.$titleClr;
+            text-transform: capitalize;
         }
         .email{
             font-size: 11px;

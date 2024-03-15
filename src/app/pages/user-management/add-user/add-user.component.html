@@ -30,57 +30,277 @@
 </ul>
 
 <div class="content-wrapper">
+    <!-- <div class="register-form">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input
+              type="text"
+              formControlName="fullname"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['fullname'].errors }"
+            />
+            <div *ngIf="submitted && f['fullname'].errors" class="invalid-feedback">
+              <div *ngIf="f['fullname'].errors['required']">Fullname is required</div>
+            </div>
+          </div>
+      
+          <div class="form-group">
+            <label>Username</label>
+            <input
+              type="text"
+              formControlName="username"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['username'].errors }"
+            />
+            <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+              <div *ngIf="f['username'].errors['required']">Username is required</div>
+              <div *ngIf="f['username'].errors['minlength']">
+                Username must be at least 6 characters
+              </div>
+              <div *ngIf="f['username'].errors['maxlength']">
+                Username must not exceed 20 characters
+              </div>
+            </div>
+          </div>
+      
+          <div class="form-group">
+            <label>Email</label>
+            <input
+              type="text"
+              formControlName="email"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+            />
+            <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+              <div *ngIf="f['email'].errors['required']">Email is required</div>
+              <div *ngIf="f['email'].errors['email']">Email is invalid</div>
+            </div>
+          </div>
+      
+          <div class="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              formControlName="password"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+            />
+            <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+              <div *ngIf="f['password'].errors['required']">Password is required</div>
+              <div *ngIf="f['password'].errors['minlength']">
+                Password must be at least 6 characters
+              </div>
+              <div *ngIf="f['password'].errors['maxlength']">
+                Username must not exceed 40 characters
+              </div>
+            </div>
+          </div>
+      
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <input
+              type="password"
+              formControlName="confirmPassword"
+              class="form-control"
+              [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }"
+            />
+            <div
+              *ngIf="submitted && f['confirmPassword'].errors"
+              class="invalid-feedback"
+            >
+              <div *ngIf="f['confirmPassword'].errors['required']">
+                Confirm Password is required
+              </div>
+              <div *ngIf="f['confirmPassword'].errors['matching']">
+                Confirm Password does not match
+              </div>
+            </div>
+          </div>
+      
+          <div class="form-group form-check">
+            <input
+              type="checkbox"
+              formControlName="acceptTerms"
+              class="form-check-input"
+              [ngClass]="{ 'is-invalid': submitted && f['acceptTerms'].errors }"
+            />
+            <label for="acceptTerms" class="form-check-label"
+              >I have read and agree to the Terms</label
+            >
+            <div *ngIf="submitted && f['acceptTerms'].errors" class="invalid-feedback">
+              Accept Terms is required
+            </div>
+          </div>
+      
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary">Register</button>
+            <button
+              type="button"
+              (click)="onReset()"
+              class="btn btn-warning float-right"
+            >
+              Reset
+            </button>
+          </div>
+        </form>
+      </div> -->
+
+
     <h1 class="main-title">Add New User</h1>
+    
     <div class="card">
-        <form [formGroup]="userForm" class="form-container">
+        <div class="form-container col4 validateUserSection">
             <div class="field p-float-label">
-                <input id="mainCategoryName" formControlName="first_name" type="text" pInputText> 
-                <label for="mainCategoryName">first_name</label>
+                <input id="userName" class="ng-invalid ng-dirty" (keyup)="validateRegularExpression()" [(ngModel)]="usernameValue" type="text" pInputText [ngClass]="{'ng-invalid':usernameValue == '', 'ng-dirty':validateRegex}"> 
+                <label for="userName">Username</label>
+                <div class="usernameAvailabelMessage" *ngIf="!userNameValidation && userNameSubmitted"><i class="pi pi-check-circle"></i> Congrats! The Username is available.</div>
+                <div class="usernameErrorMessage" *ngIf="userNameValidation && userNameSubmitted"><i class="pi pi-exclamation-circle"></i> This Username is taken. Try another.</div>
+                <!-- <small class="p-error block">Username is not available.</small> -->
+                <ul class="userNameDirty" *ngIf="!validateRegex && usernameValue !== ''">
+                    <li>Does not start with a number.</li>
+                    <li>Contains at least one letter.</li>
+                    <li>Contains only alphanumeric characters (letters and digits).</li>
+                    <li>Is between 8 and 20 characters in length.</li>
+                </ul>
+            </div>
+            <button class="btn primary-btn" (click)="validateUserName()">
+                <span class="material-symbols-rounded icon">how_to_reg</span>
+                Validate
+            </button>
+        </div>
+        <form [formGroup]="userForm" class="form-container col4" (ngSubmit)="submitData()">
+            <div class="end-row"></div>
+
+            <!-- <p-fileUpload name="myfile[]" url="https://www.primefaces.org/cdn/api/upload.php"  accept="image/*"  (onUpload)="fileChangeEvent($event)" ></p-fileUpload> -->
+
+            <!-- <input type="file" accept=".jpg, .jpeg, .png" (change)="fileChangeEvent($event)" />
+
+            <image-cropper
+                [imageChangedEvent]="imageChangedEvent"
+                [maintainAspectRatio]="true"
+                [aspectRatio]="2 / 2"
+                format="png"
+                (imageCropped)="imageCropped($event)"
+                (imageLoaded)="imageLoaded($event)"
+                (cropperReady)="cropperReady($event)"
+                (loadImageFailed)="loadImageFailed()"
+            ></image-cropper>
+
+            <img [src]="croppedImage" /> -->
+
+            <div class="field p-float-label">
+                <input id="firstName"  formControlName="first_name" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['first_name'].errors }"> 
+                <label for="firstName">First Name</label>
+                <div *ngIf="submitted && f['first_name'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['first_name'].errors['required']">First Name is required</div>
+                </div>
+                <!-- <div *ngIf="formSubmitted && f['first_name'].errors" class="invalid-feedback">
+                    <div *ngIf="f['first_name'].errors['required']">First Name is required</div>
+                </div> -->
+                <!-- <small class="p-error block" *ngIf="userForm.get('firstName')?.invalid && userForm.get('firstName')?.dirty">
+                 First name is required
+                </small> -->
             </div>
             <div class="field p-float-label">
-                <input id="mainCustomer" formControlName="last_name" type="text" pInputText> 
-                <label for="mainCustomer">last_name</label>
+                <input id="lastName" formControlName="last_name" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['last_name'].errors }"> 
+                <label for="lastName">Last Name</label>
+                <div *ngIf="submitted && f['last_name'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['last_name'].errors['required']">Last Name is required</div>
+                </div>
             </div>
             <div class="field p-float-label">
-                <input id="mainCreatedBy" formControlName="email" type="text" pInputText> 
-                <label for="mainCreatedBy">email</label>
+                <input id="email" required formControlName="email" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"> 
+                <label for="email">Email</label>
+                <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['email'].errors['required']">Email is required</div>
+                    <div class="p-error" *ngIf="f['email'].errors['email']">Email is invalid</div>
+                </div>
             </div>
             <div class="field p-float-label">
-                <input id="mainCreatedBy" formControlName="role_name" type="text" pInputText> 
-                <label for="mainCreatedBy">role_name</label>
+                <!-- <input id="roleName" formControlName="role_name" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['role_name'].errors }">  -->
+                <p-dropdown [options]="rolesList" formControlName="role_name" placeholder="Select a Role" [ngClass]="{ 'is-invalid': submitted && f['role_name'].errors }"></p-dropdown>
+                <label for="roleName">Role Name</label>
+                <div *ngIf="submitted && f['role_name'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['role_name'].errors['required']">Role Name is required</div>
+                </div>
+            </div>         
+            <div class="field p-float-label">
+                <!-- <input id="isActive" formControlName="is_active" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                <p-dropdown [options]="booleanOptions" formControlName="is_active" optionLabel="name" optionValue="value" placeholder="Select an Option" [ngClass]="{ 'is-invalid': submitted && f['is_active'].errors }"></p-dropdown>
+                <label for="isActive">Is Active</label>
+                <div *ngIf="submitted && f['is_active'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['is_active'].errors['required']">Is Active is required</div>
+                </div>
             </div>
             <div class="field p-float-label">
-                <input id="maindescription" formControlName="username" type="text" pInputText> 
-                <label for="maindescription">username</label>
+                <!-- <input id="isStaff" formControlName="is_staff" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                <p-dropdown [options]="booleanOptions" formControlName="is_staff" optionLabel="name" optionValue="value" placeholder="Select an Option" [ngClass]="{ 'is-invalid': submitted && f['is_staff'].errors }"></p-dropdown>
+                <label for="isStaff">Is Staff</label>
+                <div *ngIf="submitted && f['is_staff'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['is_staff'].errors['required']">Is Staff is required</div>
+                </div>
             </div>
-            <div class="field p-float-label">
-                <input id="maindescription" formControlName="password" type="text" pInputText> 
-                <label for="maindescription">password</label>
-            </div>
-            <div class="field p-float-label">
-                <input id="maindescription" formControlName="confirmPassword" type="text" pInputText> 
-                <label for="maindescription">confirmPassword</label>
-            </div>
-            <div class="field p-float-label">
-                <input id="maindescription" formControlName="is_active" type="text" pInputText> 
-                <label for="maindescription">is_active</label>
-            </div>
-            <div class="field p-float-label">
-                <input id="maindescription" formControlName="is_staff" type="text" pInputText> 
-                <label for="maindescription">is_staff</label>
-            </div>
-            <div class="field p-float-label">
-                <input id="mainValidTill" formControlName="valid_till" type="text" pInputText> 
-                <label for="mainValidTill">Valid Till</label>
+            <div class="field p-float-label position-relative">
+                <p-calendar formControlName="valid_till" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && f['valid_till'].errors }"></p-calendar>
+                <!-- <input id="validTill" formControlName="valid_till" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                <label for="validTill">Valid Till</label>
+                <div *ngIf="submitted && f['valid_till'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['valid_till'].errors['required']">Valid Till is required</div>
+                </div>
             </div>            
             <div class="field p-float-label">
-                <input id="mainComments" formControlName="comments" type="text" pInputText> 
-                <label for="mainComments">Comments</label>
+                <input id="comments" (onBlur)="showDate()" formControlName="comments" type="text" pInputText> 
+                <label for="comments">Comments</label>
             </div>
-            
+            <div class="field p-float-label">
+                <!-- <input id="password" formControlName="password" type="password" pInputText [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">  -->
+                <p-password id="password" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">
+                    <ng-template pTemplate="header">
+                        <h6>Pick a password</h6>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                        
+                        <p class="mt-2">Suggestions</p>
+                        <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                            <li>At least one lowercase</li>
+                            <li>At least one uppercase</li>
+                            <li>At least one numeric</li>
+                            <li>Minimum 8 characters</li>
+                        </ul>
+                    </ng-template>
+                </p-password>
+                <label for="password">Password</label>
+                
+                <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['password'].errors['required']">Password is required</div>
+                    <div class="p-error" *ngIf="f['password'].errors['minlength']">
+                      Password must be at least 6 characters
+                    </div>
+                    <div class="p-error" *ngIf="f['password'].errors['maxlength']">
+                      Username must not exceed 40 characters
+                    </div>
+                </div>
+            </div>
+            <div class="field p-float-label">
+                <input id="confirmPassword" formControlName="confirmPassword" type="password" pInputText [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }"> 
+                <label for="confirmPassword">Confirm Password</label>
+                <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['confirmPassword'].errors['required']">
+                        Confirm Password is required
+                    </div>
+                    <div class="p-error" *ngIf="f['confirmPassword'].errors['matching']">
+                        Confirm Password does not match
+                    </div>
+                </div>
+            </div>
 
             <div class="end-row"></div>
-            
+
+            <button type="submit" class="btn primary-btn submitBtn">Submit</button>
+            <p-toast></p-toast>
+            <p-messages [(value)]="successMessage" [enableService]="false"></p-messages>
+
         </form>    
         <!-- <div class="form-container">
             <div class="field-checkbox">
@@ -91,3 +311,11 @@
         
     </div>
 </div>
+
+<p-dialog header="Success" [modal]="true" [style]="{width: '30vw'}" [(visible)]="successResponcePopup">
+  <!-- {{successResponce?.message}} -->
+  <p>User created successfully</p>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" (click)="afterSuccess()" label="Ok" styleClass="p-button-text"></p-button>
+  </ng-template>
+</p-dialog>
