@@ -46,7 +46,8 @@
               "node_modules/prismjs/components/prism-css.min.js",
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js",
               "node_modules/prismjs/plugins/line-highlight/prism-line-highlight.js",
-              "node_modules/prismjs/plugins/command-line/prism-command-line.js"
+              "node_modules/prismjs/plugins/command-line/prism-command-line.js",
+              "node_modules/chart.js/dist/chart.js"
             ]
           },
           "configurations": {
@@ -59,8 +60,8 @@
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                  "maximumWarning": "4kb",
+                  "maximumError": "8kb"
                 }
               ],
               "fileReplacements": [
