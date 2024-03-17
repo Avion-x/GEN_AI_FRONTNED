@@ -156,4 +156,42 @@
         </p-table>
     </div>
 
+    <p-sidebar [(visible)]="testTypeFormSidebar"  class="sidebar-section" [style]="{width:'30%'}" position="right">
+        <ng-template pTemplate="header">Create Category</ng-template>
+        <ng-template pTemplate="content">
+            <div class="card">
+                <form [formGroup]="testTypeForm" class="form-container display-column">
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="category" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && fTestType['category'].errors }"> 
+                        <label for="float-input">Category Name<small class="star">*</small></label>
+                        <div *ngIf="submitted && fTestType['category'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fTestType['category'].errors['required']">Category Name is required</div>
+                        </div>
+                    </div>
+                    <!-- <div class="field p-float-label">
+                        <input id="float-input" formControlName="status" type="text" pInputText> 
+                        <label for="float-input">Status</label>
+                    </div> -->
+                    
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="comments" type="text" pInputText> 
+                        <label for="float-input">Comments</label>
+                    </div>
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="description" type="text" pInputText> 
+                        <label for="float-input">Description</label>
+                    </div>  
+                </form>   
+            </div>
+            
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="pageActions">
+                <!-- <button class="btn secondary-btn" (click)="mainCategoryCancelBtn()">Cancel</button>
+                <button class="btn primary-btn" (click)="createNewCategory()">Submit</button> -->
+            </div>
+        </ng-template>
+        
+    </p-sidebar>
+
 </div>

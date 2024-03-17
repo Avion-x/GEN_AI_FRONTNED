@@ -1035,6 +1035,9 @@ input::-ms-input-placeholder {
       top: 22px;
       left: 20px;
       color: vars.$fontclr;
+      .star{
+        color: vars.$error;
+      }
     }
   }
   .field-checkbox{
@@ -1076,7 +1079,7 @@ input::-ms-input-placeholder {
   .p-sidebar{
     .p-sidebar-content{
       padding: 0px;
-      background: vars.$body-bg;
+      //background: vars.$body-bg;
       height: calc(100vh - 172px);
       overflow-y: auto;
       .table-container{

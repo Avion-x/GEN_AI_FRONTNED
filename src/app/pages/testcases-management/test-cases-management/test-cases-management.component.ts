@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfigService } from 'src/app/shared/services/app-config.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DataService } from 'src/app/shared/services/data.service';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 import {MenuItem} from 'primeng/api';
 
@@ -19,9 +20,23 @@ export class TestCasesManagementComponent implements OnInit {
   public testTypesData:any[] = [];
   public selectedTestType:any;
   public selectedTestId:string = '';
+  public testTypeFormSidebar:boolean = false;
+  public submitted:boolean = false;
 
   mainActionMenuItems!: MenuItem[];
-  subActionMenuItems!:MenuItem[];
+  subActionMenuItems!: MenuItem[];
+
+  testTypeForm:FormGroup = new FormGroup({
+    product_name: new FormControl(''),
+    product_code: new FormControl(''),
+    status: new FormControl(''),
+    comments: new FormControl(''),
+    valid_till:new FormControl(''),
+    product_sub_category:new FormControl(''),
+    sub_category_id:new FormControl(''),
+    product_category:new FormControl('')
+  });
+
 
   public testTypeCategories:any[] = [
     {
@@ -48,12 +63,31 @@ export class TestCasesManagementComponent implements OnInit {
     private dataService:DataService, 
     private _router: Router, 
     private _aRoute: ActivatedRoute,
-    private appConfig:AppConfigService,) { }
+    private appConfig:AppConfigService,
+    public fb: FormBuilder) { }
 
   ngOnInit(): void {
     this.breadcrumblist.push({'name':'Home', 'url':this.appConfig.urlHome, 'disabled':false}, {'name':'Testcases Settings','url':'', 'disabled':true});
     this.backUrl = this.appConfig.urlTestCasesManagement;
     this.getTestTypes();
+    this.setTestTypeForm();
+  }
+
+  setTestTypeForm(){
+    this.testTypeForm = this.fb.group({
+      product_name: ['', [Validators.required]],
+      product_code: ['', [Validators.required]],
+      status:['', [Validators.required]],
+      valid_till:['', [Validators.required]],
+      comments:[''],
+      product_sub_category:['', [Validators.required]],
+      product_category:['', [Validators.required]],
+      sub_category_id:['', [Validators.required]]
+    })
+  }
+
+  get fTestType(): { [key: string]: AbstractControl } {
+    return this.testTypeForm.controls;
   }
 
   getTestTypes() {

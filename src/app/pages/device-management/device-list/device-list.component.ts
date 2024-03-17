@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as moment from 'moment';
+import * as _ from 'lodash';
+import {Message,MessageService} from 'primeng/api';
 import { AppConfigService } from 'src/app/shared/services/app-config.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DataService } from 'src/app/shared/services/data.service';
+
 
 import {MenuItem} from 'primeng/api';
 
@@ -18,10 +22,24 @@ export class DeviceListComponent implements OnInit {
   public backUrl:string = '';
   public hasSubCategory:boolean = false;
   public productsData:any[] = [];
-  public productsForm!: FormGroup;
   public selectedSubCategory:string = '';
   public productSubCategory:any = {};
   public productsLoader:boolean = false;
+  public addNewProductFormSidebar:boolean = false;
+  public submitted:boolean = false;
+  public statusOptions:any[] = [{name:'Active', value:true}, {name:'Inactive', value:false}];
+  public successResponce:any[] = [];
+
+  public productForm:FormGroup = new FormGroup({
+    product_name: new FormControl(''),
+    product_code: new FormControl(''),
+    status: new FormControl(''),
+    comments: new FormControl(''),
+    valid_till:new FormControl(''),
+    product_sub_category:new FormControl(''),
+    sub_category_id:new FormControl(''),
+    product_category:new FormControl('')
+  });
 
   constructor(private authenticationService:AuthService, 
     private dataService:DataService, 
@@ -42,14 +60,20 @@ export class DeviceListComponent implements OnInit {
   }
 
   setProductForm(){
-    this.productsForm = this.fb.group({
-      deviceName: ['', [Validators.required]],
-      series:['', [Validators.required]],
-      customer:['', [Validators.required]],
-      validTill:['', [Validators.required]],
-      comments:['', [Validators.required]],
-      description:['', [Validators.required]]
+    this.productForm = this.fb.group({
+      product_name: ['', [Validators.required]],
+      product_code: ['', [Validators.required]],
+      status:['', [Validators.required]],
+      valid_till:['', [Validators.required]],
+      comments:[''],
+      product_sub_category:['', [Validators.required]],
+      product_category:['', [Validators.required]],
+      sub_category_id:['', [Validators.required]]
     })
+  }
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.productForm.controls;
   }
 
   getProducts(productCat:any) {
@@ -79,6 +103,9 @@ export class DeviceListComponent implements OnInit {
     this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
       this.productSubCategory = result.data[0]; 
       this.breadcrumblist.push({'name':'Home','url':this.appConfig.urlHome, 'disabled':false}, {'name':'Device Management','url':this.appConfig.urlDeviceManagement, 'disabled':false}, {'name':this.productSubCategory.category_name, 'url':this.appConfig.urlDeviceManagement, 'disabled':false}, {'name':this.productSubCategory.sub_category, 'disabled':false}, {'name':'Device List', 'disabled':true});
+      this.productForm.get('product_category')?.setValue(this.productSubCategory.product_category);
+      this.productForm.get('product_sub_category')?.setValue(this.productSubCategory.id);
+      this.productForm.get('sub_category_id')?.setValue(this.productSubCategory.id);
       // if(this.productMainCategory && this.productSubCategory){
       //   const mainCategoryName = this.productMainCategory.category + '-' + this.productMainCategory.id;
       //   this.backUrl = this.appConfig.urlProductCategory + '/' + this.productMainCategory.id;
@@ -89,10 +116,52 @@ export class DeviceListComponent implements OnInit {
   }
 
   addProduct(){
+    this.submitted = true;
+    console.log('this.productForm.invalid', this.productForm.invalid);
+    if (this.productForm.invalid) {
+      return;
+    } 
+    this.productForm.patchValue({
+      valid_till: this.productForm.get('valid_till')?.value ? moment(this.productForm.get('valid_till')?.value).format('YYYY-MM-DD') : '',
+      //product_sub_category: this.productSubCategory.id,
+      //product_category: this.productSubCategory.product_category,
+      //confirmPassword:this.userForm.get('confirmPassword')?.disable()
+    })
+    //console.log(JSON.stringify(this.userForm.value));
+    const setUser = {
+        action: 'product/product/',
+        method: 'post',
+        data: this.productForm.value
+      }
+      this.dataService.apiDelegate(setUser).subscribe((result: any) => {
+        //this.generateTestcasesLoader = false;        
+        this.successResponce = result;
+        console.log('successResponce', this.successResponce);
+        if(!_.isEmpty(result)) {
+          this.addNewProductFormSidebar = false;
+          this.getProducts('');          
+          //this.afterSuccess();          
+          //this.messageService.add({severity:'success', summary:'Success', detail:'User added successfully'});
+          //this.messageService.add({severity:'success', summary: 'Success', detail: 'User added successfully'});          
+          //const responceData = result.response.Regression;
+          //this.testCasesData = responceData.TestCases;
+        }      
+      }, error=>{
+        console.log('error', error);
+      })
     //console.log('subCategoryForm', this.subCategoryForm.value)
     //this.productSubCategoryData.push({'sub_category':'', 'created_at':'', 'customer':'', 'valid_till':'', 'comments':'', 'description':'description'})
-    this.productsData.push(this.productsForm.value);
-    this.productsForm.reset();
+    //this.productsData.push(this.productForm.value);
+    this.productForm.reset();
+  }
+
+  cancelBtn(){
+    this.addNewProductFormSidebar = false;
+  }
+
+  showProductForm(){
+    console.log('--------------------');
+    this.addNewProductFormSidebar = true;
   }
 
   public seDeciveActionMenu(selectedProduct:any){

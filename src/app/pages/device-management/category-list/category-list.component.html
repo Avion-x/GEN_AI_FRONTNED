@@ -34,13 +34,16 @@
     <p-menu #mainActionMenu [popup]="true" [model]="mainCatActionMenuItems"></p-menu>
     <p-menu #subActionMenu [popup]="true" [model]="subCatActionMenuItems"></p-menu>
     <p-sidebar [(visible)]="mainCategoryFormSidebar"  class="sidebar-section" [style]="{width:'30%'}" position="right">
-        <ng-template pTemplate="header">Create Sub Category</ng-template>
+        <ng-template pTemplate="header">Create Category</ng-template>
         <ng-template pTemplate="content">
             <div class="card">
                 <form [formGroup]="mainCategoryForm" class="form-container display-column">
                     <div class="field p-float-label">
-                        <input id="float-input" formControlName="category" type="text" pInputText> 
-                        <label for="float-input">Category Name</label>
+                        <input id="float-input" formControlName="category" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && fMain['category'].errors }"> 
+                        <label for="float-input">Category Name<small class="star">*</small></label>
+                        <div *ngIf="submitted && fMain['category'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fMain['category'].errors['required']">Category Name is required</div>
+                        </div>
                     </div>
                     <!-- <div class="field p-float-label">
                         <input id="float-input" formControlName="status" type="text" pInputText> 
@@ -48,23 +51,23 @@
                     </div> -->
                     <div class="field p-float-label">
                         <!-- <input id="isActive" formControlName="is_active" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
-                        <p-dropdown [options]="statusOptions" formControlName="status" optionLabel="name" optionValue="value" placeholder="Select an Option"></p-dropdown>
-                        <label for="isActive">Status</label>
-                        <!-- <div *ngIf="submitted && f['is_active'].errors" class="invalid-feedback">
-                            <div class="p-error" *ngIf="f['is_active'].errors['required']">Is Active is required</div>
-                        </div> -->
+                        <p-dropdown [options]="statusOptions" formControlName="status" optionLabel="name" optionValue="value" placeholder="Select an Option" [ngClass]="{ 'is-invalid': submitted && fMain['status'].errors }"></p-dropdown>
+                        <label for="isActive">Status<small class="star">*</small></label>
+                        <div *ngIf="submitted && fMain['status'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fMain['status'].errors['required']">Status is required</div>
+                        </div>
                     </div>
                     <!-- <div class="field p-float-label">
                         <input id="float-input" formControlName="valid_till" type="text" pInputText> 
                         <label for="float-input">Valid Till</label>
                     </div> -->
                     <div class="field p-float-label position-relative">
-                        <p-calendar formControlName="valid_till" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker"></p-calendar>
+                        <p-calendar formControlName="valid_till" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && fMain['valid_till'].errors }"></p-calendar>
                         <!-- <input id="validTill" formControlName="valid_till" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
-                        <label for="validTill">Valid Till</label>
-                        <!-- <div *ngIf="submitted && f['valid_till'].errors" class="invalid-feedback">
-                            <div class="p-error" *ngIf="f['valid_till'].errors['required']">Valid Till is required</div>
-                        </div> -->
+                        <label for="validTill">Valid Till<small class="star">*</small></label>
+                        <div *ngIf="submitted && fMain['valid_till'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fMain['valid_till'].errors['required']">Valid Till is required</div>
+                        </div>
                     </div>
                     <div class="field p-float-label">
                         <input id="float-input" formControlName="comments" type="text" pInputText> 
@@ -80,49 +83,42 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <div class="pageActions">
-                <button class="btn secondary-btn">Cancel</button>
+                <button class="btn secondary-btn" (click)="mainCategoryCancelBtn()">Cancel</button>
                 <button class="btn primary-btn" (click)="createNewCategory()">Submit</button>
             </div>
         </ng-template>
         
     </p-sidebar>
     <p-sidebar [(visible)]="subCategoryFormSidebar"  class="sidebar-section" [style]="{width:'85%'}" position="right">
-        <ng-template pTemplate="header">Create Sub Category</ng-template>
+        <ng-template pTemplate="header">Create Sub Category for <div class="count">{{seletedMainProductToAddSubCategory.category}}</div></ng-template>
         <ng-template pTemplate="content">
             <div class="card">
                 <form [formGroup]="subCategoryForm" class="form-container">
-                    <div class="field p-float-label">
-                        <input id="float-input" formControlName="product_category" type="text" pInputText> 
-                        <label for="float-input">Category Name</label>
-                    </div>
+                    
                     <div class="field p-float-label">
                         <input id="float-input" formControlName="sub_category" type="text" pInputText> 
-                        <label for="float-input">Sub Category Name</label>
+                        <label for="float-input">Sub Category Name<small class="star">*</small></label>
+                        <div *ngIf="submitted && fSub['sub_category'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fSub['sub_category'].errors['required']">Sub Category Name is required</div>
+                        </div>
                     </div>
-                    <!-- <div class="field p-float-label">
-                        <input id="float-input" formControlName="status" type="text" pInputText> 
-                        <label for="float-input">Status</label>
-                    </div> -->
+                   
                     <div class="field p-float-label">
-                        <!-- <input id="isActive" formControlName="is_active" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
-                        <p-dropdown [options]="statusOptions" formControlName="status" optionLabel="name" optionValue="value" placeholder="Select an Option"></p-dropdown>
-                        <label for="isActive">Status</label>
-                        <!-- <div *ngIf="submitted && f['is_active'].errors" class="invalid-feedback">
-                            <div class="p-error" *ngIf="f['is_active'].errors['required']">Is Active is required</div>
-                        </div> -->
+                       <p-dropdown [options]="statusOptions" formControlName="status" optionLabel="name" optionValue="value" placeholder="Select an Option"></p-dropdown>
+                        <label for="isActive">Status<small class="star">*</small></label>
+                        <div *ngIf="submitted && fSub['status'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fSub['status'].errors['required']">Status is required</div>
+                        </div>
                     </div>
-                    <!-- <div class="field p-float-label">
-                        <input id="float-input" formControlName="valid_till" type="text" pInputText> 
-                        <label for="float-input">Valid Till</label>
-                    </div> -->
+                    
                     <div class="field p-float-label position-relative">
                         <p-calendar formControlName="valid_till" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker"></p-calendar>
-                        <!-- <input id="validTill" formControlName="valid_till" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
-                        <label for="validTill">Valid Till</label>
-                        <!-- <div *ngIf="submitted && f['valid_till'].errors" class="invalid-feedback">
-                            <div class="p-error" *ngIf="f['valid_till'].errors['required']">Valid Till is required</div>
-                        </div> -->
+                        <label for="validTill">Valid Till<small class="star">*</small></label>
+                        <div *ngIf="submitted && fSub['valid_till'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fSub['valid_till'].errors['required']">Valid Till is required</div>
+                        </div>
                     </div>
+                    <div class="end-row"></div>
                     <div class="field p-float-label">
                         <input id="float-input" formControlName="comments" type="text" pInputText> 
                         <label for="float-input">Comments</label>
@@ -139,41 +135,49 @@
                     </button>
                 </div> 
             </div>
-            <div class="table-container mt-30 mb-30" *ngIf="productSubCategoryData.length !== 0">
-                <p-table #subProductsTable class="selectableTable" [value]="productSubCategoryCreationData" [globalFilterFields]="['product_category','sub_category','created_at','customer', 'valid_till', 'comments']">
+            <div class="content-loader" *ngIf="productSubCategoryLoader">
+                <i class="pi pi-spin pi-spinner"></i>
+                <span>Loading Product Sub Categories...</span>
+            </div>
+            <div class="table-container table-selection-list" *ngIf="!productSubCategoryLoader">
+                <p-table #subProductsTable class="selectableTable" [value]="productSubCategoryData" [globalFilterFields]="['id','product_category','sub_category','created_at','customer', 'valid_till', 'comments']">
                     <ng-template pTemplate="caption">
                         <div class="table-title-with-search">
-                            <div class="title">Sub Categories<div class="count">{{productSubCategoryCreationData.length}}</div></div>
+                            <div class="title">Sub Categories of {{seletedMainProductToAddSubCategory.category}}<div class="count">{{productSubCategoryData.length}}</div></div>
                             <div class="right-section">   
                                 <div class="search-box">
                                     <i class="pi pi-search"></i>
-                                    <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
-                                    <input pInputText type="text" #filter (input)="subProductsTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
-                                </div>
+                                   <input pInputText type="text" #filter (input)="subProductsTable.filterGlobal(filter.value, 'contains')" placeholder="Sub Category Search" />
+                                </div>                                
                             </div>
                         </div>                
                     </ng-template>
                     <ng-template pTemplate="header">
                         <tr>
-                            <!-- <th>Id</th> -->
-                            <!-- <th>Product Category</th> -->
+                            <th>Id</th>
+                            <th>Product Category</th>
                             <th>Sub category</th>
                             <th>Created At</th>
                             <!-- <th>Customer</th> -->
                             <th>Valid till</th>
                             <th>Comments</th>
-                            <th>Description</th>
+                            <th></th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-product>
+                    <ng-template pTemplate="body" let-subProduct>
                         <tr>
-                            <!-- <td>{{product.id}}</td> -->
-                            <td>{{product.subCategoryName}}</td>
-                            <td>{{product.createdAt}}</td>
-                            <!-- <td>{{product.customer}}</td> -->
-                            <td>{{product.validTill}}</td>
-                            <td>{{product.comments}}</td>
-                            <td>{{product.description}}</td>
+                            <td>{{subProduct.id}}</td>
+                            <td>{{subProduct.product_category}}</td>
+                            <td>{{subProduct.sub_category}}</td>
+                            <td>{{subProduct.created_at}}</td>
+                            <!-- <td (click)="navigateToProducts(subProduct.id)">{{subProduct.customer}}</td> -->
+                            <td>{{subProduct.valid_till}}</td>
+                            <td>{{subProduct.comments}}</td>
+                            <td style="width: 50px; min-width: 50px; max-width: 50px;">
+                                <button type="button" class="td-menu-btn" (click)="subActionMenu.toggle($event); setMainSubCatActionMenu(subProduct)">
+                                    <span class="material-symbols-rounded icon">more_vert</span>
+                                </button>                        
+                            </td>
                         </tr>
                     </ng-template>
                 </p-table>
@@ -181,8 +185,8 @@
         </ng-template>
         <ng-template pTemplate="footer">
             <div class="pageActions">
-                <button class="btn secondary-btn">Cancel</button>
-                <button class="btn primary-btn">Submit</button>
+                <button class="btn secondary-btn" (click)="subCategoryCancelBtn()">Cancel</button>
+                <button class="btn primary-btn" (click)="subCategoryCancelBtn()">Done</button>
             </div>
         </ng-template>
         
@@ -255,7 +259,7 @@
                                                     <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
                                                     <input pInputText type="text" #filter (input)="subProductsTable.filterGlobal(filter.value, 'contains')" placeholder="Sub Category Search" />
                                                 </div>
-                                                <button class="btn primary-btn" (click)="showCreateSubCategory(product.category)">
+                                                <button class="btn primary-btn" (click)="showCreateSubCategory(product)">
                                                     <span class="material-symbols-rounded icon">add</span>
                                                     Add Sub Category
                                                 </button>
