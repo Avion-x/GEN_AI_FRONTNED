@@ -32,12 +32,12 @@
 <div class="content-wrapper">
     <div class="content-loader" *ngIf="productsLoader">
         <i class="pi pi-spin pi-spinner"></i>
-        <span>Loading Products...</span>
+        <span>Loading Devices...</span>
     </div>
 
     <div class="products-container" *ngIf="!productsLoader">
         <h1 class="main-title">
-            Products List
+            Device List
         </h1>
     
         <div class="products-wrapper">
@@ -50,7 +50,7 @@
                     <div class="right-section"></div>
                 </div>
                 <div class="content">
-                    <span>ID: <b>{{item.id}}</b></span>
+                    <!-- <span>ID: <b>{{item.id}}</b></span> -->
                     <span>No of Prompts: <b>{{item.prompts?.length}}</b></span>
                 </div>
             </div>

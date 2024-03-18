@@ -149,8 +149,8 @@
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th>Id</th>
-                                <th>Product Code</th>
+                                <!-- <th>Id</th> -->
+                                <th>Code</th>
                                 <th>Category Name</th>
                                 <th>Sub Category Name</th>
                                 <th>Available Test Type</th>
@@ -162,7 +162,7 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-device>
                             <tr (click)="navigateToProductDetails(device)">
-                                <td>{{device.id}}</td>
+                                <!-- <td>{{device.id}}</td> -->
                                 <td class="td-clr-primary tb-bold">{{device.product_code}}</td>
                                 <td>{{device.main_category_name}}</td>
                                 <td>{{device.sub_category_name}}</td>
@@ -205,8 +205,8 @@
                         </ng-template>
                         <ng-template pTemplate="header">
                             <tr>
-                                <th>Id</th>
-                                <th>Product Code</th>
+                                <!-- <th>Id</th> -->
+                                <th>Code</th>
                                 <th>Category Name</th>
                                 <th>Sub Category Name</th>
                                 <!-- <th>Customer Name</th> -->
@@ -218,7 +218,7 @@
                         </ng-template>
                         <ng-template pTemplate="body" let-device>
                             <tr>
-                                <td>{{device.id}}</td>
+                                <!-- <td>{{device.id}}</td> -->
                                 <td class="td-clr-primary tb-bold">{{device.product_code}}</td>
                                 <td>{{device.category_name}}</td>
                                 <td>{{device.sub_category_name}}</td>
@@ -229,7 +229,7 @@
                                 <td>{{device.valid_till}}</td>
                                
                                 <td style="width: 110px; min-width: 110px; max-width: 110px;">
-                                    <button type="button" class="testNowBtn" (click)="showTestDialog(device)">
+                                    <button type="button" class="testNowBtn" disabled (click)="showTestDialog(device)">
                                         Test Now
                                         <!-- <span class="material-symbols-rounded icon">more_vert</span> -->
                                     </button>                        

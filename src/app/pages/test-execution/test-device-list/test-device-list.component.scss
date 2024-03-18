@@ -25,4 +25,9 @@
     padding: 6px 10px;
     box-shadow: vars.$primary-box-shoadow;
     cursor: pointer;
+    &[disabled]{
+        opacity: 0.7;
+        box-shadow: none;
+        cursor:default;
+    }
 }

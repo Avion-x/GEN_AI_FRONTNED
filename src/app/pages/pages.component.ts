@@ -71,7 +71,7 @@ export class PagesComponent implements OnInit {
             'url':this.appConfig.urlDashboard
           },
           {
-            'name':'Test Case Management',
+            'name':'Test Management',
             'icon':'bug_report',
             'url':this.appConfig.urlTestCaseManagement
           },

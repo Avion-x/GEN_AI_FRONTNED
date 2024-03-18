@@ -8,7 +8,7 @@
                     {{productSubCategory.sub_category}}   
                 </h1>
                 <h2 class="sub-title">
-                    <span *ngIf="productSubCategory">{{productSubCategory.category_name}}</span>
+                    <span *ngIf="productSubCategory">{{productSubCategory.main_category_name}}</span>
                     <span *ngIf="productSubCategory"><i class="icofont-simple-right"></i></span>
                     <span *ngIf="productSubCategory">{{productSubCategory.sub_category}}</span>
                 </h2>
@@ -70,12 +70,12 @@
 
     <div class="header-with-btns">
         <div class="title-section">
-            <h1 class="main-title">Product List</h1>
+            <h1 class="main-title">Device List</h1>
         </div>
         <div class="right-section">
             <button class="btn primary-btn" (click)="showProductForm()">
                 <span class="material-symbols-rounded icon">add</span>
-                Add New Product
+                Add New Device
             </button>
             <!-- <button class="btn primary-btn">
                 <span class="material-symbols-rounded icon">attach_file</span>
@@ -121,7 +121,7 @@
 
     <div class="content-loader" *ngIf="productsLoader">
         <i class="pi pi-spin pi-spinner"></i>
-        <span>Loading Products...</span>
+        <span>Loading Device list...</span>
     </div>
 
     <div class="products-container" *ngIf="!productsLoader">
@@ -138,7 +138,7 @@
                     </div>
                 </div>
                 <div class="content">
-                    <span>ID: <b>{{item.id}}</b></span>
+                    <!-- <span>ID: <b>{{item.id}}</b></span> -->
                     <span>Valid Till: <b>{{item.valid_till}}</b></span>
                 </div>
             </div>
@@ -147,20 +147,20 @@
 
 
     <p-sidebar [(visible)]="addNewProductFormSidebar"  class="sidebar-section" [style]="{width:'30%'}" position="right">
-        <ng-template pTemplate="header">Add New Product</ng-template>
+        <ng-template pTemplate="header">Add New Device</ng-template>
         <ng-template pTemplate="content">
             <div class="card">
                 <form [formGroup]="productForm" class="form-container display-column" (ngSubmit)="addProduct()">
                     <div class="field p-float-label">
                         <input id="float-input" formControlName="product_name" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['product_name'].errors }"> 
-                        <label for="float-input">Product Name<small class="star">*</small></label>
+                        <label for="float-input">Device Name<small class="star">*</small></label>
                         <div *ngIf="submitted && f['product_name'].errors" class="invalid-feedback">
                             <div class="p-error" *ngIf="f['product_name'].errors['required']">Product Name is required</div>
                         </div>
                     </div>
                     <div class="field p-float-label">
                         <input id="float-input" formControlName="product_code" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['product_code'].errors }"> 
-                        <label for="float-input">Product Code<small class="star">*</small></label>
+                        <label for="float-input">Device Code<small class="star">*</small></label>
                         <div *ngIf="submitted && f['product_code'].errors" class="invalid-feedback">
                             <div class="p-error" *ngIf="f['product_code'].errors['required']">Product code is required</div>
                         </div>

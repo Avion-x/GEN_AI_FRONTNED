@@ -137,7 +137,7 @@
             </div>
             <div class="content-loader" *ngIf="productSubCategoryLoader">
                 <i class="pi pi-spin pi-spinner"></i>
-                <span>Loading Product Sub Categories...</span>
+                <span>Loading Sub Categories...</span>
             </div>
             <div class="table-container table-selection-list" *ngIf="!productSubCategoryLoader">
                 <p-table #subProductsTable class="selectableTable" [value]="productSubCategoryData" [globalFilterFields]="['id','product_category','sub_category','created_at','customer', 'valid_till', 'comments']">
@@ -154,25 +154,28 @@
                     </ng-template>
                     <ng-template pTemplate="header">
                         <tr>
-                            <th>Id</th>
-                            <th>Product Category</th>
+                            <!-- <th>Id</th> -->
+                            <th>Device Category</th>
                             <th>Sub category</th>
                             <th>Created At</th>
-                            <!-- <th>Customer</th> -->
+                            <th>Last Updated At</th>
                             <th>Valid till</th>
                             <th>Comments</th>
-                            <th></th>
+                            <th>Description</th>
+                            <th style="width: 50px; min-width: 50px; max-width: 50px;"></th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-subProduct>
                         <tr>
-                            <td>{{subProduct.id}}</td>
-                            <td>{{subProduct.product_category}}</td>
+                            <!-- <td>{{subProduct.id}}</td> -->
+                            <td>{{subProduct.main_category_name}}</td>
                             <td>{{subProduct.sub_category}}</td>
                             <td>{{subProduct.created_at}}</td>
+                            <td>{{subProduct.last_updated_at}}</td>
                             <!-- <td (click)="navigateToProducts(subProduct.id)">{{subProduct.customer}}</td> -->
                             <td>{{subProduct.valid_till}}</td>
                             <td>{{subProduct.comments}}</td>
+                            <td>{{subProduct.description}}</td>
                             <td style="width: 50px; min-width: 50px; max-width: 50px;">
                                 <button type="button" class="td-menu-btn" (click)="subActionMenu.toggle($event); setMainSubCatActionMenu(subProduct)">
                                     <span class="material-symbols-rounded icon">more_vert</span>
@@ -194,11 +197,11 @@
 
     <div class="content-loader" *ngIf="productsLoader">
         <i class="pi pi-spin pi-spinner"></i>
-        <span>Loading Product Categories...</span>
+        <span>Loading Device Categories...</span>
     </div>
 
     <div class="table-container table-selection-list mt-30"  *ngIf="!productsLoader">
-        <p-table #productsTable class="selectableTable" [value]="productCategoryData" [globalFilterFields]="['id','category','created_at','customer', 'valid_till', 'comments']">
+        <p-table #productsTable class="selectableTable expantionTable" [value]="productCategoryData" [globalFilterFields]="['id','category','created_at','customer', 'valid_till', 'comments']">
             <ng-template pTemplate="caption">
                 <div class="table-title-with-search">
                     <div class="title">Categories <div class="count">{{productCategoryData.length}}</div></div>
@@ -217,7 +220,7 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th>Id</th>
+                    <th class="tdFirstCol"></th>
                     <th>Category</th>
                     <th>Created At</th>
                     <!-- <th>Customer</th> -->
@@ -228,7 +231,7 @@
             </ng-template>
             <ng-template pTemplate="body" let-product >
                 <tr [ngClass]="{'active': selectedProductId === product.id}">
-                    <td (click)="getProductsSubCategory(product.id)">{{product.id}}</td>
+                    <td (click)="getProductsSubCategory(product.id)" class="tdFirstCol"></td>
                     <td (click)="getProductsSubCategory(product.id)">{{product.category}}</td>
                     <td (click)="getProductsSubCategory(product.id)">{{product.created_at}}</td>
                     <!-- <td (click)="getProductsSubCategory(product.id)">{{product.customer}}</td> -->
@@ -268,25 +271,27 @@
                                     </ng-template>
                                     <ng-template pTemplate="header">
                                         <tr>
-                                            <th>Id</th>
-                                            <th>Product Category</th>
+                                            <!-- <th>Id</th> -->                                            
+                                            <th>Category</th>
                                             <th>Sub category</th>
                                             <th>Created At</th>
-                                            <!-- <th>Customer</th> -->
+                                            <th>Last Updated At</th>
                                             <th>Valid till</th>
                                             <th>Comments</th>
-                                            <th></th>
+                                            <th>Description</th>
+                                            <th style="width: 50px; min-width: 50px; max-width: 50px;"></th>
                                         </tr>
                                     </ng-template>
                                     <ng-template pTemplate="body" let-subProduct>
                                         <tr>
-                                            <td (click)="navigateToProducts(subProduct.id)">{{subProduct.id}}</td>
+                                            <!-- <td (click)="navigateToProducts(subProduct.id)">{{subProduct.id}}</td> -->
                                             <td (click)="navigateToProducts(subProduct.id)">{{subProduct.product_category}}</td>
                                             <td (click)="navigateToProducts(subProduct.id)">{{subProduct.sub_category}}</td>
                                             <td (click)="navigateToProducts(subProduct.id)">{{subProduct.created_at}}</td>
-                                            <!-- <td (click)="navigateToProducts(subProduct.id)">{{subProduct.customer}}</td> -->
+                                            <td (click)="navigateToProducts(subProduct.id)">{{subProduct.last_updated_at}}</td>
                                             <td (click)="navigateToProducts(subProduct.id)">{{subProduct.valid_till}}</td>
                                             <td (click)="navigateToProducts(subProduct.id)">{{subProduct.comments}}</td>
+                                            <td (click)="navigateToProducts(subProduct.id)">{{subProduct.description}}</td>
                                             <td style="width: 50px; min-width: 50px; max-width: 50px;">
                                                 <button type="button" class="td-menu-btn" (click)="subActionMenu.toggle($event); setMainSubCatActionMenu(subProduct)">
                                                     <span class="material-symbols-rounded icon">more_vert</span>

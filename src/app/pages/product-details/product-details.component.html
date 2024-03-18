@@ -16,7 +16,7 @@
     </div>
     
     <div class="header-right-section">
-        <button class="btn primary-btn">
+        <button class="btn primary-btn" [disabled]="true">
             <span class="material-symbols-rounded icon">speed</span>
             Run Test
         </button>
@@ -36,7 +36,7 @@
 <div class="content-wrapper">
     <div class="content-loader" *ngIf="productsLoader">
         <i class="pi pi-spin pi-spinner"></i>
-        <span>Loading Products Details...</span>
+        <span>Loading Device Details...</span>
     </div> 
 
     <div class="products-container" *ngIf="!productsLoader">
@@ -52,9 +52,9 @@
                         <span>{{productMainCategory?.category}}</span>
                     </div>
                     <div class="item">
-                        <label>Customer Name</label>
-                        <span>{{productMainCategory?.customer_name}}</span>
-                    </div>            
+                        <label>Status</label>
+                        <span>{{productMainCategory?.status == true ? 'Active':'Inactive'}}</span>
+                    </div>           
                     <div class="item">
                         <label>Created At</label>
                         <span>{{productMainCategory?.created_at}}</span>
@@ -62,7 +62,11 @@
                     <div class="item">
                         <label>Last Updated At</label>
                         <span>{{productMainCategory?.last_updated_at}}</span>
-                    </div>      
+                    </div>  
+                    <div class="item">
+                        <label>Valid Till</label>
+                        <span>{{productMainCategory?.valid_till}}</span>
+                    </div>    
                     <div class="item">
                         <label>Description</label>
                         <span>{{productMainCategory?.description}}</span>
@@ -81,13 +85,17 @@
                 
                 <div class="product-details-section" *ngIf="!subCategoryLoader">  
                     <div class="item">
+                        <label>Category</label>
+                        <span>{{productSubCategory?.main_category_name}}</span>
+                    </div>
+                    <div class="item">
                         <label>Sub Category</label>
                         <span>{{productSubCategory?.sub_category}}</span>
                     </div>
                     <div class="item">
-                        <label>Customer Name</label>
-                        <span>{{productSubCategory?.customer_name}}</span>
-                    </div>            
+                        <label>Status</label>
+                        <span>{{productSubCategory?.status == true ? 'Active':'Inactive'}}</span>
+                    </div>           
                     <div class="item">
                         <label>Created At</label>
                         <span>{{productSubCategory?.created_at}}</span>
@@ -95,7 +103,11 @@
                     <div class="item">
                         <label>Last Updated At</label>
                         <span>{{productSubCategory?.last_updated_at}}</span>
-                    </div>      
+                    </div>    
+                    <div class="item">
+                        <label>Valid Till</label>
+                        <span>{{productSubCategory?.valid_till}}</span>
+                    </div>     
                     <div class="item">
                         <label>Description</label>
                         <span>{{productSubCategory?.description}}</span>
@@ -109,17 +121,21 @@
             <p-tabPanel header="Product Details" [selected]="true">
                 <div class="product-details-section" *ngIf="productData">                
                     <div class="item">
-                        <label>Product Code</label>
+                        <label>Device Code</label>
                         <span>{{productData?.product_code}}</span>
                     </div>
                     <div class="item">
                         <label>Category</label>
-                        <span>{{productData?.category_name}}</span>
+                        <span>{{productData?.main_category_name}}</span>
                     </div>
                     <div class="item">
                         <label>Sub Category</label>
                         <span>{{productData?.sub_category_name}}</span>
-                    </div>            
+                    </div>   
+                    <div class="item">
+                        <label>Status</label>
+                        <span>{{productData?.status == true ? 'Active':'Inactive'}}</span>
+                    </div>         
                     <div class="item">
                         <label>Created At</label>
                         <span>{{productData?.created_at}}</span>
@@ -127,7 +143,11 @@
                     <div class="item">
                         <label>Last Updated At</label>
                         <span>{{productData?.last_updated_at}}</span>
-                    </div>            
+                    </div>     
+                    <div class="item">
+                        <label>Valid Till</label>
+                        <span>{{productData?.valid_till}}</span>
+                    </div>       
                     <div class="item">
                         <label>Comments</label>
                         <span>{{productData?.comments}}</span>

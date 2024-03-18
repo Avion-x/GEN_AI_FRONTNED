@@ -167,7 +167,7 @@ export class ProductDetailsComponent implements OnInit {
         this.productMainCategory = result[0];      
         const mainCategoryName = this.productMainCategory.category + '-' + this.productMainCategory.id;
         const productsListUrl = this.appConfig.urlProductCategory + '/' + this.productMainCategory.id + '/' + this.productSubCategoryId +'/products'
-        this.backUrl = this.appConfig.urlProductCategory;
+        this.backUrl = this.appConfig.urlTestCaseManagement;
         this.breadcrumblist.push(
           {'name':'Home','url':this.appConfig.urlHome, 'disabled':false}, 
           {'name':'Test Generation','url':'', 'disabled':true},
@@ -435,6 +435,7 @@ export class ProductDetailsComponent implements OnInit {
       this.generateTestcasesLoader = false;
       console.log('result', result);
       if(!_.isEmpty(result)){
+        this.generateTestCasesFormSidebar = false;
         this.successResponcePopup = true;
         this.generateTestCaseResponceData = result.response.Message;
         // this.testCasesData = responceData.TestCases;        
@@ -444,8 +445,7 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   afterSuccess(){
-    this.successResponcePopup = false;
-    this.generateTestCasesFormSidebar = false;
+    this.successResponcePopup = false;    
     this.messageService.add({severity:'success', summary: 'Success', detail: 'Test Case Generation has submitted successfully!'});
   }
 

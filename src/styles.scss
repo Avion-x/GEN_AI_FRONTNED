@@ -471,7 +471,7 @@ input::-ms-input-placeholder {
                     bottom: -10px;
                   }
                   .expantionPanel-tableData{
-                    padding: 0px 10px 0px 0px;
+                    padding: 0px 10px 0px 20px;
                     &::before, &::after{
                       display: none;
                     }
@@ -885,6 +885,11 @@ input::-ms-input-placeholder {
     font-size: 21px;
     margin-right: 5px;
   }
+  &[disabled]{
+    opacity: 0.7;
+    box-shadow: none;
+    cursor:default;
+  }
 }
 
 .secondary-btn{
@@ -1088,6 +1093,16 @@ input::-ms-input-placeholder {
     }
   }  
 }
+
+.expantionTable{
+  .tdFirstCol{
+    padding: 0px !important;
+    width: 0px !important;
+    min-width: 0px !important;
+    max-width: 0px !important;
+  }
+}
+
 
 .header-with-btns{
   display: flex;

@@ -103,9 +103,9 @@ export class CategoryListComponent implements OnInit {
       product_category: ['', [Validators.required]],
       sub_category: ['', [Validators.required]],
       status:['', [Validators.required]],
-      comments:['', [Validators.required]],
+      comments:[''],
       valid_till:['', [Validators.required]],
-      description:['', [Validators.required]]
+      description:['']
     })
   }
 
@@ -120,6 +120,8 @@ export class CategoryListComponent implements OnInit {
     //console.log('subCategoryForm', this.subCategoryForm.value)
     //this.productSubCategoryData.push({'sub_category':'', 'created_at':'', 'customer':'', 'valid_till':'', 'comments':'', 'description':'description'})
     //this.productSubCategoryCreationData.push(this.subCategoryForm.value);
+    console.log('this.subCategoryForm.invalid', this.subCategoryForm.invalid);
+    console.log('this.subCategoryForm', this.subCategoryForm.value);
     this.productSubCategoryLoader = true;
     this.submitted = true;
     if (this.subCategoryForm.invalid) {

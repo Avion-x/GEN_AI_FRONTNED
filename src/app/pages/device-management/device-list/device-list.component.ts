@@ -55,7 +55,7 @@ export class DeviceListComponent implements OnInit {
     this.selectedSubCategory = this._aRoute.snapshot.params?.['subId'];
     //this.breadcrumblist.push({'name':'Home', 'url':this.appConfig.urlHome, 'disabled':false}, {'name':'Device Management','url':this.appConfig.urlDeviceManagement, 'disabled':true}, {'name':'Add New Product','url':'', 'disabled':true});
     this.setProductForm();
-    this.getProducts('');
+    this.getProducts(this.selectedSubCategory);
     this.getSubCategoryDetails(this.selectedSubCategory);
   }
 
@@ -81,9 +81,9 @@ export class DeviceListComponent implements OnInit {
     const getProductCategory = {
       action: 'product/product/',
       method: 'get',
-      // params: {
-      //   product_category: 3
-      // }
+      params: {
+        product_sub_category:productCat
+      }
     }
     this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
       this.productsData = result.data;
@@ -102,7 +102,7 @@ export class DeviceListComponent implements OnInit {
     }
     this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
       this.productSubCategory = result.data[0]; 
-      this.breadcrumblist.push({'name':'Home','url':this.appConfig.urlHome, 'disabled':false}, {'name':'Device Management','url':this.appConfig.urlDeviceManagement, 'disabled':false}, {'name':this.productSubCategory.category_name, 'url':this.appConfig.urlDeviceManagement, 'disabled':false}, {'name':this.productSubCategory.sub_category, 'disabled':false}, {'name':'Device List', 'disabled':true});
+      this.breadcrumblist.push({'name':'Home','url':this.appConfig.urlHome, 'disabled':false}, {'name':'Device Management','url':this.appConfig.urlDeviceManagement, 'disabled':false}, {'name':this.productSubCategory.main_category_name, 'url':this.appConfig.urlDeviceManagement, 'disabled':false}, {'name':this.productSubCategory.sub_category, 'disabled':false}, {'name':'Device List', 'disabled':true});
       this.productForm.get('product_category')?.setValue(this.productSubCategory.product_category);
       this.productForm.get('product_sub_category')?.setValue(this.productSubCategory.id);
       this.productForm.get('sub_category_id')?.setValue(this.productSubCategory.id);
@@ -172,18 +172,24 @@ export class DeviceListComponent implements OnInit {
           label: 'Edit',
           icon: 'pi pi-pencil',
           command: () => {
-              //this.update();
+              this.update();
           }
       },
       {
           label: 'Delete',
           icon: 'pi pi-times',
           command: () => {
-              //this.delete();
+              this.delete(selectedProduct);
           }
       }
       ]}
   ];
+  }
+  update(){
+    console.log('update')
+  }
+  delete(selectedProduct:any){
+    console.log('delete', selectedProduct);
   }
 
 }
