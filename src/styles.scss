@@ -389,9 +389,12 @@ input::-ms-input-placeholder {
             .p-datatable{
                 .p-datatable-tbody{
                     tr{
-                        cursor:default;                        
+                        cursor:default;                                              
                         &:hover {
-                            background: rgba(255, 255, 255, 1);
+                            background: rgba(255, 255, 255, 1) !important;
+                            td{
+                              color: vars.$td-color !important;
+                            }  
                         }
                     }
                 }

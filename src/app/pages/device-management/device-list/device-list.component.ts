@@ -147,7 +147,7 @@ export class DeviceListComponent implements OnInit {
         console.log('successResponce', this.successResponce);
         if(!_.isEmpty(result)) {
           this.addNewProductFormSidebar = false;
-          this.getProducts('');          
+          this.getProducts(this.selectedSubCategory);          
           //this.afterSuccess();          
           //this.messageService.add({severity:'success', summary:'Success', detail:'User added successfully'});
           //this.messageService.add({severity:'success', summary: 'Success', detail: 'User added successfully'});          

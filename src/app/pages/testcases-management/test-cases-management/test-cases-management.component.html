@@ -115,7 +115,7 @@
                                 </div>
                             </div>                       
                             <div class="table-container table-selection-list" *ngIf="!testCategoriesLoader && testTypeCategories?.length !== 0">
-                                <p-table #testTypeCategoryTable class="selectableTable" [value]="testTypeCategories" [globalFilterFields]="['id','product_category','sub_category','created_at','customer', 'valid_till', 'comments']" [paginator]="true" [alwaysShowPaginator]="false" paginatorPosition="bottom" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                                <p-table #testTypeCategoryTable class="selectableTable noHover" [value]="testTypeCategories" [globalFilterFields]="['id','product_category','sub_category','created_at','customer', 'valid_till', 'comments']" [paginator]="true" [alwaysShowPaginator]="false" paginatorPosition="bottom" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
                                     <ng-template pTemplate="caption">
                                         <div class="table-title-with-search">
                                             <div class="title">Test Categories of {{testType.description}}<div class="count">{{testTypeCategories.length}}</div></div>
