@@ -233,6 +233,7 @@ export class CategoryListComponent implements OnInit {
       items: [{
           label: 'Edit',
           icon: 'pi pi-pencil',
+          disabled: true,
           command: () => {
               //this.update();
           }
@@ -240,6 +241,7 @@ export class CategoryListComponent implements OnInit {
       {
           label: 'Delete',
           icon: 'pi pi-times',
+          disabled: true,
           command: () => {
               //this.delete();
           }
@@ -252,15 +254,18 @@ export class CategoryListComponent implements OnInit {
     console.log('selected Sub Product', selectedSubProduct);
     this.subCatActionMenuItems = [{
       label: 'Actions',
-      items: [{
-          label: 'Add Devices',
-          icon: 'pi pi-plus',
-          command: () => {
-              this.navigateToProducts(selectedSubProduct);
-          }
-      },{
+      items: [
+      //   {
+      //     label: 'Add Devices',
+      //     icon: 'pi pi-plus',
+      //     command: () => {
+      //         this.navigateToProducts(selectedSubProduct);
+      //     }
+      // },
+      {
           label: 'Edit',
           icon: 'pi pi-pencil',
+          disabled: true,
           command: () => {
               //this.update();
           }
@@ -268,6 +273,7 @@ export class CategoryListComponent implements OnInit {
       {
           label: 'Delete',
           icon: 'pi pi-times',
+          disabled: true,
           command: () => {
               //this.delete();
           }
@@ -348,7 +354,7 @@ export class CategoryListComponent implements OnInit {
     this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
       this.productSubCategoryData = result.data;
       this.productSubCategoryLoader = false;
-      //console.log('productSubCategoryData', this.productSubCategoryData);
+      console.log('productSubCategoryData', this.productSubCategoryData);
     })
   }
 

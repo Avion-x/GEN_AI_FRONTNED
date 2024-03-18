@@ -40,224 +40,9 @@ export class TestDeviceListComponent implements OnInit {
 
   public selectedMainCategoryId:string = '';
   public selectedSubCategoryId:string = '';
+  public readytoTestDevicesLoader:boolean=false;
 
-  public readyToTestDevices:any[] = [
-    {
-        "id": 5,
-        "sub_category_name": "M series",
-        "category_name": "router",
-        "customer_name": "Juniper",
-        "product_code": "MX480",
-        "status": true,
-        "valid_till": "2025-12-14",
-        "comments": "This is Juniper router",
-        "created_at": "2023-12-14T18:30:00Z",
-        "last_updated_at": "2023-12-14T18:30:00Z",
-        "customer": 3,
-        "test_types":[{
-          "id": 1,
-          "name": "",
-          "code": "UNIT TEST",
-          "description": "unit test",
-          "status": true,
-          "valid_till": null,
-          "comments": "",
-          "created_at": null,
-          "last_updated_at": null,
-          "last_updated_by": "",
-          "executable_codes": {
-            "TestCases": {
-              "code": "Unit Test"
-            },
-            "TestScripts": {
-              "code": "python script in seperate file for each Unit test"
-            }
-          }
-        },
-        {
-          "id": 2,
-          "name": "",
-          "code": "Regression",
-          "description": "Regression Test",
-          "status": true,
-          "valid_till": "2023-12-21",
-          "comments": "This is regression test f",
-          "created_at": "2023-12-15T18:30:00Z",
-          "last_updated_at": "2024-01-05T18:30:00Z",
-          "last_updated_by": "Avion-x",
-          "executable_codes": {
-            "TestCases": {
-              "code": "Regression Test"
-            },
-            "TestScripts": {
-              "code": "python script in seperate file for each Regression test"
-            }
-          }
-        }],
-        "product_sub_category": 2,
-        "last_updated_by": 2
-    },
-    {
-        "id": 6,
-        "sub_category_name": "M series",
-        "category_name": "router",
-        "customer_name": "Juniper",
-        "product_code": "MX481",
-        "status": true,
-        "valid_till": "2025-12-15",
-        "comments": "This is Juniper router",
-        "created_at": "2023-12-15T18:30:00Z",
-        "last_updated_at": "2023-12-15T18:30:00Z",
-        "customer": 3,
-        "test_types":[{
-          "id": 1,
-          "name": "",
-          "code": "UNIT TEST",
-          "description": "unit test",
-          "status": true,
-          "valid_till": null,
-          "comments": "",
-          "created_at": null,
-          "last_updated_at": null,
-          "last_updated_by": "",
-          "executable_codes": {
-            "TestCases": {
-              "code": "Unit Test"
-            },
-            "TestScripts": {
-              "code": "python script in seperate file for each Unit test"
-            }
-          }
-        }],
-        "product_sub_category": 2,
-        "last_updated_by": 7
-    }
-  ]
-
-  public allDevices:any[] = [
-      {
-        "id": 1,
-        "sub_category_name": "R series",
-        "category_name": "router",
-        "customer_name": "Juniper",
-        "product_code": "MX251",
-        "status": true,
-        "valid_till": "2025-12-15",
-        "comments": "This is Juniper router",
-        "created_at": "2023-12-15T18:30:00Z",
-        "last_updated_at": "2023-12-15T18:30:00Z",
-        "customer": 3,
-        "test_types":[],
-        "product_sub_category": 2,
-        "last_updated_by": 7
-      },
-      {
-        "id": 2,
-        "sub_category_name": "R series",
-        "category_name": "router",
-        "customer_name": "Juniper",
-        "product_code": "MX268",
-        "status": true,
-        "valid_till": "2025-12-15",
-        "comments": "This is Juniper router",
-        "created_at": "2023-12-15T18:30:00Z",
-        "last_updated_at": "2023-12-15T18:30:00Z",
-        "customer": 3,
-        "test_types":[],
-        "product_sub_category": 2,
-        "last_updated_by": 7
-    },
-    {
-        "id": 5,
-        "sub_category_name": "M series",
-        "category_name": "router",
-        "customer_name": "Juniper",
-        "product_code": "MX480",
-        "status": true,
-        "valid_till": "2025-12-14",
-        "comments": "This is Juniper router",
-        "created_at": "2023-12-14T18:30:00Z",
-        "last_updated_at": "2023-12-14T18:30:00Z",
-        "customer": 3,
-        "test_types":[{
-          "id": 1,
-          "name": "",
-          "code": "UNIT TEST",
-          "description": "unit test",
-          "status": true,
-          "valid_till": null,
-          "comments": "",
-          "created_at": null,
-          "last_updated_at": null,
-          "last_updated_by": "",
-          "executable_codes": {
-            "TestCases": {
-              "code": "Unit Test"
-            },
-            "TestScripts": {
-              "code": "python script in seperate file for each Unit test"
-            }
-          }
-        },
-        {
-          "id": 2,
-          "name": "",
-          "code": "Regression",
-          "description": "Regression Test",
-          "status": true,
-          "valid_till": "2023-12-21",
-          "comments": "This is regression test f",
-          "created_at": "2023-12-15T18:30:00Z",
-          "last_updated_at": "2024-01-05T18:30:00Z",
-          "last_updated_by": "Avion-x",
-          "executable_codes": {
-            "TestCases": {
-              "code": "Regression Test"
-            },
-            "TestScripts": {
-              "code": "python script in seperate file for each Regression test"
-            }
-          }
-        }],
-        "product_sub_category": 2,
-        "last_updated_by": 2
-    },
-    {
-        "id": 6,
-        "sub_category_name": "M series",
-        "category_name": "router",
-        "customer_name": "Juniper",
-        "product_code": "MX481",
-        "status": true,
-        "valid_till": "2025-12-15",
-        "comments": "This is Juniper router",
-        "created_at": "2023-12-15T18:30:00Z",
-        "last_updated_at": "2023-12-15T18:30:00Z",
-        "customer": 3,
-        "test_types":[{
-          "id": 1,
-          "name": "",
-          "code": "UNIT TEST",
-          "description": "unit test",
-          "status": true,
-          "valid_till": null,
-          "comments": "",
-          "created_at": null,
-          "last_updated_at": null,
-          "last_updated_by": "",
-          "executable_codes": {
-            "TestCases": {
-              "code": "Unit Test"
-            },
-            "TestScripts": {
-              "code": "python script in seperate file for each Unit test"
-            }
-          }
-        }],
-        "product_sub_category": 2,
-        "last_updated_by": 7
-    }
-  ]
+  public readyToTestDevices:any[] = []
 
   constructor(private authenticationService:AuthService, 
     private dataService:DataService, 
@@ -266,11 +51,12 @@ export class TestDeviceListComponent implements OnInit {
     private appConfig:AppConfigService,) { }
 
   ngOnInit(): void {
-    this.breadcrumblist.push({'name':'Home', 'url':this.appConfig.urlHome, 'disabled':false}, {'name':'Test Execution','url':'', 'disabled':true});
+    this.breadcrumblist.push({'name':'Home', 'url':this.appConfig.urlHome, 'disabled':false}, {'name':'Test Management','url':'', 'disabled':true});
     this.backUrl = this.appConfig.urlHome;
     this.getProducts();
     this.getTestTypes();
     this.getProductsCat();
+    this.getReadyToTestDevices();
   }
 
   public showTestDialog(selectedDevice:any){
@@ -314,6 +100,23 @@ export class TestDeviceListComponent implements OnInit {
     this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
       this.productsData = result.data;
       this.productsLoader = false;
+      console.log('Product List', this.productsData);
+    })
+  }
+
+  getReadyToTestDevices() {
+    this.readyToTestDevices = [];
+    this.readytoTestDevicesLoader = true;
+    const getProductCategory = {
+      action: 'product/product/',
+      method: 'get',
+      params: {
+        test_types_available:true
+      }
+    }
+    this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
+      this.readyToTestDevices = result.data;
+      this.readytoTestDevicesLoader = false;
       console.log('Product List', this.productsData);
     })
   }

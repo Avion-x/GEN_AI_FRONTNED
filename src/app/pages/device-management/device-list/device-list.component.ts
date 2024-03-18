@@ -29,6 +29,7 @@ export class DeviceListComponent implements OnInit {
   public submitted:boolean = false;
   public statusOptions:any[] = [{name:'Active', value:true}, {name:'Inactive', value:false}];
   public successResponce:any[] = [];
+  public loggedInUserName:string = '';
 
   public productForm:FormGroup = new FormGroup({
     product_name: new FormControl(''),
@@ -38,7 +39,8 @@ export class DeviceListComponent implements OnInit {
     valid_till:new FormControl(''),
     product_sub_category:new FormControl(''),
     sub_category_id:new FormControl(''),
-    product_category:new FormControl('')
+    product_category:new FormControl(''),
+    //last_updated_by_id:new FormControl('')
   });
 
   constructor(private authenticationService:AuthService, 
@@ -57,18 +59,21 @@ export class DeviceListComponent implements OnInit {
     this.setProductForm();
     this.getProducts(this.selectedSubCategory);
     this.getSubCategoryDetails(this.selectedSubCategory);
+    const userData:any = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    this.loggedInUserName = userData.user_details.username
   }
 
   setProductForm(){
     this.productForm = this.fb.group({
       product_name: ['', [Validators.required]],
-      product_code: ['', [Validators.required]],
+      product_code: [''],
       status:['', [Validators.required]],
       valid_till:['', [Validators.required]],
       comments:[''],
-      product_sub_category:['', [Validators.required]],
-      product_category:['', [Validators.required]],
-      sub_category_id:['', [Validators.required]]
+      product_sub_category:[''],
+      product_category:[''],
+      sub_category_id:[''],
+      //last_updated_by_id:['']
     })
   }
 
@@ -106,6 +111,7 @@ export class DeviceListComponent implements OnInit {
       this.productForm.get('product_category')?.setValue(this.productSubCategory.product_category);
       this.productForm.get('product_sub_category')?.setValue(this.productSubCategory.id);
       this.productForm.get('sub_category_id')?.setValue(this.productSubCategory.id);
+      //this.productForm.get('last_updated_by_id')?.setValue(this.loggedInUserName)
       // if(this.productMainCategory && this.productSubCategory){
       //   const mainCategoryName = this.productMainCategory.category + '-' + this.productMainCategory.id;
       //   this.backUrl = this.appConfig.urlProductCategory + '/' + this.productMainCategory.id;
@@ -123,6 +129,8 @@ export class DeviceListComponent implements OnInit {
     } 
     this.productForm.patchValue({
       valid_till: this.productForm.get('valid_till')?.value ? moment(this.productForm.get('valid_till')?.value).format('YYYY-MM-DD') : '',
+      product_code:this.productForm.get('product_name')?.value,
+      //last_updated_by_id: this.loggedInUserName
       //product_sub_category: this.productSubCategory.id,
       //product_category: this.productSubCategory.product_category,
       //confirmPassword:this.userForm.get('confirmPassword')?.disable()
@@ -158,6 +166,7 @@ export class DeviceListComponent implements OnInit {
   cancelBtn(){
     this.addNewProductFormSidebar = false;
   }
+
 
   showProductForm(){
     console.log('--------------------');

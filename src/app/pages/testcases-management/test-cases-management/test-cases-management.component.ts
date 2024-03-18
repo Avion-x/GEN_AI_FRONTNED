@@ -34,6 +34,11 @@ export class TestCasesManagementComponent implements OnInit {
   public testCategoryFormSidebar:boolean = false;
   public testCategoriesLoader:boolean = false;
   public testTypeCategories:any[] = [];
+  public confirmDeletionPopup:boolean = false;
+  public selectedTestCategoryToDelete:any;
+  public testCategoryDeletionLoader:boolean = false;
+  public testCategoryDetionSuccess:boolean = false;
+  public testCategoryDetionMessage:string = '';
 
   testCategoryForm:FormGroup = new FormGroup({
     name: new FormControl(''),
@@ -86,7 +91,7 @@ export class TestCasesManagementComponent implements OnInit {
     public fb: FormBuilder) { }
 
   ngOnInit(): void {
-    this.breadcrumblist.push({'name':'Home', 'url':this.appConfig.urlHome, 'disabled':false}, {'name':'Testcases Settings','url':'', 'disabled':true});
+    this.breadcrumblist.push({'name':'Home', 'url':this.appConfig.urlHome, 'disabled':false}, {'name':'Test Settings','url':'', 'disabled':true});
     this.backUrl = this.appConfig.urlTestCasesManagement;
     this.getTestTypes();
     this.setTestTypeForm();
@@ -274,6 +279,7 @@ export class TestCasesManagementComponent implements OnInit {
       items: [{
           label: 'Edit',
           icon: 'pi pi-pencil',
+          disabled:true,
           command: () => {
               //this.update();
           }
@@ -281,6 +287,7 @@ export class TestCasesManagementComponent implements OnInit {
       {
           label: 'Delete',
           icon: 'pi pi-times',
+          disabled:true,
           command: () => {
               //this.delete();
           }
@@ -289,13 +296,14 @@ export class TestCasesManagementComponent implements OnInit {
   ];
   }
 
-  public setTestCatActionMenu(selectedSubProduct:any){
-    console.log('selected Sub Product', selectedSubProduct);
+  public setTestCatActionMenu(selectedTestCategory:any){
+    console.log('selected Test Category', selectedTestCategory);
     this.subActionMenuItems = [{
       label: 'Actions',
       items: [{
           label: 'Edit',
           icon: 'pi pi-pencil',
+          disabled:true,
           command: () => {
               //this.update();
           }
@@ -303,12 +311,51 @@ export class TestCasesManagementComponent implements OnInit {
       {
           label: 'Delete',
           icon: 'pi pi-times',
+          disabled:true,
           command: () => {
-              //this.delete();
+              this.deleteTestCategory(selectedTestCategory);
           }
       }
       ]}
   ];
+  }
+
+  deleteTestCategory(category:any){
+    this.confirmDeletionPopup = true;
+    this.selectedTestCategoryToDelete = category;   
+    console.log('this.selectedTestCategoryToDelete -- Delete', this.selectedTestCategoryToDelete);
+  }
+
+  confirmDelete(){
+    this.testCategoryDeletionLoader = true;
+    const getProductCategory = {
+      action: 'product/test_categories/',
+      method: 'delete',
+      params: {
+        id: this.selectedTestCategoryToDelete.id
+      }
+    }
+    this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
+      console.log('delete Result', result);
+      this.testCategoryDeletionLoader = false;
+      if(!_.isEmpty(result)) {
+        this.testCategoryDetionSuccess = true;
+        this.testCategoryDetionMessage = result.message;
+      }
+      //const testCases = result.data;   
+      //this.testTypeCategories = [...result.data]; 
+      // testCases.forEach((item:any) => {
+      //   this.testTypes.push(item.code)
+      // });
+      //this.testCategoriesLoader = false;
+     // console.log('testTypeCategories', this.testTypeCategories);
+    },error=>{
+      console.log('error', error);
+    })
+  }
+
+  closeDeleteConformaion(){
+    this.confirmDeletionPopup = false;
   }
 
 }

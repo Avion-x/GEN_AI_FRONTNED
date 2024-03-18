@@ -30,7 +30,7 @@ export class AddUserComponent implements OnInit {
   public userNameDirty:boolean = false;
   public validateRegex:boolean = false;
   public formSubmitted:boolean = false;
-  public rolesList:any[] = ['Admin', 'Test Admin', 'User']; 
+  public rolesList:any[] = ['ADMIN', 'TEST_ADMIN', 'USER']; 
   public booleanOptions:any[] = [{name:'Yes', value:true}, {name:'No', value:false}];
   public loggedInUserName:string = '';
   public successMessage!:Message[];

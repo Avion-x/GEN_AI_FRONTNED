@@ -488,6 +488,7 @@ input::-ms-input-placeholder {
                       border-bottom: 10px solid vars.$body-bg-dark;
                       td {
                         border-bottom: 10px solid vars.$body-bg-dark !important;
+                        text-transform: capitalize;
                         &:first-child{
                           &::before{
                               box-shadow: -5px -5px 0 0 vars.$body-bg-dark;
@@ -606,6 +607,7 @@ input::-ms-input-placeholder {
                     padding: 10px 15px;
                     font-size: 13px;
                     color: vars.$td-color;
+                    text-transform: capitalize;
                     &.td-clr-primary{
                       color: vars.$primary-color;
                     }
@@ -728,6 +730,10 @@ input::-ms-input-placeholder {
   //color: vars.$titleClrLight;
   font-weight: 600;
   margin-top: 20px;
+}
+
+.td-uppercase{
+  text-transform: uppercase !important;
 }
 
 
@@ -1191,6 +1197,12 @@ input::-ms-input-placeholder {
 
 .clr-primary{
   color: vars.$primary-color;
+}
+
+.noData{
+  padding: 20px;
+  font-size: 14px;
+  color: vars.$fontclr;
 }
 
 .testConformationDialog{
@@ -1687,6 +1699,7 @@ input::-ms-input-placeholder {
             }
             td {
               padding: 5px;
+              text-transform: capitalize;
               span{
                 width: 25px;
                 height: 25px;

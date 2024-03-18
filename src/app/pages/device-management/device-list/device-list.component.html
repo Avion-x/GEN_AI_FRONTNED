@@ -46,25 +46,33 @@
             <label>Sub Category</label>
             <span>{{productSubCategory.sub_category}}</span>
         </div>
-        <!-- <div class="item">
-            <label>Customer Name</label>
-            <span>{{productSubCategory.customer_name}}</span>
-        </div> -->
+        <div class="item" style="width:20%">
+            <label>Description</label>
+            <span>{{productSubCategory.description}}</span>
+        </div>
+        <div class="item">
+            <label>Status</label>
+            <span class="td-uppercase">{{productSubCategory.status == true?'Active':'Inactive'}}</span>
+        </div>
+        <div class="item">
+            <label>Valid Till</label>
+            <span>{{productSubCategory.valid_till}}</span>
+        </div>        
+        <div class="item" style="width:20%">
+            <label>Comments</label>
+            <span>{{productSubCategory.comments}}</span>
+        </div>
+        <div class="item">
+            <label>Created At</label>
+            <span>{{productSubCategory.created_at}}</span>
+        </div>
         <div class="item">
             <label>Last Updated At</label>
             <span>{{productSubCategory.last_updated_at}}</span>
         </div>
         <div class="item">
-            <label>Valid Till</label>
-            <span>{{productSubCategory.valid_till}}</span>
-        </div>
-        <div class="item">
-            <label>Description</label>
-            <span>{{productSubCategory.description}}</span>
-        </div>
-        <div class="item">
-            <label>Comments</label>
-            <span>{{productSubCategory.comments}}</span>
+            <label>Last Updated By</label>
+            <span>{{productSubCategory.last_updated_by_name}}</span>
         </div>
     </div>
 
@@ -158,13 +166,13 @@
                             <div class="p-error" *ngIf="f['product_name'].errors['required']">Product Name is required</div>
                         </div>
                     </div>
-                    <div class="field p-float-label">
+                    <!-- <div class="field p-float-label">
                         <input id="float-input" formControlName="product_code" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['product_code'].errors }"> 
                         <label for="float-input">Device Code<small class="star">*</small></label>
                         <div *ngIf="submitted && f['product_code'].errors" class="invalid-feedback">
                             <div class="p-error" *ngIf="f['product_code'].errors['required']">Product code is required</div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="field p-float-label">
                         <!-- <input id="isActive" formControlName="is_active" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
                         <p-dropdown [options]="statusOptions" formControlName="status" optionLabel="name" optionValue="value" placeholder="Select an Option" [ngClass]="{ 'is-invalid': submitted && f['status'].errors }"></p-dropdown>

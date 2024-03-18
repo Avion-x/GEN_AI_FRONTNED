@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/app/shared/services/data.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,49 +15,51 @@ export class DashboardComponent implements OnInit {
   todaysTestData:any;
   approvedChartData:any;
   approvedChartOptions:any;
+  widgetsLoader:boolean = false;
 
-  constructor() { }
+  constructor(private dataService:DataService) { }
 
   ngOnInit(): void {
-    this.widgetsTopSection = [
-      {
-        title:'Total Devices',
-        count:'120'
-      },
-      {
-        title:'Ready to Test Devices',
-        count:'20',
-      },
-      {
-        title:'Test Scheduled Devices',
-        count:'15',
-      },
-      // {
-      //   title:'Test Failed Devices',
-      //   count:'5'
-      // },
+    this.getProductsCat();
+    // this.widgetsTopSection = [
+    //   {
+    //     title:'Total Devices',
+    //     count:'120'
+    //   },
+    //   {
+    //     title:'Ready to Test Devices',
+    //     count:'20',
+    //   },
+    //   {
+    //     title:'Test Scheduled Devices',
+    //     count:'15',
+    //   },
+    //   // {
+    //   //   title:'Test Failed Devices',
+    //   //   count:'5'
+    //   // },
       
-      {
-        title:'Test Types',
-        count:'7'
-      },
-      {
-        title:'Users',
-        count:'10'
-      },
-      {
-        title:'Devices Expire in next 30 days',
-        count:'2'
-      },
-      {
-        title:'Categories',
-        count:'6'
-      },
-      {
-        title:'Sub Categories',
-        count:'20'
-      }
-    ];
+    //   {
+    //     title:'Test Types',
+    //     count:'7'
+    //   },
+    //   {
+    //     title:'Users',
+    //     count:'10'
+    //   },
+    //   {
+    //     title:'Devices Expire in next 30 days',
+    //     count:'2'
+    //   },
+    //   {
+    //     title:'Categories',
+    //     count:'6'
+    //   },
+    //   {
+    //     title:'Sub Categories',
+    //     count:'20'
+    //   }
+    // ];
 
     this.todaysTestData = {
       labels: ['Unit', 'Regression', 'integration', 'Functional', 'System', 'Performance', 'User Acceptance',],
@@ -144,8 +147,23 @@ export class DashboardComponent implements OnInit {
           }
       }
     };
+  }
 
-
+  getProductsCat(){
+    this.widgetsLoader = true;
+    const getProductCategory = {
+      action: 'product/dashboard_kpi/',
+      method: 'get',
+      // params: {
+      //   unixid: this.userLogged
+      // }
+    }
+    this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
+      //this.productCategoryData = result;
+      this.widgetsTopSection = result.data;
+      this.widgetsLoader = false;
+      //console.log('this.productCategoryData', this.productCategoryData);
+    })
   }
 
 }

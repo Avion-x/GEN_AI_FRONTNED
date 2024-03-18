@@ -21,6 +21,7 @@ export class PagesComponent implements OnInit {
   public userTag:string = '';
   public userMenuActiveState: boolean = false;
   public showClientLogo:boolean = true;
+  public userDetailsMenu:boolean = false;
 
   constructor(private authenticationService:AuthService, 
     private dataService:DataService, 
@@ -76,15 +77,15 @@ export class PagesComponent implements OnInit {
             'url':this.appConfig.urlTestCaseManagement
           },
           {
-            'name':'Device Management',
-            'icon':'router',
-            'url':this.appConfig.urlDeviceManagement
-          },
-          {
-            'name':'Testcases Settings',
+            'name':'Test Settings',
             'icon':'psychology',
             'url':this.appConfig.urlTestCasesManagement
           },
+          {
+            'name':'Device Management',
+            'icon':'router',
+            'url':this.appConfig.urlDeviceManagement
+          },          
           {
             'name':'User Management',
             'icon':'manage_accounts',
@@ -128,6 +129,14 @@ export class PagesComponent implements OnInit {
 
     
 
+  }
+
+  showUserDetails(){
+    this.userDetailsMenu = !this.userDetailsMenu;
+  }
+
+  hideUserMenu(){
+    this.userDetailsMenu = false;
   }
 
   logout() {

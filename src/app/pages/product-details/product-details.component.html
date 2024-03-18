@@ -52,9 +52,21 @@
                         <span>{{productMainCategory?.category}}</span>
                     </div>
                     <div class="item">
+                        <label>Description</label>
+                        <span>{{productMainCategory?.description}}</span>
+                    </div> 
+                    <div class="item">
                         <label>Status</label>
                         <span>{{productMainCategory?.status == true ? 'Active':'Inactive'}}</span>
-                    </div>           
+                    </div>    
+                    <div class="item">
+                        <label>Valid Till</label>
+                        <span>{{productMainCategory?.valid_till}}</span>
+                    </div>      
+                    <div class="item">
+                        <label>Comments</label>
+                        <span>{{productMainCategory?.comments}}</span>
+                    </div>    
                     <div class="item">
                         <label>Created At</label>
                         <span>{{productMainCategory?.created_at}}</span>
@@ -62,19 +74,11 @@
                     <div class="item">
                         <label>Last Updated At</label>
                         <span>{{productMainCategory?.last_updated_at}}</span>
-                    </div>  
+                    </div> 
                     <div class="item">
-                        <label>Valid Till</label>
-                        <span>{{productMainCategory?.valid_till}}</span>
-                    </div>    
-                    <div class="item">
-                        <label>Description</label>
-                        <span>{{productMainCategory?.description}}</span>
-                    </div>      
-                    <div class="item">
-                        <label>Comments</label>
-                        <span>{{productMainCategory?.comments}}</span>
-                    </div>
+                        <label>Last Updated By</label>
+                        <span>{{productMainCategory?.last_updated_by_name}}</span>
+                    </div> 
                 </div>
             </p-tabPanel>
             <p-tabPanel header="Sub Category Details">
@@ -93,9 +97,21 @@
                         <span>{{productSubCategory?.sub_category}}</span>
                     </div>
                     <div class="item">
+                        <label>Description</label>
+                        <span>{{productSubCategory?.description}}</span>
+                    </div>  
+                    <div class="item">
                         <label>Status</label>
-                        <span>{{productSubCategory?.status == true ? 'Active':'Inactive'}}</span>
-                    </div>           
+                        <span class="td-uppercase">{{productSubCategory?.status == true ? 'Active':'Inactive'}}</span>
+                    </div>       
+                    <div class="item">
+                        <label>Valid Till</label>
+                        <span>{{productSubCategory?.valid_till}}</span>
+                    </div>     
+                    <div class="item">
+                        <label>Comments</label>
+                        <span>{{productSubCategory?.comments}}</span>
+                    </div>
                     <div class="item">
                         <label>Created At</label>
                         <span>{{productSubCategory?.created_at}}</span>
@@ -103,25 +119,17 @@
                     <div class="item">
                         <label>Last Updated At</label>
                         <span>{{productSubCategory?.last_updated_at}}</span>
-                    </div>    
+                    </div>   
                     <div class="item">
-                        <label>Valid Till</label>
-                        <span>{{productSubCategory?.valid_till}}</span>
-                    </div>     
-                    <div class="item">
-                        <label>Description</label>
-                        <span>{{productSubCategory?.description}}</span>
-                    </div>      
-                    <div class="item">
-                        <label>Comments</label>
-                        <span>{{productSubCategory?.comments}}</span>
-                    </div>
+                        <label>Last Updated By</label>
+                        <span>{{productSubCategory?.last_updated_by_name}}</span>
+                    </div> 
                 </div>
             </p-tabPanel>
-            <p-tabPanel header="Product Details" [selected]="true">
+            <p-tabPanel header="Device Details" [selected]="true">
                 <div class="product-details-section" *ngIf="productData">                
                     <div class="item">
-                        <label>Device Code</label>
+                        <label>Device Name</label>
                         <span>{{productData?.product_code}}</span>
                     </div>
                     <div class="item">
@@ -134,24 +142,30 @@
                     </div>   
                     <div class="item">
                         <label>Status</label>
-                        <span>{{productData?.status == true ? 'Active':'Inactive'}}</span>
-                    </div>         
-                    <div class="item">
-                        <label>Created At</label>
-                        <span>{{productData?.created_at}}</span>
-                    </div>
-                    <div class="item">
-                        <label>Last Updated At</label>
-                        <span>{{productData?.last_updated_at}}</span>
-                    </div>     
+                        <span class="td-uppercase">{{productData?.status == true ? 'Active':'Inactive'}}</span>
+                    </div>    
                     <div class="item">
                         <label>Valid Till</label>
                         <span>{{productData?.valid_till}}</span>
-                    </div>       
+                    </div>         
                     <div class="item">
                         <label>Comments</label>
                         <span>{{productData?.comments}}</span>
                     </div>
+                    <div class="item">
+                        <label>Created At</label>
+                        <span>{{productData?.created_at}}</span>
+                    </div>                    
+                    <div class="item">
+                        <label>Last Updated At</label>
+                        <span>{{productData?.last_updated_at}}</span>
+                    </div>    
+                    <div class="item">
+                        <label>Last Updated By</label>
+                        <span>{{productData?.last_updated_by_name}}</span>
+                    </div>   
+                       
+                    
                 </div>
             </p-tabPanel>
         </p-tabView>

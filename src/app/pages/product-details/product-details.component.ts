@@ -165,16 +165,13 @@ export class ProductDetailsComponent implements OnInit {
     this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
       if(!_.isEmpty(result)){
         this.productMainCategory = result[0];      
-        const mainCategoryName = this.productMainCategory.category + '-' + this.productMainCategory.id;
-        const productsListUrl = this.appConfig.urlProductCategory + '/' + this.productMainCategory.id + '/' + this.productSubCategoryId +'/products'
+        //const mainCategoryName = this.productMainCategory.category + '-' + this.productMainCategory.id;
+        //const productsListUrl = this.appConfig.urlProductCategory + '/' + this.productMainCategory.id + '/' + this.productSubCategoryId +'/products'
         this.backUrl = this.appConfig.urlTestCaseManagement;
         this.breadcrumblist.push(
           {'name':'Home','url':this.appConfig.urlHome, 'disabled':false}, 
-          {'name':'Test Generation','url':'', 'disabled':true},
-          {'name':'Product Categories','url':this.appConfig.urlProductCategory, 'disabled':false}, 
-          {'name':mainCategoryName, 'url':this.appConfig.urlProductCategory + '/' + this.productMainCategory.id, 'disabled':false}, 
-          {'name':this.productSubCategory.sub_category, 'url':this.appConfig.urlProductCategory + '/' + this.productMainCategory.id, 'disabled':false}, 
-          {'name':'Products List', 'url':productsListUrl, 'disabled':false}, 
+          {'name':'Test Management','url':'', 'disabled':true},
+          {'name':'Devices','url':this.appConfig.urlTestCaseManagement, 'disabled':false}, 
           {'name':this.productName, 'disabled':true});
         console.log('productMainCategory', this.productMainCategory);
       }      

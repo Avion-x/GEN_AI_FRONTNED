@@ -10,7 +10,7 @@
                 <div *ngIf="showClientLogo" class="client-logo">
                     <img src="../../assets/images/clients/juniper_black-rgb-header.webp">
                 </div>
-                <div class="user-section" *ngIf="currentUser" (click)="userMenu.toggle($event)">
+                <div class="user-section" *ngIf="currentUser" (click)="showUserDetails()">
                     <div class="icon">{{userTag}}</div>
                     <!-- <div class="user">
                         <span class="name">{{currentUser?.first_name + ' ' + currentUser?.last_name}}</span>
@@ -23,8 +23,25 @@
             </div>
         </div>  
     </div>
+    <div class="userDetailsSection" *ngIf="userDetailsMenu">
+        <div class="item">
+            <i class="pi pi-user"></i> <span>{{currentUser.first_name}} {{currentUser.last_name}}</span>
+        </div>
+        <div class="item">
+            <i class="pi pi-envelope"></i> <span>{{currentUser.email}}</span>
+        </div>
+        <!-- <div class="item">
+             <span>{{currentUser.username}}</span>
+        </div>
+        <div class="item">
+           <span>{{currentUser.role_name}}</span>
+        </div> -->
+        <div class="item center">
+            <button class="logoutBtn" (click)="logout()"><i class="pi pi-power-off"></i>Logout</button>
+        </div>
+    </div>
     <p-menu #userMenu [popup]="true" [model]="userMenuItems"></p-menu>
-    <div class="page-wrapper">
+    <div class="page-wrapper" (click)="hideUserMenu()">
         <div class="menu-section">
             <p-scrollPanel [style]="{width: '100%', height:'calc(100vh - 120px)'}" styleClass="menu-scrollbar-panel">
                 <div class="menu">

@@ -5,7 +5,7 @@
             </button>
             <div class="title-container">
                 <h1 class="title">
-                    Testcases Settings
+                    Test Settings
                 </h1>
                 <!-- <h2 class="sub-title">
                     <span *ngIf="productMainCategory">{{productMainCategory.category}}-{{productMainCategory.id}}</span>
@@ -66,27 +66,27 @@
                 <tr>
                     <th class="tdFirstCol"></th>
                     <th>Name</th>
-                    <!-- <th>Code</th> -->
-                   
+                    <th>Description</th>
                     <th>Status</th>
-                    <th>Created At</th>
-                    <th>Last Updated By</th>
-                    <th>Last updated At</th>
                     <th>Valid Till</th>
+                    <!-- <th>Comments</th> -->
+                    <th>Created At</th>                   
+                    <th>Last updated At</th>
+                    <th>Last Updated By</th>
                     <th style="width: 50px; min-width: 50px; max-width: 50px;"></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-testType>
                 <tr (click)="getTestTypeCategory(testType.id)" [ngClass]="{'active': selectedTestId === testType.id}">
                     <td class="tdFirstCol"></td>
+                    <td>{{testType.code}}</td>
                     <td>{{testType.description}}</td>
-                    <!-- <td>{{testType.code}}</td> -->
-                    
-                    <td>{{testType.status}}</td>
-                    <td>{{testType.created_at}}</td>
-                    <td>{{testType.last_updated_by}}</td>
-                    <td>{{testType.last_updated_at}}</td>
+                    <td class="td-uppercase">{{testType.status==true?'Active':'Inactive'}}</td>
                     <td>{{testType.valid_till}}</td>
+                    <!-- <td>{{testType.comments}}</td> -->
+                    <td>{{testType.created_at}}</td>
+                    <td>{{testType.last_updated_at}}</td>
+                    <td>{{testType.last_updated_by}}</td>
                     <td style="width: 50px; min-width: 50px; max-width: 50px;">
                         <button type="button" class="td-menu-btn" (click)="mainActionMenu.toggle($event); setTestTypeActionMenu(testType)">
                             <span class="material-symbols-rounded icon">more_vert</span>
@@ -94,14 +94,27 @@
                     </td>
                 </tr>
                 <tr [id]="'tableExpantion'+testType.id" class="expantionPanel" *ngIf="'tableExpantion'+testType.id == 'tableExpantion'+selectedTestId">
-                    <td class="expantionPanel-tableData" colspan="8">
+                    <td class="expantionPanel-tableData" colspan="9">
                         <div class="expanded-table">
-                            <!-- <div class="content-loader" *ngIf="productSubCategoryLoader">
+                            <div class="content-loader" *ngIf="testCategoriesLoader">
                                 <i class="pi pi-spin pi-spinner"></i>
-                                <span>Loading Product Sub Categories List...</span>
-                            </div> -->
-                                                    
-                            <div class="table-container table-selection-list">
+                                <span>Loading Test Categories...</span>
+                            </div>
+                            <div class="noData" *ngIf="!testCategoriesLoader && testTypeCategories?.length == 0">
+                                No Categories found for {{testType.description}}
+                                <div class="table-title-with-search">
+                                    <div class="title"></div>
+                                    <div class="right-section">   
+                                        <div class="search-box">
+                                        </div>
+                                        <button class="btn primary-btn" (click)="showCreateTestCategoryForm()">
+                                            <span class="material-symbols-rounded icon">add</span>
+                                            Add Test Category
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>                       
+                            <div class="table-container table-selection-list" *ngIf="!testCategoriesLoader && testTypeCategories?.length !== 0">
                                 <p-table #testTypeCategoryTable class="selectableTable" [value]="testTypeCategories" [globalFilterFields]="['id','product_category','sub_category','created_at','customer', 'valid_till', 'comments']" [paginator]="true" [alwaysShowPaginator]="false" paginatorPosition="bottom" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
                                     <ng-template pTemplate="caption">
                                         <div class="table-title-with-search">
@@ -121,27 +134,29 @@
                                     </ng-template>
                                     <ng-template pTemplate="header">
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Status</th>
-                                            <th>Is Approved</th>
+                                            <th style="width: 200px; min-width:200px; max-width:200px">Name</th>
+                                            <th style="width: 200px; min-width:200px; max-width:200px">Description</th>
+                                            <th style="width: 100px; min-width:100px; max-width:100px">Status</th>
+                                            <th style="width: 100px; min-width:100px; max-width:100px">Is Approved</th>
+                                            <th>Valid till</th>  
+                                            <!-- <th style="width: 250px; min-width:250px; max-width:250px">Comments</th> -->
+                                            <th>Created At</th>
                                             <th>Last Updated At</th>
-                                            <th>Last Updated By</th>   
-                                            <th>Valid till</th>                                         
-                                            <!-- <th>Comments</th> -->
-                                            <th>Description</th>
+                                            <th>Last Updated By</th>  
                                             <th style="width: 50px; min-width: 50px; max-width: 50px;"></th>
                                         </tr>
                                     </ng-template>
                                     <ng-template pTemplate="body" let-testCategory>
                                         <tr>
-                                            <td>{{testCategory.name}}</td>
-                                            <td>{{testCategory.status}}</td>
-                                            <td>{{testCategory.is_approved}}</td>
-                                            <td>{{testCategory.last_updated_at}}</td>
-                                            <td>{{testCategory.last_updated_by}}</td>
+                                            <td style="width: 200px; min-width:200px; max-width:200px">{{testCategory.name}}</td>
+                                            <td style="width: 200px; min-width:200px; max-width:200px">{{testCategory.description}}</td>
+                                            <td style="width: 100px; min-width:100px; max-width:100px"class="td-uppercase">{{testCategory.status==true?'Active':'Inactive'}}</td>
+                                            <td style="width: 100px; min-width:100px; max-width:100px">{{testCategory.is_approved==true?'Yes':'No'}}</td>
                                             <td>{{testCategory.valid_till}}</td>
-                                            <!-- <td>{{testCategory.comments}}</td> -->
-                                            <td>{{testCategory.description}}</td>
+                                            <!-- <td style="width: 250px; min-width:250px; max-width:250px">{{testCategory.comments}}</td> -->
+                                            <td>{{testCategory.created_at}}</td>
+                                            <td>{{testCategory.last_updated_at}}</td>
+                                            <td>{{testCategory.last_updated_by_name}}</td>
                                             <td style="width: 50px; min-width: 50px; max-width: 50px;">
                                                 <button type="button" class="td-menu-btn" (click)="subActionMenu.toggle($event); setTestCatActionMenu(testCategory)">
                                                     <span class="material-symbols-rounded icon">more_vert</span>
@@ -232,13 +247,13 @@
                             <div class="p-error" *ngIf="fTestCat['name'].errors['required']">Test Category Name is required</div>
                         </div>
                     </div>
-                    <div class="field p-float-label">
+                    <!-- <div class="field p-float-label">
                         <input id="float-input" formControlName="test_type" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && fTestCat['test_type'].errors }"> 
                         <label for="float-input">test_type<small class="star">*</small></label>
                         <div *ngIf="submitted && fTestCat['test_type'].errors" class="invalid-feedback">
                             <div class="p-error" *ngIf="fTestCat['test_type'].errors['required']">Test type is required</div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="field p-float-label">
                         <!-- <input id="isActive" formControlName="is_active" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
@@ -284,3 +299,21 @@
 
 </div>
 <p-toast></p-toast>
+<p-dialog header="Success" [modal]="true" [style]="{width: '30vw'}" [(visible)]="confirmDeletionPopup">
+    <!-- {{successResponce?.message}} -->
+    <div class="confirmatinMessage" *ngIf="!testCategoryDeletionLoader && !testCategoryDetionSuccess">
+        <p>Are you sure you want to delete <br>the test category <span class="clr-primary"><b>{{selectedTestCategoryToDelete?.name}}</b></span>?</p>
+    </div>
+    <div class="content-loader" *ngIf="testCategoryDeletionLoader">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Deleting Category <span class="clr-primary"><b>{{selectedTestCategoryToDelete?.name}}</b></span>...</span>
+    </div> 
+    <div class="confirmatinMessage" *ngIf="!testCategoryDeletionLoader && !testCategoryDetionSuccess">
+        <p>{{testCategoryDetionMessage}}</p>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="closeDeleteConformaion()" label="Cancel" styleClass="p-button-text" *ngIf="!testCategoryDeletionLoader && !testCategoryDetionSuccess"></p-button>
+      <p-button icon="pi pi-check" (click)="confirmDelete()" label="Delete" styleClass="p-button-text" *ngIf="!testCategoryDeletionLoader && !testCategoryDetionSuccess"></p-button>
+      <p-button icon="pi pi-check" (click)="closeDeleteConformaion()" label="Ok" styleClass="p-button-text" *ngIf="testCategoryDetionSuccess"></p-button>
+    </ng-template>
+</p-dialog>

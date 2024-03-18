@@ -206,3 +206,53 @@ $topnav-height:60px;
                 }
     }
 }
+
+.userDetailsSection{
+    position: absolute;
+    background: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    top: 50px;
+    right: 20px;
+    z-index: 9;
+    box-shadow: 2px 5px 15px rgb(0 0 0 / 8%);
+    width: 200px;
+    border: 1px solid vars.$devider;
+    .item{
+        //border-bottom: 1px solid vars.$devider;
+        font-size: 12px;
+        padding:10px 0;
+        display: flex;
+        align-items: center;
+        i{
+            font-size: 16px;
+            color: vars.$primary-color;
+            margin-right: 10px;
+        }
+        span{
+            color: vars.$fontclr;
+        }
+        .logoutBtn{
+            border: 0px;
+            background: vars.$primary-color;
+            color: #fff;
+            border-radius: 4px;
+            padding: 7px 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-transform: uppercase;
+            font-size: 11px;
+            font-weight: 600;
+            i{
+                color: #fff;
+                font-size: 13px;
+            }
+        }
+        &.center{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+}
