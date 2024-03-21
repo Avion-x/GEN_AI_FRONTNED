@@ -52,7 +52,6 @@ import { EnterpriseManagementComponent } from './enterprise/enterprise-managemen
 import { AddNewEnterpriseComponent } from './enterprise/add-new-enterprise/add-new-enterprise.component';
 
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
-import {ConfirmationService} from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -101,6 +100,7 @@ import {ConfirmationService} from 'primeng/api';
     HttpClientModule,
     MessagesModule,
     MessageModule,
+    ConfirmDialogModule,    
     //NgxChartsModule,
     MarkdownModule.forRoot()
   ]

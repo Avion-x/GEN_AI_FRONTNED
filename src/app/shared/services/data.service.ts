@@ -14,9 +14,11 @@ import { map } from 'rxjs/operators'
 import { Subject } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 import { AuthService } from './auth.service';
+import { environment } from 'src/environments/environment';
 
 // const appUrl = 'http://127.0.0.1:8000/';
-const appUrl = 'http://44.235.235.248:8000/';
+//const appUrl = 'http://44.235.235.248:8000/';
+const appUrl = environment.apiUrl;
 //const appUrl = 'https://1436-49-206-36-248.ngrok-free.app/';
 
 @Injectable({

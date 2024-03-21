@@ -3,18 +3,18 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import { ActivatedRoute, Router } from '@angular/router';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import {Message,MessageService} from 'primeng/api';
 import { AppConfigService } from 'src/app/shared/services/app-config.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DataService } from 'src/app/shared/services/data.service';
-
+import {ConfirmationService, ConfirmEventType, MessageService} from 'primeng/api';
 
 import {MenuItem} from 'primeng/api';
 
 @Component({
   selector: 'app-device-list',
   templateUrl: './device-list.component.html',
-  styleUrls: ['./device-list.component.scss']
+  styleUrls: ['./device-list.component.scss'],
+  providers: [ConfirmationService,MessageService]
 })
 export class DeviceListComponent implements OnInit {
 
@@ -30,8 +30,12 @@ export class DeviceListComponent implements OnInit {
   public statusOptions:any[] = [{name:'Active', value:true}, {name:'Inactive', value:false}];
   public successResponce:any[] = [];
   public loggedInUserName:string = '';
+  public productDeleteLoading:boolean = false;
+  public formTitle!:string;
+  public formState!:string;
 
   public productForm:FormGroup = new FormGroup({
+    id:new FormControl(''),
     product_name: new FormControl(''),
     product_code: new FormControl(''),
     status: new FormControl(''),
@@ -48,6 +52,8 @@ export class DeviceListComponent implements OnInit {
     private _router: Router, 
     private _aRoute: ActivatedRoute,
     private appConfig:AppConfigService,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService,
     public fb: FormBuilder) { }
 
     deviceActionMenuItems!:MenuItem[];
@@ -65,6 +71,7 @@ export class DeviceListComponent implements OnInit {
 
   setProductForm(){
     this.productForm = this.fb.group({
+      id:[''],
       product_name: ['', [Validators.required]],
       product_code: [''],
       status:['', [Validators.required]],
@@ -108,9 +115,7 @@ export class DeviceListComponent implements OnInit {
     this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
       this.productSubCategory = result.data[0]; 
       this.breadcrumblist.push({'name':'Home','url':this.appConfig.urlHome, 'disabled':false}, {'name':'Device Management','url':this.appConfig.urlDeviceManagement, 'disabled':false}, {'name':this.productSubCategory.main_category_name, 'url':this.appConfig.urlDeviceManagement, 'disabled':false}, {'name':this.productSubCategory.sub_category, 'disabled':false}, {'name':'Device List', 'disabled':true});
-      this.productForm.get('product_category')?.setValue(this.productSubCategory.product_category);
-      this.productForm.get('product_sub_category')?.setValue(this.productSubCategory.id);
-      this.productForm.get('sub_category_id')?.setValue(this.productSubCategory.id);
+      
       //this.productForm.get('last_updated_by_id')?.setValue(this.loggedInUserName)
       // if(this.productMainCategory && this.productSubCategory){
       //   const mainCategoryName = this.productMainCategory.category + '-' + this.productMainCategory.id;
@@ -138,7 +143,7 @@ export class DeviceListComponent implements OnInit {
     //console.log(JSON.stringify(this.userForm.value));
     const setUser = {
         action: 'product/product/',
-        method: 'post',
+        method: this.formState == 'add'?'post':'put',
         data: this.productForm.value
       }
       this.dataService.apiDelegate(setUser).subscribe((result: any) => {
@@ -147,19 +152,16 @@ export class DeviceListComponent implements OnInit {
         console.log('successResponce', this.successResponce);
         if(!_.isEmpty(result)) {
           this.addNewProductFormSidebar = false;
-          this.getProducts(this.selectedSubCategory);          
-          //this.afterSuccess();          
-          //this.messageService.add({severity:'success', summary:'Success', detail:'User added successfully'});
-          //this.messageService.add({severity:'success', summary: 'Success', detail: 'User added successfully'});          
-          //const responceData = result.response.Regression;
-          //this.testCasesData = responceData.TestCases;
+          this.getProducts(this.selectedSubCategory);       
+          if(this.formState == 'add'){
+            this.messageService.add({severity:'success', summary:'Success', detail:'Device added successfully'});
+          } else {
+            this.messageService.add({severity:'success', summary:'Success', detail:'Device updated successfully'});
+          }      
         }      
       }, error=>{
         console.log('error', error);
       })
-    //console.log('subCategoryForm', this.subCategoryForm.value)
-    //this.productSubCategoryData.push({'sub_category':'', 'created_at':'', 'customer':'', 'valid_till':'', 'comments':'', 'description':'description'})
-    //this.productsData.push(this.productForm.value);
     this.productForm.reset();
   }
 
@@ -169,8 +171,12 @@ export class DeviceListComponent implements OnInit {
 
 
   showProductForm(){
-    console.log('--------------------');
+    this.formTitle = 'Add New Device';
+    this.formState = 'add';
     this.addNewProductFormSidebar = true;
+    this.productForm.get('product_category')?.setValue(this.productSubCategory.product_category);
+    this.productForm.get('product_sub_category')?.setValue(this.productSubCategory.id);
+    this.productForm.get('sub_category_id')?.setValue(this.productSubCategory.id);
   }
 
   public seDeciveActionMenu(selectedProduct:any){
@@ -181,7 +187,7 @@ export class DeviceListComponent implements OnInit {
           label: 'Edit',
           icon: 'pi pi-pencil',
           command: () => {
-              this.update();
+              this.showUpdateForm(selectedProduct);
           }
       },
       {
@@ -192,13 +198,70 @@ export class DeviceListComponent implements OnInit {
           }
       }
       ]}
-  ];
+    ];
   }
+
+  delete(selectedProduct:any){    
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this device?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        //console.log('selectedUserId', userId);
+        this.productDeleteLoading = true;
+        const getUsers = {
+          action: 'product/product/',
+          method: 'delete',
+          params: {
+            id: selectedProduct.id
+          }
+        }
+        this.dataService.apiDelegate(getUsers).subscribe((result: any) => {
+          // if(!_.isEmpty(result)){        
+          //     this.usersList = result;
+          // }
+          //this.deleteResponce = result.message;
+          this.messageService.add({severity:'info', summary:'Confirmed', detail:result.message});
+          this.getProducts(this.selectedSubCategory);         
+          this.productDeleteLoading = false;
+        }, error => {
+          this.productDeleteLoading = false;
+        })
+          
+      },
+      reject: (type:any) => {
+          switch(type) {
+              case ConfirmEventType.REJECT:
+                  this.messageService.add({severity:'error', summary:'Rejected', detail:'You have rejected'});
+              break;
+              case ConfirmEventType.CANCEL:
+                  this.messageService.add({severity:'warn', summary:'Cancelled', detail:'You have cancelled'});
+              break;
+          }
+      }
+    });
+  }
+
+  showUpdateForm(selectedDevice:any){
+    this.formTitle = 'Update Device';
+    this.formState = 'edit';
+    this.addNewProductFormSidebar = true;
+    console.log('selectedDevice', selectedDevice);
+    this.productForm.patchValue({
+      id:selectedDevice.id,
+      product_name: selectedDevice.product_name,
+      product_code: selectedDevice.product_code,
+      status:selectedDevice.status,
+      valid_till:moment(selectedDevice.valid_till).format('YYYY-MM-DD'),
+      comments:selectedDevice.comments,
+      product_sub_category:selectedDevice.product_sub_category,
+      product_category:selectedDevice.product_category,
+      sub_category_id:selectedDevice.sub_category_id,
+    })
+  }
+
   update(){
     console.log('update')
-  }
-  delete(selectedProduct:any){
-    console.log('delete', selectedProduct);
   }
 
 }

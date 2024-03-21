@@ -13,6 +13,7 @@ import { AppComponent } from './app.component';
 import { TokenInterceptorService } from './shared/services/token-interceptor.service';
 import { LoginComponent } from './login/login.component';
 import { MarkdownModule } from 'ngx-markdown';
+import { GlobalService } from './shared/services/global.service';
 
 @NgModule({
   declarations: [

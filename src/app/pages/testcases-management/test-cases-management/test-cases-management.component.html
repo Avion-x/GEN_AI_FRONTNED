@@ -77,16 +77,16 @@
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-testType>
-                <tr (click)="getTestTypeCategory(testType.id)" [ngClass]="{'active': selectedTestId === testType.id}">
-                    <td class="tdFirstCol"></td>
-                    <td>{{testType.code}}</td>
-                    <td>{{testType.description}}</td>
-                    <td class="td-uppercase">{{testType.status==true?'Active':'Inactive'}}</td>
-                    <td>{{testType.valid_till}}</td>
+                <tr [ngClass]="{'active': selectedTestId === testType.id}">
+                    <td (click)="getTestTypeCategory(testType)" class="tdFirstCol"></td>
+                    <td (click)="getTestTypeCategory(testType)">{{testType.code}}</td>
+                    <td (click)="getTestTypeCategory(testType)">{{testType.description}}</td>
+                    <td (click)="getTestTypeCategory(testType)" class="td-uppercase">{{testType.status==true?'Active':'Inactive'}}</td>
+                    <td (click)="getTestTypeCategory(testType)">{{testType.valid_till}}</td>
                     <!-- <td>{{testType.comments}}</td> -->
-                    <td>{{testType.created_at}}</td>
-                    <td>{{testType.last_updated_at}}</td>
-                    <td>{{testType.last_updated_by}}</td>
+                    <td (click)="getTestTypeCategory(testType)">{{testType.created_at}}</td>
+                    <td (click)="getTestTypeCategory(testType)">{{testType.last_updated_at}}</td>
+                    <td (click)="getTestTypeCategory(testType)">{{testType.last_updated_by}}</td>
                     <td style="width: 50px; min-width: 50px; max-width: 50px;">
                         <button type="button" class="td-menu-btn" (click)="mainActionMenu.toggle($event); setTestTypeActionMenu(testType)">
                             <span class="material-symbols-rounded icon">more_vert</span>
@@ -174,7 +174,7 @@
     </div>
 
     <p-sidebar [(visible)]="testTypeFormSidebar"  class="sidebar-section" [style]="{width:'30%'}" position="right">
-        <ng-template pTemplate="header">Create New Test Type</ng-template>
+        <ng-template pTemplate="header">{{testTypeFormTitle}}</ng-template>
         <ng-template pTemplate="content">
             <div class="card">
                 <form [formGroup]="testTypeForm" class="form-container display-column">
@@ -206,7 +206,7 @@
                         <label for="float-input">Valid Till</label>
                     </div> -->
                     <div class="field p-float-label position-relative">
-                        <p-calendar formControlName="valid_till" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && fTestType['valid_till'].errors }"></p-calendar>
+                        <p-calendar formControlName="valid_till" dateFormat="yy-mm-dd" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && fTestType['valid_till'].errors }"></p-calendar>
                         <!-- <input id="validTill" formControlName="valid_till" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
                         <label for="validTill">Valid Till<small class="star">*</small></label>
                         <div *ngIf="submitted && fTestType['valid_till'].errors" class="invalid-feedback">
@@ -236,7 +236,7 @@
     </p-sidebar>
 
     <p-sidebar [(visible)]="testCategoryFormSidebar"  class="sidebar-section" [style]="{width:'30%'}" position="right">
-        <ng-template pTemplate="header">Add New Test Category</ng-template>
+        <ng-template pTemplate="header">{{testCategoryFormTitle}}</ng-template>
         <ng-template pTemplate="content">
             <div class="card">
                 <form [formGroup]="testCategoryForm" class="form-container display-column">
@@ -268,7 +268,7 @@
                         <label for="float-input">Valid Till</label>
                     </div> -->
                     <div class="field p-float-label position-relative">
-                        <p-calendar formControlName="valid_till" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && fTestCat['valid_till'].errors }"></p-calendar>
+                        <p-calendar formControlName="valid_till" dateFormat="yy-mm-dd" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && fTestCat['valid_till'].errors }"></p-calendar>
                         <!-- <input id="validTill" formControlName="valid_till" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
                         <label for="validTill">Valid Till<small class="star">*</small></label>
                         <div *ngIf="submitted && fTestCat['valid_till'].errors" class="invalid-feedback">
@@ -299,8 +299,9 @@
 
 </div>
 <p-toast></p-toast>
-<p-dialog header="Success" [modal]="true" [style]="{width: '30vw'}" [(visible)]="confirmDeletionPopup">
-    <!-- {{successResponce?.message}} -->
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<!-- <p-dialog header="Success" [modal]="true" [style]="{width: '30vw'}" [(visible)]="confirmDeletionPopup">
+    
     <div class="confirmatinMessage" *ngIf="!testCategoryDeletionLoader && !testCategoryDetionSuccess">
         <p>Are you sure you want to delete <br>the test category <span class="clr-primary"><b>{{selectedTestCategoryToDelete?.name}}</b></span>?</p>
     </div>
@@ -316,4 +317,4 @@
       <p-button icon="pi pi-check" (click)="confirmDelete()" label="Delete" styleClass="p-button-text" *ngIf="!testCategoryDeletionLoader && !testCategoryDetionSuccess"></p-button>
       <p-button icon="pi pi-check" (click)="closeDeleteConformaion()" label="Ok" styleClass="p-button-text" *ngIf="testCategoryDetionSuccess"></p-button>
     </ng-template>
-</p-dialog>
+</p-dialog> -->

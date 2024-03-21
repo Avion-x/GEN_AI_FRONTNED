@@ -155,10 +155,10 @@
 
 
     <p-sidebar [(visible)]="addNewProductFormSidebar"  class="sidebar-section" [style]="{width:'30%'}" position="right">
-        <ng-template pTemplate="header">Add New Device</ng-template>
+        <ng-template pTemplate="header">{{formTitle}}</ng-template>
         <ng-template pTemplate="content">
             <div class="card">
-                <form [formGroup]="productForm" class="form-container display-column" (ngSubmit)="addProduct()">
+                <form [formGroup]="productForm" class="form-container display-column">
                     <div class="field p-float-label">
                         <input id="float-input" formControlName="product_name" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['product_name'].errors }"> 
                         <label for="float-input">Device Name<small class="star">*</small></label>
@@ -186,7 +186,7 @@
                         <label for="float-input">Valid Till</label>
                     </div> -->
                     <div class="field p-float-label position-relative">
-                        <p-calendar formControlName="valid_till" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && f['valid_till'].errors }"></p-calendar>
+                        <p-calendar formControlName="valid_till" dateFormat="yy-mm-dd" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && f['valid_till'].errors }"></p-calendar>
                         <!-- <input id="validTill" formControlName="valid_till" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
                         <label for="validTill">Valid Till<small class="star">*</small></label>
                         <div *ngIf="submitted && f['valid_till'].errors" class="invalid-feedback">
@@ -202,20 +202,20 @@
                         <label for="float-input">Description</label>
                     </div>   -->
 
-                    <div class="pageActions">
+                    <!-- <div class="pageActions">
                         <button class="btn secondary-btn" (click)="cancelBtn()">Cancel</button>
                         <button class="btn primary-btn">Submit</button>
-                    </div>
+                    </div> -->
                 </form>   
             </div>
             
         </ng-template>
-        <!-- <ng-template pTemplate="footer">
+        <ng-template pTemplate="footer">
             <div class="pageActions">
-                <button class="btn secondary-btn" (click)="mainCategoryCancelBtn()">Cancel</button>
-                <button class="btn primary-btn" (click)="createNewCategory()">Submit</button>
+                <button class="btn secondary-btn" (click)="cancelBtn()">Cancel</button>
+                <button class="btn primary-btn" (click)="addProduct()">Submit</button>
             </div>
-        </ng-template> -->
+        </ng-template>
         
     </p-sidebar>
 
@@ -262,3 +262,5 @@
     <button class="btn primary-btn">Submit</button>
 </div> -->
 
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<p-toast></p-toast>

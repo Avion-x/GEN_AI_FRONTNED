@@ -34,7 +34,7 @@
     <p-menu #mainActionMenu [popup]="true" [model]="mainCatActionMenuItems"></p-menu>
     <p-menu #subActionMenu [popup]="true" [model]="subCatActionMenuItems"></p-menu>
     <p-sidebar [(visible)]="mainCategoryFormSidebar"  class="sidebar-section" [style]="{width:'30%'}" position="right">
-        <ng-template pTemplate="header">Create Category</ng-template>
+        <ng-template pTemplate="header">{{mainCategoryFormTitle}}</ng-template>
         <ng-template pTemplate="content">
             <div class="card">
                 <form [formGroup]="mainCategoryForm" class="form-container display-column">
@@ -62,7 +62,7 @@
                         <label for="float-input">Valid Till</label>
                     </div> -->
                     <div class="field p-float-label position-relative">
-                        <p-calendar formControlName="valid_till" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && fMain['valid_till'].errors }"></p-calendar>
+                        <p-calendar formControlName="valid_till" dateFormat="yy-mm-dd" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && fMain['valid_till'].errors }"></p-calendar>
                         <!-- <input id="validTill" formControlName="valid_till" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
                         <label for="validTill">Valid Till<small class="star">*</small></label>
                         <div *ngIf="submitted && fMain['valid_till'].errors" class="invalid-feedback">
@@ -89,8 +89,8 @@
         </ng-template>
         
     </p-sidebar>
-    <p-sidebar [(visible)]="subCategoryFormSidebar"  class="sidebar-section" [style]="{width:'85%'}" position="right">
-        <ng-template pTemplate="header">Create Sub Category for <div class="count">{{seletedMainProductToAddSubCategory.category}}</div></ng-template>
+    <p-sidebar [(visible)]="subCategoryFormSidebar" (onHide)="subCategoryCancelBtn()"  class="sidebar-section" [style]="{width:'85%'}" position="right">
+        <ng-template pTemplate="header">{{subCategoryFormTitle}} Sub Category for <div class="count">{{seletedMainProductToAddSubCategory.category}}</div></ng-template>
         <ng-template pTemplate="content">
             <div class="card">
                 <form [formGroup]="subCategoryForm" class="form-container">
@@ -112,7 +112,7 @@
                     </div>
                     
                     <div class="field p-float-label position-relative">
-                        <p-calendar formControlName="valid_till" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker"></p-calendar>
+                        <p-calendar formControlName="valid_till" dateFormat="yy-mm-dd" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker"></p-calendar>
                         <label for="validTill">Valid Till<small class="star">*</small></label>
                         <div *ngIf="submitted && fSub['valid_till'].errors" class="invalid-feedback">
                             <div class="p-error" *ngIf="fSub['valid_till'].errors['required']">Valid Till is required</div>
@@ -129,9 +129,12 @@
                     </div>
                 </form>      
                 <div class="card-actions">
-                    <button class="btn primary-btn" (click)="addSubCaterory()">
+                    <button class="btn primary-btn" (click)="addSubCaterory()" *ngIf="this.subCategoryFormType == 'add'">
                         <span class="material-symbols-rounded icon">add</span>
                         Add
+                    </button>
+                    <button class="btn primary-btn" (click)="addSubCaterory()" *ngIf="this.subCategoryFormType == 'edit'">
+                        Update
                     </button>
                 </div> 
             </div>
@@ -179,7 +182,7 @@
                             <td>{{subProduct.last_updated_at}}</td>
                             <td>{{subProduct.last_updated_by_name}}</td>
                             <td style="width: 50px; min-width: 50px; max-width: 50px;">
-                                                <button type="button" class="td-menu-btn" (click)="subActionMenu.toggle($event); setMainSubCatActionMenu(subProduct)">
+                                                <button type="button" class="td-menu-btn" (click)="subActionMenu.toggle($event); setSubCatActionMenu(subProduct)">
                                                     <span class="material-symbols-rounded icon">more_vert</span>
                                                 </button>                        
                             </td>
@@ -238,19 +241,19 @@
             </ng-template>
             <ng-template pTemplate="body" let-product >
                 <tr [ngClass]="{'active': selectedProductId === product.id}">
-                    <td (click)="getProductsSubCategory(product.id)" class="tdFirstCol"></td>
-                    <td (click)="getProductsSubCategory(product.id)">{{product.category}}</td>
-                    <td style="width: 250px; min-width:250px; max-width:250px;" (click)="getProductsSubCategory(product.id)">{{product.description}}</td>
-                    <td class="td-uppercase" (click)="getProductsSubCategory(product.id)">{{product.status==true?'Active':'Inactive'}}</td>
-                    <td (click)="getProductsSubCategory(product.id)">{{product.valid_till}}</td>
+                    <td (click)="getProductsSubCategory(product)" class="tdFirstCol"></td>
+                    <td (click)="getProductsSubCategory(product)">{{product.category}}</td>
+                    <td style="width: 250px; min-width:250px; max-width:250px;" (click)="getProductsSubCategory(product)">{{product.description}}</td>
+                    <td class="td-uppercase" (click)="getProductsSubCategory(product)">{{product.status==true?'Active':'Inactive'}}</td>
+                    <td (click)="getProductsSubCategory(product)">{{product.valid_till}}</td>
                     <!-- <td (click)="getProductsSubCategory(product.id)">{{product.comments}}</td> -->
-                    <td (click)="getProductsSubCategory(product.id)">{{product.created_at}}</td>
-                    <td (click)="getProductsSubCategory(product.id)">{{product.last_updated_at}}</td>
-                    <td (click)="getProductsSubCategory(product.id)">{{product.last_updated_by_name}}</td>
+                    <td (click)="getProductsSubCategory(product)">{{product.created_at}}</td>
+                    <td (click)="getProductsSubCategory(product)">{{product.last_updated_at}}</td>
+                    <td (click)="getProductsSubCategory(product)">{{product.last_updated_by_name}}</td>
                     
                     <!-- <td (click)="getProductsSubCategory(product.id)">{{product.customer}}</td> -->
                     <td style="width: 50px; min-width: 50px; max-width: 50px;">
-                        <button type="button" class="td-menu-btn" (click)="mainActionMenu.toggle($event); setMainCatMenu(product)">
+                        <button type="button" class="td-menu-btn" (click)="mainActionMenu.toggle($event); setMainCatActionMenu(product)">
                             <span class="material-symbols-rounded icon">more_vert</span>
                         </button>                        
                     </td>
@@ -309,7 +312,7 @@
                                             <td (click)="navigateToProducts(subProduct.id)">{{subProduct.last_updated_at}}</td>
                                             <td (click)="navigateToProducts(subProduct.id)">{{subProduct.last_updated_by_name}}</td>
                                             <td style="width: 50px; min-width: 50px; max-width: 50px;">
-                                                <button type="button" class="td-menu-btn" (click)="subActionMenu.toggle($event); setMainSubCatActionMenu(subProduct)">
+                                                <button type="button" class="td-menu-btn" (click)="subActionMenu.toggle($event); setSubCatActionMenu(subProduct)">
                                                     <span class="material-symbols-rounded icon">more_vert</span>
                                                 </button>                        
                                             </td>
@@ -325,5 +328,5 @@
         </p-table>
     </div>
 </div>
-
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
 <p-toast></p-toast>

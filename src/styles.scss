@@ -394,8 +394,18 @@ input::-ms-input-placeholder {
                             background: rgba(255, 255, 255, 1) !important;
                             td{
                               color: vars.$td-color !important;
+                              .td-menu-btn {
+                                span.icon{
+                                  color: vars.$secondary-color !important;
+                                }
+                                &:hover{
+                                  span.icon{
+                                    color: #fff !important;
+                                  }
+                                }
+                              }
                             }  
-                        }
+                        } 
                     }
                 }
             }

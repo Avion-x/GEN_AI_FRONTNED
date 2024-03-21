@@ -8,13 +8,13 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
 import {MenuItem} from 'primeng/api';
 import * as moment from 'moment';
 import * as _ from 'lodash';
-import {Message,MessageService} from 'primeng/api';
+import {ConfirmationService, ConfirmEventType, MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-test-cases-management',
   templateUrl: './test-cases-management.component.html',
   styleUrls: ['./test-cases-management.component.scss'],
-  providers: [MessageService]
+  providers: [ConfirmationService,MessageService]
 })
 export class TestCasesManagementComponent implements OnInit {
 
@@ -23,7 +23,7 @@ export class TestCasesManagementComponent implements OnInit {
   public backUrl:string = '';
   public testTypesData:any[] = [];
   public selectedTestType:any;
-  public selectedTestId:string = '';
+  public selectedTestId!:any;
   public testTypeFormSidebar:boolean = false;
   public submitted:boolean = false;
   public statusOptions:any[] = [{name:'Active', value:true}, {name:'Inactive', value:false}];
@@ -36,11 +36,18 @@ export class TestCasesManagementComponent implements OnInit {
   public testTypeCategories:any[] = [];
   public confirmDeletionPopup:boolean = false;
   public selectedTestCategoryToDelete:any;
+  public testTypeDeletionLoader:boolean = false;
   public testCategoryDeletionLoader:boolean = false;
   public testCategoryDetionSuccess:boolean = false;
   public testCategoryDetionMessage:string = '';
 
+  public testTypeFormState!:string;
+  public testTypeFormTitle!:string;
+  public testCategoryFormState!:string;
+  public testCategoryFormTitle!:string;
+
   testCategoryForm:FormGroup = new FormGroup({
+    id: new FormControl(''),
     name: new FormControl(''),
     test_type: new FormControl(''),
     status: new FormControl(''),
@@ -49,6 +56,7 @@ export class TestCasesManagementComponent implements OnInit {
   });
 
   testTypeForm:FormGroup = new FormGroup({
+    id: new FormControl(''),
     name: new FormControl(''),
     code: new FormControl(''),
     status: new FormControl(''),
@@ -88,6 +96,7 @@ export class TestCasesManagementComponent implements OnInit {
     private _aRoute: ActivatedRoute,
     private appConfig:AppConfigService,
     private messageService: MessageService,
+    private confirmationService: ConfirmationService,
     public fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -102,6 +111,7 @@ export class TestCasesManagementComponent implements OnInit {
 
   setTestTypeForm(){
     this.testTypeForm = this.fb.group({
+      id:[''],
       name: ['', [Validators.required]],
       code: ['', [Validators.required]],
       status:['', [Validators.required]],
@@ -115,6 +125,7 @@ export class TestCasesManagementComponent implements OnInit {
 
   setTestCategoryForm(){
     this.testCategoryForm = this.fb.group({
+      id:[''],
       name: ['', [Validators.required]],
       test_type: ['', [Validators.required]],
       status:['', [Validators.required]],
@@ -154,6 +165,8 @@ export class TestCasesManagementComponent implements OnInit {
   }
 
   showTestTypeForm(){
+    this.testTypeFormState = 'add';
+    this.testTypeFormTitle = "Create New Test Type"
     this.testTypeFormSidebar = true;
   }
   
@@ -162,20 +175,33 @@ export class TestCasesManagementComponent implements OnInit {
     if (this.testTypeForm.invalid) {
       return;
     }
-    const scriptData = "python script in seperate file for each " + this.testTypeForm.get('name')?.value
+    const scriptData = "python script in seperate file for each " + this.testTypeForm.get('name')?.value;
     const executable_codes:any = {TestCases: {code: this.testTypeForm.get('code')?.value}, TestScripts: {code: scriptData}}
-    this.testTypeForm.patchValue({
-      //product_category:this.subCategoryForm.get('valid_till')?.value,
-      valid_till: this.testTypeForm.get('valid_till')?.value ? moment(this.testTypeForm.get('valid_till')?.value).format('YYYY-MM-DD') : '',
-      //last_updated_by:
-      executable_codes: executable_codes,
-      last_updated_by: this.loggedInUserName ? this.loggedInUserName : '',
-      //confirmPassword:this.userForm.get('confirmPassword')?.disable()
-    })
+    if(this.testTypeFormState == 'add'){
+      this.testTypeForm.patchValue({
+        //product_category:this.subCategoryForm.get('valid_till')?.value,
+        valid_till: this.testTypeForm.get('valid_till')?.value ? moment(this.testTypeForm.get('valid_till')?.value).format('YYYY-MM-DD') : '',
+        //last_updated_by:
+        executable_codes: executable_codes,
+        last_updated_by: this.loggedInUserName ? this.loggedInUserName : '',
+        //confirmPassword:this.userForm.get('confirmPassword')?.disable()
+      })
+    } else {
+      this.testTypeForm.patchValue({
+        //product_category:this.subCategoryForm.get('valid_till')?.value,
+        valid_till: this.testTypeForm.get('valid_till')?.value ? moment(this.testTypeForm.get('valid_till')?.value).format('YYYY-MM-DD') : '',
+        //last_updated_by:
+        //executable_codes: executable_codes,
+        last_updated_by: this.loggedInUserName ? this.loggedInUserName : '',
+        //confirmPassword:this.userForm.get('confirmPassword')?.disable()
+      })
+    }
+    
+    
     //console.log(JSON.stringify(this.userForm.value));
     const setUser = {
         action: 'product/testtypes/',
-        method: 'post',
+        method: this.testTypeFormState=='add'?'post':'put',
         data: this.testTypeForm.value
       }
       this.dataService.apiDelegate(setUser).subscribe((result: any) => {
@@ -206,6 +232,9 @@ export class TestCasesManagementComponent implements OnInit {
   }
 
   showCreateTestCategoryForm(){
+    this.testCategoryFormState = 'add';
+    this.testCategoryFormTitle = "Create New Test Category";
+    this.testCategoryForm.get('number_of_test_cases')?.setValue('0');
     this.testCategoryFormSidebar=true;
     this.testCategoryForm.get('test_type')?.setValue(this.selectedTestId);
   }
@@ -228,7 +257,7 @@ export class TestCasesManagementComponent implements OnInit {
     //console.log(JSON.stringify(this.userForm.value));
     const setUser = {
         action: 'product/test_categories/',
-        method: 'post',
+        method: this.testCategoryFormState == 'add'?'post':'put',
         data: this.testCategoryForm.value
       }
       this.dataService.apiDelegate(setUser).subscribe((result: any) => {
@@ -237,9 +266,15 @@ export class TestCasesManagementComponent implements OnInit {
         //console.log('successResponce', result);
         if(!_.isEmpty(result)) {
           //this.afterSuccess();          
-          this.messageService.add({severity:'success', summary:'Success', detail:'Test category created successfully'});
+          if(this.testCategoryFormState == 'add'){
+            this.messageService.add({severity:'success', summary:'Success', detail:'Test category created successfully'});
+          } else {
+            this.messageService.add({severity:'success', summary:'Success', detail:'Test category updated successfully'});
+          }
+          
           this.testCategoryFormSidebar = false;
-          this.getTestTypes();
+          //this.getTestTypes();
+          this.getTestTypeCategory(this.selectedTestType);
         }      
         //this.testScriptsData = responceData.TestScripts;
       }, error => {
@@ -250,15 +285,19 @@ export class TestCasesManagementComponent implements OnInit {
     this.submitted = false;
   }
 
-  getTestTypeCategory(selecedTestType:string){
+  getTestTypeCategory(selecedTestType:any) {
+    if(this.selectedTestId == selecedTestType.id){
+      this.selectedTestId = '';
+      return
+    }
     this.selectedTestType = selecedTestType;
-    this.selectedTestId = selecedTestType;
+    this.selectedTestId = selecedTestType.id;
     this.testCategoriesLoader = true;
     const getProductCategory = {
       action: 'product/test_categories/',
       method: 'get',
       params: {
-        test_type_id: selecedTestType
+        test_type_id: this.selectedTestId
       }
     }
     this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
@@ -272,28 +311,89 @@ export class TestCasesManagementComponent implements OnInit {
     })
   }
 
-  public setTestTypeActionMenu(selectedProduct:any){
-    console.log('selected Main Product', selectedProduct);
+  public setTestTypeActionMenu(selectedTestType:any){
+    console.log('selectedTestType', selectedTestType);
     this.mainActionMenuItems = [{
       label: 'Actions',
       items: [{
           label: 'Edit',
           icon: 'pi pi-pencil',
-          disabled:true,
+          //disabled:true,
           command: () => {
-              //this.update();
+              this.showUpdateTestType(selectedTestType);
           }
       },
       {
           label: 'Delete',
           icon: 'pi pi-times',
-          disabled:true,
+          //disabled:true,
           command: () => {
-              //this.delete();
+              this.deleteTestType(selectedTestType);
           }
       }
       ]}
   ];
+  }
+
+  showUpdateTestType(selectedTestType:any){
+    this.testTypeFormState = 'edit';
+    this.testTypeFormTitle = "Update Test Type"
+    this.testTypeFormSidebar = true;
+    this.testTypeForm.patchValue({
+      id:selectedTestType.id,
+      name: selectedTestType.name,
+      code: selectedTestType.code,
+      status:selectedTestType.status,
+      valid_till:moment(selectedTestType.valid_till).format('YYYY-MM-DD'),
+      comments:selectedTestType.comments,
+      description:selectedTestType.description,
+      executable_codes:selectedTestType.executable_codes,
+      //last_updated_by:selectedTestType.last_updated_by
+    })
+  }
+
+  deleteTestType(selectedTestType:any) {
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        //console.log('selectedUserId', userId);
+        this.testTypeDeletionLoader = true;
+        const getUsers = {
+          action: 'product/testtypes/',
+          method: 'delete',
+          params: {
+            id: selectedTestType.id
+          }
+        }
+        this.dataService.apiDelegate(getUsers).subscribe((result: any) => {
+          console.log('delete user', result);
+          // if(!_.isEmpty(result)){        
+          //     this.usersList = result;
+          // }
+          //this.testCategoryDetionMessage = result.message;
+          this.messageService.add({severity:'info', summary:'Confirmed', detail:result.message});
+          this.testCategoryFormSidebar = false;
+          this.getTestTypes();          
+          this.testTypeDeletionLoader = false;
+        }, error => {
+          this.testTypeDeletionLoader = false;
+          //console.log('error',error);
+        })
+          
+      },
+      reject: (type:any) => {
+          switch(type) {
+              case ConfirmEventType.REJECT:
+                  this.messageService.add({severity:'error', summary:'Rejected', detail:'You have rejected'});
+              break;
+              case ConfirmEventType.CANCEL:
+                  this.messageService.add({severity:'warn', summary:'Cancelled', detail:'You have cancelled'});
+              break;
+          }
+      }
+    });  
   }
 
   public setTestCatActionMenu(selectedTestCategory:any){
@@ -303,59 +403,118 @@ export class TestCasesManagementComponent implements OnInit {
       items: [{
           label: 'Edit',
           icon: 'pi pi-pencil',
-          disabled:true,
+          //disabled:true,
           command: () => {
-              //this.update();
+              this.showUpdateTestCategory(selectedTestCategory);
           }
       },
       {
           label: 'Delete',
           icon: 'pi pi-times',
-          disabled:true,
+          //disabled:true,
           command: () => {
               this.deleteTestCategory(selectedTestCategory);
           }
       }
       ]}
-  ];
+    ];
   }
 
-  deleteTestCategory(category:any){
-    this.confirmDeletionPopup = true;
-    this.selectedTestCategoryToDelete = category;   
-    console.log('this.selectedTestCategoryToDelete -- Delete', this.selectedTestCategoryToDelete);
-  }
-
-  confirmDelete(){
-    this.testCategoryDeletionLoader = true;
-    const getProductCategory = {
-      action: 'product/test_categories/',
-      method: 'delete',
-      params: {
-        id: this.selectedTestCategoryToDelete.id
-      }
-    }
-    this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
-      console.log('delete Result', result);
-      this.testCategoryDeletionLoader = false;
-      if(!_.isEmpty(result)) {
-        this.testCategoryDetionSuccess = true;
-        this.testCategoryDetionMessage = result.message;
-      }
-      //const testCases = result.data;   
-      //this.testTypeCategories = [...result.data]; 
-      // testCases.forEach((item:any) => {
-      //   this.testTypes.push(item.code)
-      // });
-      //this.testCategoriesLoader = false;
-     // console.log('testTypeCategories', this.testTypeCategories);
-    },error=>{
-      console.log('error', error);
+  showUpdateTestCategory(selectedTestCategory:any){
+    this.testCategoryFormState = 'edit';
+    this.testCategoryFormTitle = "Update Test Category";
+    this.testCategoryFormSidebar=true;
+    this.testCategoryForm.patchValue({
+      id:selectedTestCategory.id,
+      name: selectedTestCategory.name,
+      test_type: selectedTestCategory.test_type,
+      status:selectedTestCategory.status,
+      valid_till:moment(selectedTestCategory.valid_till).format('YYYY-MM-DD'),
+      description:selectedTestCategory.description,
+      number_of_test_cases:selectedTestCategory.number_of_test_cases
     })
   }
 
-  closeDeleteConformaion(){
-    this.confirmDeletionPopup = false;
+  deleteTestCategory(selectedTestCategory:any) {
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        //console.log('selectedUserId', userId);
+        this.testCategoryDeletionLoader = true;
+        const getUsers = {
+          action: 'product/test_categories/',
+          method: 'delete',
+          params: {
+            id: selectedTestCategory.id
+          }
+        }
+        this.dataService.apiDelegate(getUsers).subscribe((result: any) => {
+          console.log('delete user', result);
+          // if(!_.isEmpty(result)){        
+          //     this.usersList = result;
+          // }
+          this.testCategoryDetionMessage = result.message;
+          this.messageService.add({severity:'info', summary:'Confirmed', detail:result.message});
+          this.testCategoryFormSidebar = false;
+          this.getTestTypeCategory(this.selectedTestType);          
+          this.testCategoryDeletionLoader = false;
+        }, error => {
+          this.testCategoryDeletionLoader = false;
+          //console.log('error',error);
+        })
+          
+      },
+      reject: (type:any) => {
+          switch(type) {
+              case ConfirmEventType.REJECT:
+                  this.messageService.add({severity:'error', summary:'Rejected', detail:'You have rejected'});
+              break;
+              case ConfirmEventType.CANCEL:
+                  this.messageService.add({severity:'warn', summary:'Cancelled', detail:'You have cancelled'});
+              break;
+          }
+      }
+    });  
   }
+
+  // deleteTestCategory(category:any){
+  //   this.confirmDeletionPopup = true;
+  //   this.selectedTestCategoryToDelete = category;   
+  //   console.log('this.selectedTestCategoryToDelete -- Delete', this.selectedTestCategoryToDelete);
+  // }
+
+  // confirmDelete(){
+  //   this.testCategoryDeletionLoader = true;
+  //   const getProductCategory = {
+  //     action: 'product/test_categories/',
+  //     method: 'delete',
+  //     params: {
+  //       id: this.selectedTestCategoryToDelete.id
+  //     }
+  //   }
+  //   this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
+  //     console.log('delete Result', result);
+  //     this.testCategoryDeletionLoader = false;
+  //     if(!_.isEmpty(result)) {
+  //       this.testCategoryDetionSuccess = true;
+  //       this.testCategoryDetionMessage = result.message;
+  //     }
+  //     //const testCases = result.data;   
+  //     //this.testTypeCategories = [...result.data]; 
+  //     // testCases.forEach((item:any) => {
+  //     //   this.testTypes.push(item.code)
+  //     // });
+  //     //this.testCategoriesLoader = false;
+  //    // console.log('testTypeCategories', this.testTypeCategories);
+  //   },error=>{
+  //     console.log('error', error);
+  //   })
+  // }
+
+  // closeDeleteConformaion(){
+  //   this.confirmDeletionPopup = false;
+  // }
 
 }

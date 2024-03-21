@@ -4,11 +4,14 @@ import { AppConfigService } from 'src/app/shared/services/app-config.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DataService } from 'src/app/shared/services/data.service';
 import * as _ from 'lodash';
+import {ConfirmationService, ConfirmEventType, MessageService} from 'primeng/api';
+import { GlobalService } from 'src/app/shared/services/global.service';
 
 @Component({
   selector: 'app-users-list',
   templateUrl: './users-list.component.html',
-  styleUrls: ['./users-list.component.scss']
+  styleUrls: ['./users-list.component.scss'],
+  providers: [ConfirmationService,MessageService]
 })
 export class UsersListComponent implements OnInit {
 
@@ -21,98 +24,18 @@ export class UsersListComponent implements OnInit {
   public selectedUserId:string = '';
   public loadingUsersList:boolean = false;
   public usersList:any[] = [];
-  // public usersList:any[] = [
-  //   {
-  //     avatar:'',
-  //     fullname:'Anju Goel',
-  //     email:'anju@avion-x.com',
-  //     username:'anjug',
-  //     permissions:'Super Admin',
-  //   },
-  //   {
-  //     avatar:'',
-  //     fullname:'Deepak Agrawal',
-  //     email:'deepak@avion-x.com',
-  //     username:'deepaka',
-  //     permissions:'Super Admin',
-  //   },
-  //   {
-  //     avatar:'../../../../assets/avatars/premalatha.webp',
-  //     fullname:'Premalatha Nair',
-  //     email:'Premanair@avion-x.com',
-  //     username:'muraleep',
-  //     permissions:'Admin',
-  //   },
-  //   {
-  //     avatar:'../../../../assets/avatars/rafi.webp',
-  //     fullname:'Rafi Shaik',
-  //     email:'rafi@avion-x.com',
-  //     username:'rafis5',
-  //     permissions:'Admin',
-  //   },
-  //   {
-  //     avatar:'../../../../assets/avatars/abdullah.webp',
-  //     fullname:'Abdullah Shaik',
-  //     email:'abdullah@avion-x.com',
-  //     username:'shaikm3',
-  //     permissions:'Admin',
-  //   },
-  //   {
-  //     avatar:'',
-  //     fullname:'Damodar Reddy',
-  //     email:'Damodar@avion-x.com',
-  //     username:'damodar',
-  //     permissions:'Admin',
-  //   },
-  //   {
-  //     avatar:'../../../../assets/avatars/priyabrata.webp',
-  //     fullname:'Priyabrata Parhi',
-  //     email:'priyabrata@avion-x.com',
-  //     username:'parhip',
-  //     permissions:'Admin',
-  //   },
-  //   {
-  //     avatar:'../../../../assets/avatars/harsha.webp',
-  //     fullname:'Sree Harsha Bhardwaj',
-  //     email:'harsha@avion-x.com',
-  //     username:'sreehars',
-  //     permissions:'User',
-  //   },
-  //   {
-  //     avatar:'../../../../assets/avatars/dinesh.webp',
-  //     fullname:'Dinesh Vemuri',
-  //     email:'dinesh@avion-x.com',
-  //     username:'chandv10',
-  //     permissions:'User',
-  //   },
-  //   {
-  //     avatar:'../../../../assets/avatars/prem.webp',
-  //     fullname:'Prem Kumar',
-  //     email:'prem@avion-x.com',
-  //     username:'rsp1',
-  //     permissions:'User',
-  //   },
-  //   {
-  //     avatar:'../../../../assets/avatars/venkaiah.webp',
-  //     fullname:'Venkaiah Valluru',
-  //     email:'venkaiah@avion-x.com',
-  //     username:'valluruv',
-  //     permissions:'User',
-  //   },
-  //   {
-  //     avatar:'',
-  //     fullname:'Shubham Ramapure',
-  //     email:'shubham@avion-x.com',
-  //     username:'shubham',
-  //     permissions:'User',
-  //   }
-  // ]
+  public deletionLoadiong:boolean = false;
+  public deleteResponce:string = '';
+  public deleteConformationDialog:boolean = false;
 
   constructor(private authenticationService:AuthService, 
     private dataService:DataService, 
     private _router: Router, 
     private _aRoute: ActivatedRoute,
-    private appConfig:AppConfigService,) { }
+    private appConfig:AppConfigService,
+    private _global: GlobalService,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService) { }
 
   ngOnInit(): void {
     this.breadcrumblist.push({'name':'Home', 'url':this.appConfig.urlHome, 'disabled':false}, {'name':'Users Management','url':'', 'disabled':true}, {'name':'Users List','url':'', 'disabled':true});
@@ -124,13 +47,19 @@ export class UsersListComponent implements OnInit {
 
   }
 
-  showUserDetails(selectedUser:any){
+  updateUser(selectedUser:any) {
+    this._global.sendUserInfoToUpdate(selectedUser);
+    const url = this.appConfig.urlUpdateUser + "/"+selectedUser.id;
+    this._router.navigateByUrl(url);
+  }
+
+  showUserDetails(selectedUser:any) {
     this.showSidePannel = true;
     this.selectedUser = selectedUser;
     this.selectedUserId = selectedUser.username;
     console.log('selectedUser', this.selectedUser);
     const sidepanel = document.getElementById('sidePanelSection')?.classList;
-    if(sidepanel?.contains('showSidePanel')){
+    if(sidepanel?.contains('showSidePanel')) {
       sidepanel.remove('showSidePanel');
     } else {
       sidepanel?.add('showSidePanel');
@@ -184,6 +113,50 @@ export class UsersListComponent implements OnInit {
       this.loadingUsersList = false;
       console.log('error',error);
     })
+  }
+
+  deleteUser(userId:any) {
+    this.confirmationService.confirm({
+      message: 'Do you want to delete this record?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        console.log('selectedUserId', userId);
+        this.deletionLoadiong = true;
+        const getUsers = {
+          action: 'users/',
+          method: 'delete',
+          params: {
+            id: userId
+          }
+        }
+        this.dataService.apiDelegate(getUsers).subscribe((result: any) => {
+          console.log('delete user', result);
+          // if(!_.isEmpty(result)){        
+          //     this.usersList = result;
+          // }
+          this.deleteResponce = result.message;
+          this.messageService.add({severity:'info', summary:'Confirmed', detail:result.message});
+          this.showSidePannel = false;
+          this.getUsers();          
+          this.deletionLoadiong = false;
+        }, error => {
+          this.deletionLoadiong = false;
+          //console.log('error',error);
+        })
+          
+      },
+      reject: (type:any) => {
+          switch(type) {
+              case ConfirmEventType.REJECT:
+                  this.messageService.add({severity:'error', summary:'Rejected', detail:'You have rejected'});
+              break;
+              case ConfirmEventType.CANCEL:
+                  this.messageService.add({severity:'warn', summary:'Cancelled', detail:'You have cancelled'});
+              break;
+          }
+      }
+    });  
   }
 
 }
