@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 import { environment } from 'src/environments/environment';
 
 // const apiUrl = 'http://127.0.0.1:8000';
-const apiUrl = 'http://44.235.235.248:8000';
+const apiUrl = 'http://34.209.126.109:8000';
 export class User {
   email?: string;
   token?: string;
