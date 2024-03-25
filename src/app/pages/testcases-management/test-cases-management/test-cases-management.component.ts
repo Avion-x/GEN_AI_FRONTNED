@@ -21,6 +21,7 @@ export class TestCasesManagementComponent implements OnInit {
   public breadcrumblist:any[] = [];
   public testTypesLoader:boolean = false;
   public backUrl:string = '';
+  public tabActiveIndex: number = 0;
   public testTypesData:any[] = [];
   public selectedTestType:any;
   public selectedTestId!:any;
@@ -40,11 +41,16 @@ export class TestCasesManagementComponent implements OnInit {
   public testCategoryDeletionLoader:boolean = false;
   public testCategoryDetionSuccess:boolean = false;
   public testCategoryDetionMessage:string = '';
+  public pendingApprovalsData:any[] = [];
+  public pendingApprovalsDataLoader:boolean = false;
+  public userRole:string='';
 
   public testTypeFormState!:string;
   public testTypeFormTitle!:string;
   public testCategoryFormState!:string;
   public testCategoryFormTitle!:string;
+  public approvalPendingDetailsSideBar:boolean = false;
+  public selectedPendingApprovalTestCategory:any;
 
   testCategoryForm:FormGroup = new FormGroup({
     id: new FormControl(''),
@@ -100,13 +106,18 @@ export class TestCasesManagementComponent implements OnInit {
     public fb: FormBuilder) { }
 
   ngOnInit(): void {
+    const userData:any = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    this.loggedInUserName = userData.user_details.username
+    if(!_.isEmpty(userData)) {
+      this.userRole = userData.user_details.role_name.toLowerCase();
+    }
     this.breadcrumblist.push({'name':'Home', 'url':this.appConfig.urlHome, 'disabled':false}, {'name':'Test Settings','url':'', 'disabled':true});
     this.backUrl = this.appConfig.urlTestCasesManagement;
     this.getTestTypes();
+    this.getPendingApprovalTestCategories();
     this.setTestTypeForm();
     this.setTestCategoryForm();
-    const userData:any = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    this.loggedInUserName = userData.user_details.username
+    
   }
 
   setTestTypeForm(){
@@ -161,6 +172,28 @@ export class TestCasesManagementComponent implements OnInit {
       // });
       this.testTypesLoader = false;
       console.log('testTypes', this.testTypesData);
+    })
+  }
+
+  getPendingApprovalTestCategories() {
+    this.pendingApprovalsDataLoader = true;
+    const getProductCategory = {
+      action: 'product/pending_approval_test_categories/',
+      method: 'get',
+      // params: {
+      //   id: productId
+      // }
+    }
+    this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
+      this.pendingApprovalsData = result.data;
+      console.log('pending_approval_test_categories',result);
+      //const testCases = result.data;   
+      //this.testTypesData = [...result.data]; 
+      // testCases.forEach((item:any) => {
+      //   this.testTypes.push(item.code)
+      // });
+      this.pendingApprovalsDataLoader = false;
+      
     })
   }
 
@@ -353,47 +386,61 @@ export class TestCasesManagementComponent implements OnInit {
   }
 
   deleteTestType(selectedTestType:any) {
-    this.confirmationService.confirm({
-      message: 'Do you want to delete this record?',
-      header: 'Delete Confirmation',
-      icon: 'pi pi-info-circle',
-      accept: () => {
-        //console.log('selectedUserId', userId);
-        this.testTypeDeletionLoader = true;
-        const getUsers = {
-          action: 'product/testtypes/',
-          method: 'delete',
-          params: {
-            id: selectedTestType.id
+    console.log('selectedTestType----', selectedTestType.test_categories_count);
+    if(selectedTestType.test_categories_count == 0){
+      this.confirmationService.confirm({
+        message: 'Do you want to delete this record?',
+        header: 'Delete Confirmation',
+        icon: 'pi pi-info-circle',
+        accept: () => {
+          //console.log('selectedUserId', userId);
+          this.testTypeDeletionLoader = true;
+          const getUsers = {
+            action: 'product/testtypes/',
+            method: 'delete',
+            params: {
+              id: selectedTestType.id
+            }
           }
+          this.dataService.apiDelegate(getUsers).subscribe((result: any) => {
+            console.log('delete user', result);
+            // if(!_.isEmpty(result)){        
+            //     this.usersList = result;
+            // }
+            //this.testCategoryDetionMessage = result.message;
+            this.messageService.add({severity:'info', summary:'Confirmed', detail:result.message});
+            this.testCategoryFormSidebar = false;
+            this.getTestTypes();          
+            this.testTypeDeletionLoader = false;
+          }, error => {
+            this.testTypeDeletionLoader = false;
+            //console.log('error',error);
+          })
+            
+        },
+        reject: (type:any) => {
+            switch(type) {
+                case ConfirmEventType.REJECT:
+                    this.messageService.add({severity:'error', summary:'Rejected', detail:'You have rejected'});
+                break;
+                case ConfirmEventType.CANCEL:
+                    this.messageService.add({severity:'warn', summary:'Cancelled', detail:'You have cancelled'});
+                break;
+            }
         }
-        this.dataService.apiDelegate(getUsers).subscribe((result: any) => {
-          console.log('delete user', result);
-          // if(!_.isEmpty(result)){        
-          //     this.usersList = result;
-          // }
-          //this.testCategoryDetionMessage = result.message;
-          this.messageService.add({severity:'info', summary:'Confirmed', detail:result.message});
-          this.testCategoryFormSidebar = false;
-          this.getTestTypes();          
-          this.testTypeDeletionLoader = false;
-        }, error => {
-          this.testTypeDeletionLoader = false;
-          //console.log('error',error);
-        })
-          
-      },
-      reject: (type:any) => {
-          switch(type) {
-              case ConfirmEventType.REJECT:
-                  this.messageService.add({severity:'error', summary:'Rejected', detail:'You have rejected'});
-              break;
-              case ConfirmEventType.CANCEL:
-                  this.messageService.add({severity:'warn', summary:'Cancelled', detail:'You have cancelled'});
-              break;
-          }
-      }
-    });  
+      });  
+    } else {
+      this.confirmationService.confirm({
+        header: 'Unable to Delete Selected Test Type',
+        message:'The selected test type contains categories, hence it cannot be deleted directly.',
+        //message: 'The selected test type cannot be deleted due to its association with categories',
+        icon: 'pi pi-info-circle',
+        accept: () => {
+            //Actual logic to perform a confirmation
+        }
+      });
+    }
+    
   }
 
   public setTestCatActionMenu(selectedTestCategory:any){
@@ -477,6 +524,62 @@ export class TestCasesManagementComponent implements OnInit {
           }
       }
     });  
+  }
+
+
+  showPendingApprovalTestCategory(selectedTestCategory:any){
+    this.approvalPendingDetailsSideBar = true;
+    this.selectedPendingApprovalTestCategory = selectedTestCategory;
+    console.log('selectedTestCategory', selectedTestCategory);
+  }
+
+  approveTestCategory(){
+    const msg = 'Approve the category ' + '\"' +this.selectedPendingApprovalTestCategory.name+ '\" for the test type \"' + this.selectedPendingApprovalTestCategory.test_type_name + '\".'
+    this.confirmationService.confirm({
+      message: msg,
+      header: 'Approve Confirmation',
+      icon: 'pi pi-info-circle',
+      accept: () => {
+        //console.log('selectedUserId', userId);
+        //this.testCategoryDeletionLoader = true;
+        const getUsers = {
+          action: 'product/approve_test_category/',
+          method: 'putparam',
+          params: {
+            id: this.selectedPendingApprovalTestCategory.id
+          }
+        }
+        this.dataService.apiDelegate(getUsers).subscribe((result: any) => {
+          //console.log('delete user', result);
+          // if(!_.isEmpty(result)){        
+          //     this.usersList = result;
+          // }
+          //this.testCategoryDetionMessage = result.message;
+          this.messageService.add({severity:'info', summary:'Approved', detail:result.message});
+          this.approvalPendingDetailsSideBar = false;
+          this.getPendingApprovalTestCategories();         
+         // this.testCategoryDeletionLoader = false;
+        }, error => {
+         // this.testCategoryDeletionLoader = false;
+          //console.log('error',error);
+        })
+          
+      },
+      reject: (type:any) => {
+          switch(type) {
+              case ConfirmEventType.REJECT:
+                  this.messageService.add({severity:'error', summary:'Rejected', detail:'You have rejected'});
+              break;
+              case ConfirmEventType.CANCEL:
+                  this.messageService.add({severity:'warn', summary:'Cancelled', detail:'You have cancelled'});
+              break;
+          }
+      }
+    });  
+  }
+
+  rejectTestCategory(){
+
   }
 
   // deleteTestCategory(category:any){

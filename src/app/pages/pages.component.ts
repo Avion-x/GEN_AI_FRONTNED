@@ -38,7 +38,7 @@ export class PagesComponent implements OnInit {
     }
 
   ngOnInit(): void {
-
+    this.navList = [];
     const userData:any = JSON.parse(localStorage.getItem('currentUser') || '{}');
     console.log('----userData', userData);
     if(!_.isEmpty(userData)){
@@ -50,7 +50,7 @@ export class PagesComponent implements OnInit {
       console.log(' this.userTag',  this.currentUser);
       console.log('currentUser', this.currentUser);
 
-      if(this.currentUser.role_name === 'SUPERADMIN'){
+      if(this.currentUser.role_name.toLowerCase() === 'superadmin'){
         this.showClientLogo = false;
         this.navList = [
           {
@@ -64,7 +64,7 @@ export class PagesComponent implements OnInit {
             'url':this.appConfig.urlEnterpriseManagement
           },
         ]
-      } else if (this.currentUser.role_name === 'ADMIN' || this.currentUser.role_name === 'Admin'){
+      } else if (this.currentUser.role_name.toLowerCase() == 'admin'){
         this.navList = [
           {
             'name':'Dashboard',
@@ -92,7 +92,7 @@ export class PagesComponent implements OnInit {
             'url':this.appConfig.urlUsersList
           },
         ]
-      } else if (this.currentUser.role_name === 'user'){
+      } else if (this.currentUser.role_name.toLowerCase() === 'user'){
         this.navList = [
           {
             'name':'Dashboard',
@@ -103,7 +103,12 @@ export class PagesComponent implements OnInit {
             'name':'Test Execution',
             'icon':'bug_report',
             'url':this.appConfig.urlTestCaseManagement
-          }
+          },
+          {
+            'name':'Test Settings',
+            'icon':'psychology',
+            'url':this.appConfig.urlTestCasesManagement
+          },
         ]
       }
     }
@@ -158,10 +163,8 @@ export class PagesComponent implements OnInit {
     // this.dataService.apiDelegate(hitLogout).subscribe((result: any) => {
     //   //this.productCategoryData = result;
     //   //this.productsLoader = false;
-    //   console.log('logout', result);
-      
-    // });
-   
+    //   console.log('logout', result);      
+    // });   
     this._router.navigateByUrl('login');
   }
 

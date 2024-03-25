@@ -30,6 +30,226 @@
 </ul>
 
 <div class="content-wrapper">
+    <div class="custom-nav-tabs-header">
+        <!-- <h1 class="main-title">Tabs List</h1> -->
+        <div class="nav-tabs-container" *ngIf="userRole == 'admin'">
+            <button class="nav-tab btn" (click)="tabActiveIndex = 0" [ngClass]="tabActiveIndex === 0 ? 'active':''">Test Types</button>
+            <button class="nav-tab btn" (click)="tabActiveIndex = 1" [ngClass]="tabActiveIndex === 1 ? 'active':''">Pending Approvals</button>
+        </div>        
+    </div>
+    <div class="custom-nav-tabs-container">
+    <p-tabView [(activeIndex)]="tabActiveIndex">
+        <p-tabPanel header="Test Types">
+            <div class="content-loader" *ngIf="testTypesLoader">
+                <i class="pi pi-spin pi-spinner"></i>
+                <span>Loading Test Types...</span>
+            </div>
+            <div class="table-container table-selection-list" *ngIf="!testTypesLoader">
+                <p-table #testTypesTable class="selectableTable expantionTable" [value]="testTypesData" [globalFilterFields]="['code','description','valid_till','created_at', 'last_updated_at', 'last_updated_by']">
+                    <ng-template pTemplate="caption">
+                        <div class="table-title-with-search">
+                            <div class="title">Test Types
+                                <!-- <div class="count">{{testTypesData.length}}</div> -->
+                            </div>
+                            <div class="right-section">   
+                                <div class="search-box">
+                                    <i class="pi pi-search"></i>
+                                    <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
+                                    <input pInputText type="text" #filter (input)="testTypesTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
+                                </div>
+                                <button class="btn primary-btn" *ngIf="userRole == 'admin'" (click)="showTestTypeForm()">
+                                    <span class="material-symbols-rounded icon">add</span>
+                                   Add New Test Type
+                                </button>
+                            </div>
+                        </div>                
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th class="tdFirstCol"></th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Valid Till</th>
+                            <!-- <th>Comments</th> -->
+                            <th>Created At</th>                   
+                            <th>Last updated At</th>
+                            <th>Last Updated By</th>
+                            <th style="width: 50px; min-width: 50px; max-width: 50px;"></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-testType>
+                        <tr [ngClass]="{'active': selectedTestId === testType.id}">
+                            <td (click)="getTestTypeCategory(testType)" class="tdFirstCol"></td>
+                            <td (click)="getTestTypeCategory(testType)">{{testType.code}}</td>
+                            <td (click)="getTestTypeCategory(testType)">{{testType.description}}</td>
+                            <td (click)="getTestTypeCategory(testType)" class="td-uppercase">{{testType.status==true?'Active':'Inactive'}}</td>
+                            <td (click)="getTestTypeCategory(testType)">{{testType.valid_till}}</td>
+                            <!-- <td>{{testType.comments}}</td> -->
+                            <td (click)="getTestTypeCategory(testType)">{{testType.created_at}}</td>
+                            <td (click)="getTestTypeCategory(testType)">{{testType.last_updated_at}}</td>
+                            <td (click)="getTestTypeCategory(testType)">{{testType.last_updated_by}}</td>
+                            <td style="width: 50px; min-width: 50px; max-width: 50px;">
+                                <button type="button" class="td-menu-btn" (click)="mainActionMenu.toggle($event); setTestTypeActionMenu(testType)">
+                                    <span class="material-symbols-rounded icon">more_vert</span>
+                                </button>                        
+                            </td>
+                        </tr>
+                        <tr [id]="'tableExpantion'+testType.id" class="expantionPanel" *ngIf="'tableExpantion'+testType.id == 'tableExpantion'+selectedTestId">
+                            <td class="expantionPanel-tableData" colspan="9">
+                                <div class="expanded-table">
+                                    <div class="content-loader" *ngIf="testCategoriesLoader">
+                                        <i class="pi pi-spin pi-spinner"></i>
+                                        <span>Loading Test Categories...</span>
+                                    </div>
+                                    <div class="noData" *ngIf="!testCategoriesLoader && testTypeCategories?.length == 0">
+                                        No Categories found for {{testType.description}}
+                                        <div class="table-title-with-search">
+                                            <div class="title"></div>
+                                            <div class="right-section">   
+                                                <div class="search-box">
+                                                </div>
+                                                <button class="btn primary-btn" (click)="showCreateTestCategoryForm()">
+                                                    <span class="material-symbols-rounded icon">add</span>
+                                                    Add Test Category
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>                       
+                                    <div class="table-container table-selection-list" *ngIf="!testCategoriesLoader && testTypeCategories?.length !== 0">
+                                        <p-table #testTypeCategoryTable class="selectableTable noHover" [value]="testTypeCategories" 
+                                        [globalFilterFields]="['name','description','valid_till','created_at','approved_by_name', 'last_updated_at', 'last_updated_by_name']" [paginator]="true" [alwaysShowPaginator]="false" paginatorPosition="bottom" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                                            <ng-template pTemplate="caption">
+                                                <div class="table-title-with-search">
+                                                    <div class="title">Test Categories of {{testType.description}}<div class="count">{{testTypeCategories.length}}</div></div>
+                                                    <div class="right-section">   
+                                                        <div class="search-box">
+                                                            <i class="pi pi-search"></i>
+                                                            <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
+                                                            <input pInputText type="text" #filter (input)="testTypeCategoryTable.filterGlobal(filter.value, 'contains')" placeholder="Test Category Search" />
+                                                        </div>
+                                                        <button class="btn primary-btn" (click)="showCreateTestCategoryForm()">
+                                                            <span class="material-symbols-rounded icon">add</span>
+                                                            Add Test Category
+                                                        </button>
+                                                    </div>
+                                                </div>                
+                                            </ng-template>
+                                            <ng-template pTemplate="header">
+                                                <tr>
+                                                    <th style="width: 200px; min-width:200px; max-width:200px">Name</th>
+                                                    <th style="width: 200px; min-width:200px; max-width:200px">Description</th>
+                                                    <th style="width: 100px; min-width:100px; max-width:100px">Status</th>
+                                                    <th style="width: 120px; min-width:120px; max-width:120px">Is Approved</th>
+                                                    <th>Valid till</th>  
+                                                    <!-- <th style="width: 250px; min-width:250px; max-width:250px">Comments</th> -->
+                                                    <th>Created At</th>
+                                                    <th>Approved By</th>
+                                                    <th>Last Updated At</th>
+                                                    <th>Last Updated By</th>  
+                                                    <th style="width: 50px; min-width: 50px; max-width: 50px;"></th>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="body" let-testCategory>
+                                                <tr>
+                                                    <td style="width: 200px; min-width:200px; max-width:200px">{{testCategory.name}}</td>
+                                                    <td style="width: 200px; min-width:200px; max-width:200px">{{testCategory.description}}</td>
+                                                    <td style="width: 100px; min-width:100px; max-width:100px"class="td-uppercase">{{testCategory.status==true?'Active':'Inactive'}}</td>
+                                                    <td style="width: 120px; min-width:120px; max-width:120px">
+                                                        <div class="tdChip" [ngClass]="testCategory.is_approved==true?'approved':'pending'">{{testCategory.is_approved==true?'Approved':'Pending'}}</div>                                
+                                                    </td>
+                                                    <td>{{testCategory.valid_till}}</td>
+                                                    <!-- <td style="width: 250px; min-width:250px; max-width:250px">{{testCategory.comments}}</td> -->
+                                                    <td>{{testCategory.created_at}}</td>
+                                                    <td>{{testCategory.approved_by_name}}</td>
+                                                    <td>{{testCategory.last_updated_at}}</td>
+                                                    <td>{{testCategory.last_updated_by_name}}</td>
+                                                    <td style="width: 50px; min-width: 50px; max-width: 50px;">
+                                                        <button type="button" class="td-menu-btn" [disabled]="!testCategory.is_approved" (click)="subActionMenu.toggle($event); setTestCatActionMenu(testCategory)">
+                                                            <span class="material-symbols-rounded icon">more_vert</span>
+                                                        </button>                        
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="Test Categories waiting for approval">
+            <div class="content-loader" *ngIf="pendingApprovalsDataLoader">
+                <i class="pi pi-spin pi-spinner"></i>
+                <span>Loading Approval Pending Test Categories...</span>
+            </div>
+            <div class="table-container table-selection-list" *ngIf="!pendingApprovalsDataLoader">
+                <p-table #pendingApprovelTestCategoriesTable class="selectableTable" [value]="pendingApprovalsData" 
+                [globalFilterFields]="['name','test_type_name','description','valid_till', 'created_at', 'last_updated_at', 'last_updated_by_name']">
+                    <ng-template pTemplate="caption">
+                        <div class="table-title-with-search">
+                            <div class="title">Test Categories
+                                <!-- <div class="count">{{testTypesData.length}}</div> -->
+                            </div>
+                            <div class="right-section">   
+                                <div class="search-box">
+                                    <i class="pi pi-search"></i>
+                                    <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
+                                    <input pInputText type="text" #filter (input)="pendingApprovelTestCategoriesTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
+                                </div>
+                                <!-- <button class="btn primary-btn" (click)="showTestTypeForm()">
+                                    <span class="material-symbols-rounded icon">add</span>
+                                   Add New Test Type
+                                </button> -->
+                            </div>
+                        </div>                
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th class="tdFirstCol"></th>
+                            <th>Category Name</th>
+                            <th>Test Type</th>                            
+                            <th>Description</th>
+                            <th>Is Approved</th>
+                            <th>Status</th>
+                            <th>Valid Till</th>
+                            <!-- <th>Comments</th> -->
+                            <th>Created At</th>                   
+                            <th>Last updated At</th>
+                            <th>Last Updated By</th>
+                            <!-- <th style="width: 50px; min-width: 50px; max-width: 50px;"></th> -->
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-testcategory>
+                        <tr (click)="showPendingApprovalTestCategory(testcategory)">
+                            <td class="tdFirstCol"></td>
+                            <td>{{testcategory.name}}</td>
+                            <td>{{testcategory.test_type_name}}</td>                            
+                            <td>{{testcategory.description}}</td>
+                            <td>
+                                <div class="tdChip" [ngClass]="testcategory.is_approved==true?'approved':'pending'">{{testcategory.is_approved==true?'Approved':'Pending'}}</div>                                
+                            </td>
+                            <td class="td-uppercase">{{testcategory.status==true?'Active':'Inactive'}}</td>
+                            <td>{{testcategory.valid_till}}</td>
+                            <!-- <td>{{testType.comments}}</td> -->
+                            <td>{{testcategory.created_at}}</td>
+                            <td>{{testcategory.last_updated_at}}</td>
+                            <td>{{testcategory.last_updated_by_name}}</td>
+                            <!-- <td style="width: 50px; min-width: 50px; max-width: 50px;">
+                                <button type="button" class="td-menu-btn" (click)="mainActionMenu.toggle($event); setTestTypeActionMenu(testType)">
+                                    <span class="material-symbols-rounded icon">more_vert</span>
+                                </button>                        
+                            </td> -->
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </p-tabPanel>
+    </p-tabView>
+    </div>
+
     <p-menu #mainActionMenu [popup]="true" [model]="mainActionMenuItems"></p-menu>
     <p-menu #subActionMenu [popup]="true" [model]="subActionMenuItems"></p-menu>
 
@@ -38,140 +258,7 @@
             <i [class]="item.icon"></i>
         </ng-template>
     </p-selectButton> -->
-    <div class="content-loader" *ngIf="testTypesLoader">
-        <i class="pi pi-spin pi-spinner"></i>
-        <span>Loading Test Types...</span>
-    </div>
-    <div class="table-container table-selection-list" *ngIf="!testTypesLoader">
-        <p-table #testTypesTable class="selectableTable expantionTable" [value]="testTypesData" [globalFilterFields]="['product_category','sub_category','created_at','customer', 'valid_till', 'comments']">
-            <ng-template pTemplate="caption">
-                <div class="table-title-with-search">
-                    <div class="title">Test Types
-                        <!-- <div class="count">{{testTypesData.length}}</div> -->
-                    </div>
-                    <div class="right-section">   
-                        <div class="search-box">
-                            <i class="pi pi-search"></i>
-                            <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
-                            <input pInputText type="text" #filter (input)="testTypesTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
-                        </div>
-                        <button class="btn primary-btn" (click)="showTestTypeForm()">
-                            <span class="material-symbols-rounded icon">add</span>
-                           Add New Test Type
-                        </button>
-                    </div>
-                </div>                
-            </ng-template>
-            <ng-template pTemplate="header">
-                <tr>
-                    <th class="tdFirstCol"></th>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th>Valid Till</th>
-                    <!-- <th>Comments</th> -->
-                    <th>Created At</th>                   
-                    <th>Last updated At</th>
-                    <th>Last Updated By</th>
-                    <th style="width: 50px; min-width: 50px; max-width: 50px;"></th>
-                </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-testType>
-                <tr [ngClass]="{'active': selectedTestId === testType.id}">
-                    <td (click)="getTestTypeCategory(testType)" class="tdFirstCol"></td>
-                    <td (click)="getTestTypeCategory(testType)">{{testType.code}}</td>
-                    <td (click)="getTestTypeCategory(testType)">{{testType.description}}</td>
-                    <td (click)="getTestTypeCategory(testType)" class="td-uppercase">{{testType.status==true?'Active':'Inactive'}}</td>
-                    <td (click)="getTestTypeCategory(testType)">{{testType.valid_till}}</td>
-                    <!-- <td>{{testType.comments}}</td> -->
-                    <td (click)="getTestTypeCategory(testType)">{{testType.created_at}}</td>
-                    <td (click)="getTestTypeCategory(testType)">{{testType.last_updated_at}}</td>
-                    <td (click)="getTestTypeCategory(testType)">{{testType.last_updated_by}}</td>
-                    <td style="width: 50px; min-width: 50px; max-width: 50px;">
-                        <button type="button" class="td-menu-btn" (click)="mainActionMenu.toggle($event); setTestTypeActionMenu(testType)">
-                            <span class="material-symbols-rounded icon">more_vert</span>
-                        </button>                        
-                    </td>
-                </tr>
-                <tr [id]="'tableExpantion'+testType.id" class="expantionPanel" *ngIf="'tableExpantion'+testType.id == 'tableExpantion'+selectedTestId">
-                    <td class="expantionPanel-tableData" colspan="9">
-                        <div class="expanded-table">
-                            <div class="content-loader" *ngIf="testCategoriesLoader">
-                                <i class="pi pi-spin pi-spinner"></i>
-                                <span>Loading Test Categories...</span>
-                            </div>
-                            <div class="noData" *ngIf="!testCategoriesLoader && testTypeCategories?.length == 0">
-                                No Categories found for {{testType.description}}
-                                <div class="table-title-with-search">
-                                    <div class="title"></div>
-                                    <div class="right-section">   
-                                        <div class="search-box">
-                                        </div>
-                                        <button class="btn primary-btn" (click)="showCreateTestCategoryForm()">
-                                            <span class="material-symbols-rounded icon">add</span>
-                                            Add Test Category
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>                       
-                            <div class="table-container table-selection-list" *ngIf="!testCategoriesLoader && testTypeCategories?.length !== 0">
-                                <p-table #testTypeCategoryTable class="selectableTable noHover" [value]="testTypeCategories" [globalFilterFields]="['id','product_category','sub_category','created_at','customer', 'valid_till', 'comments']" [paginator]="true" [alwaysShowPaginator]="false" paginatorPosition="bottom" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
-                                    <ng-template pTemplate="caption">
-                                        <div class="table-title-with-search">
-                                            <div class="title">Test Categories of {{testType.description}}<div class="count">{{testTypeCategories.length}}</div></div>
-                                            <div class="right-section">   
-                                                <div class="search-box">
-                                                    <i class="pi pi-search"></i>
-                                                    <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
-                                                    <input pInputText type="text" #filter (input)="testTypeCategoryTable.filterGlobal(filter.value, 'contains')" placeholder="Sub Category Search" />
-                                                </div>
-                                                <button class="btn primary-btn" (click)="showCreateTestCategoryForm()">
-                                                    <span class="material-symbols-rounded icon">add</span>
-                                                    Add Test Category
-                                                </button>
-                                            </div>
-                                        </div>                
-                                    </ng-template>
-                                    <ng-template pTemplate="header">
-                                        <tr>
-                                            <th style="width: 200px; min-width:200px; max-width:200px">Name</th>
-                                            <th style="width: 200px; min-width:200px; max-width:200px">Description</th>
-                                            <th style="width: 100px; min-width:100px; max-width:100px">Status</th>
-                                            <th style="width: 100px; min-width:100px; max-width:100px">Is Approved</th>
-                                            <th>Valid till</th>  
-                                            <!-- <th style="width: 250px; min-width:250px; max-width:250px">Comments</th> -->
-                                            <th>Created At</th>
-                                            <th>Last Updated At</th>
-                                            <th>Last Updated By</th>  
-                                            <th style="width: 50px; min-width: 50px; max-width: 50px;"></th>
-                                        </tr>
-                                    </ng-template>
-                                    <ng-template pTemplate="body" let-testCategory>
-                                        <tr>
-                                            <td style="width: 200px; min-width:200px; max-width:200px">{{testCategory.name}}</td>
-                                            <td style="width: 200px; min-width:200px; max-width:200px">{{testCategory.description}}</td>
-                                            <td style="width: 100px; min-width:100px; max-width:100px"class="td-uppercase">{{testCategory.status==true?'Active':'Inactive'}}</td>
-                                            <td style="width: 100px; min-width:100px; max-width:100px">{{testCategory.is_approved==true?'Yes':'No'}}</td>
-                                            <td>{{testCategory.valid_till}}</td>
-                                            <!-- <td style="width: 250px; min-width:250px; max-width:250px">{{testCategory.comments}}</td> -->
-                                            <td>{{testCategory.created_at}}</td>
-                                            <td>{{testCategory.last_updated_at}}</td>
-                                            <td>{{testCategory.last_updated_by_name}}</td>
-                                            <td style="width: 50px; min-width: 50px; max-width: 50px;">
-                                                <button type="button" class="td-menu-btn" (click)="subActionMenu.toggle($event); setTestCatActionMenu(testCategory)">
-                                                    <span class="material-symbols-rounded icon">more_vert</span>
-                                                </button>                        
-                                            </td>
-                                        </tr>
-                                    </ng-template>
-                                </p-table>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </ng-template>
-        </p-table>
-    </div>
+    
 
     <p-sidebar [(visible)]="testTypeFormSidebar"  class="sidebar-section" [style]="{width:'30%'}" position="right">
         <ng-template pTemplate="header">{{testTypeFormTitle}}</ng-template>
@@ -297,6 +384,57 @@
         
     </p-sidebar>
 
+    <p-sidebar [(visible)]="approvalPendingDetailsSideBar" class="sidebar-section" [style]="{width:'30%'}" position="right">
+        <ng-template pTemplate="header">Details of <span class="clr-primary">{{selectedPendingApprovalTestCategory.name}}</span> </ng-template>
+        <ng-template pTemplate="content">
+            <div class="sideBarContent">                
+                <div class="sidebarFields">
+                    <div class="field">
+                        <label for="">Category Name</label>
+                        <span>{{selectedPendingApprovalTestCategory.name}}</span>
+                    </div>
+                    <div class="field">
+                        <label for="">Test Type Name</label>
+                        <span>{{selectedPendingApprovalTestCategory.test_type_name}}</span>
+                    </div>
+                    <div class="field">
+                        <label for="">Description</label>
+                        <span>{{selectedPendingApprovalTestCategory.description}}</span>
+                    </div>
+                    <div class="field">
+                        <label for="">Status</label>
+                        <span>{{selectedPendingApprovalTestCategory.status}}</span>
+                    </div>
+                    <div class="field">
+                        <label for="">Valid Till</label>
+                        <span>{{selectedPendingApprovalTestCategory.valid_till}}</span>
+                    </div>
+                    <div class="field">
+                        <label for="">Created At</label>
+                        <span>{{selectedPendingApprovalTestCategory.created_at}}</span>
+                    </div>
+                    <div class="field">
+                        <label for="">last_updated_at</label>
+                        <span>{{selectedPendingApprovalTestCategory.last_updated_at}}</span>
+                    </div>
+                    <div class="field">
+                        <label for="">last_updated_by_name</label>
+                        <span>{{selectedPendingApprovalTestCategory.last_updated_by_name}}</span>
+                    </div>
+                    <!-- <div class="field">
+                        <label for="">Comments</label>
+                        <span>{{selectedPendingApprovalTestCategory.comments}}</span>
+                    </div> -->
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="pageActions">
+                <button class="btn secondary-btn" (click)="rejectTestCategory()" disabled>Reject</button>
+                <button class="btn primary-btn" (click)="approveTestCategory()">Approve</button>
+            </div>
+        </ng-template>
+    </p-sidebar>
 </div>
 <p-toast></p-toast>
 <p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

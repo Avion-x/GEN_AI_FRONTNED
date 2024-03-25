@@ -355,7 +355,17 @@ input::-ms-input-placeholder {
                         td{
                             color: #fff;
                             .td-menu-btn{
-                              &:hover{
+                              &[disabled]{
+                                opacity: 0.5;
+                                cursor:default;
+                                :hover{
+                                  background: #fff;
+                                  .icon{
+                                    color: vars.$secondary-color;
+                                  }
+                                }
+                              }
+                              &:not(disabled):hover{
                                 background: vars.$primary-dark;
                               }
                               .icon{
@@ -373,7 +383,7 @@ input::-ms-input-placeholder {
                         td{
                             color: #fff;
                             .td-menu-btn{
-                              &:hover{
+                              &:not(disabled):hover{
                                 background: vars.$primary-dark;
                               }
                               .icon{
@@ -389,19 +399,38 @@ input::-ms-input-placeholder {
             .p-datatable{
                 .p-datatable-tbody{
                     tr{
-                        cursor:default;                                              
+                        cursor:default;  
+                        td{
+                          .td-menu-btn{
+                            &[disabled]{
+                              opacity: 0.5;
+                              cursor:default;
+                            }
+                          }
+                        }                                            
                         &:hover {
                             background: rgba(255, 255, 255, 1) !important;
                             td{
                               color: vars.$td-color !important;
                               .td-menu-btn {
-                                span.icon{
-                                  color: vars.$secondary-color !important;
+                                &[disabled]{
+                                  opacity: 0.5;
+                                  cursor:default;
+                                  &:hover{
+                                    background: transparent;
+                                    span.icon{
+                                      color: vars.$secondary-color !important;
+                                    }
+                                  }
                                 }
-                                &:hover{
+                                &:not(disabled):hover{
+                                  background: vars.$primary-dark;
                                   span.icon{
                                     color: #fff !important;
                                   }
+                                }
+                                span.icon{
+                                  color: vars.$secondary-color !important;
                                 }
                               }
                             }  
@@ -1101,6 +1130,11 @@ input::-ms-input-placeholder {
 
 .sidebar-section{
   .p-sidebar{
+    .p-sidebar-header{
+      span{
+        margin-left: 5px;
+      }
+    }
     .p-sidebar-content{
       padding: 0px;
       //background: vars.$body-bg;
@@ -1725,4 +1759,14 @@ input::-ms-input-placeholder {
       }
     }
   }
+}
+
+.tdChip{
+  padding: 1px 10px 3px;
+  border-radius: 30px;
+  font-size: 12px;  
+  background: rgba(91,84,187,0.2);
+  color: vars.$primary-color;
+  font-weight: 600;
+  display: inline-flex;
 }

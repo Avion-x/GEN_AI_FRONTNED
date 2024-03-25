@@ -18,7 +18,8 @@ import { environment } from 'src/environments/environment';
 
 // const appUrl = 'http://127.0.0.1:8000/';
 //const appUrl = 'http://44.235.235.248:8000/';
-const appUrl = environment.apiUrl;
+const url = environment.apiUrl;
+console.log('environment.apiUrl---', environment.apiUrl);
 //const appUrl = 'https://1436-49-206-36-248.ngrok-free.app/';
 
 @Injectable({
@@ -29,7 +30,7 @@ export class DataService {
   public token:any = '';
   public currentUser:any;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private authService:AuthService) {
     // this.authenticationService.user.subscribe(user => this.currentUser = user);
     // console.log('currentUser', this.currentUser)
   }
@@ -55,10 +56,11 @@ export class DataService {
     //   next: HttpHandler
     // ): Observable<HttpEvent<any>> {
     //   const { token } = this.authService.userValue;
+    //   console.log('----token-----', token);
     //   if (token) {
     //     request = request.clone({
     //       setHeaders: {
-    //         Authorization: `Bearer ${token}`,
+    //         Authorization: `Token ${token}`,
     //       },
     //     });
     //   }
@@ -95,24 +97,27 @@ export class DataService {
     const httpOptions = {
       params: req.params
     };
+    console.log('----------url', url);
     //const url = `${this.baseUrl}`;
     //const url = window.location.protocol + "//" + window.location.host + "/api/";
    // const url = 'http://127.0.0.1:5000/api/'
     switch (req.method.toLowerCase()) {
       case 'get':
-        return this.httpClient.get(appUrl + req.action, httpOptions).pipe(retry(2), catchError(this.handleError));
+        return this.httpClient.get(url + req.action, httpOptions).pipe(retry(2), catchError(this.handleError));
       case 'post':
-        return this.httpClient.post(appUrl + req.action, req.data);
+        return this.httpClient.post(url + req.action, req.data);
       case 'put':
-        return this.httpClient.put(appUrl + req.action, req.data).pipe(retry(2), catchError(this.handleError));
+        return this.httpClient.put(url + req.action, req.data).pipe(retry(2), catchError(this.handleError));
+      case 'putparam':
+        return this.httpClient.put(url + req.action, req.data, httpOptions).pipe(retry(2), catchError(this.handleError));
       case 'patch':
-        return this.httpClient.patch(appUrl + req.action, req.data).pipe(retry(2), catchError(this.handleError));
+        return this.httpClient.patch(url + req.action, req.data).pipe(retry(2), catchError(this.handleError));
       case 'delete':
-        return this.httpClient.delete(appUrl + req.action, httpOptions).pipe(retry(2), catchError(this.handleError));
+        return this.httpClient.delete(url + req.action, httpOptions).pipe(retry(2), catchError(this.handleError));
       case 'download':
-        return this.httpClient.get(appUrl + req.action, {responseType: 'arraybuffer', params: req.params});
+        return this.httpClient.get(url + req.action, {responseType: 'arraybuffer', params: req.params});
       default:
-        return this.httpClient.get(appUrl + req.action, httpOptions).pipe(retry(2), catchError(this.handleError));
+        return this.httpClient.get(url + req.action, httpOptions).pipe(retry(2), catchError(this.handleError));
     }
   }
 }

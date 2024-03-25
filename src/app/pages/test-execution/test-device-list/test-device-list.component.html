@@ -79,8 +79,8 @@
                     <span>Loading All Devices List...</span>
                 </div>
                 <div class="table-container table-selection-list" *ngIf="!productsLoader">
-
-                    <p-table #allDevicesTable class="selectableTable" [value]="productsData" (onFilter)="onFiltering($event)" [globalFilterFields]="['id','product_code','main_category_name','sub_category_name','customer_name', 'valid_till']">
+                    <p-table #allDevicesTable class="selectableTable" [value]="productsData" (onFilter)="onFiltering($event)" 
+                    [globalFilterFields]="['product_code','main_category_name','sub_category_name','test_types.name', 'valid_till','created_at', 'last_updated_at', 'last_updated_by_name']">
                         <ng-template pTemplate="caption">
                             <div class="table-title-with-search">
                                 <div class="title">                                    
@@ -198,7 +198,8 @@
                     <span>Loading Ready To Test Devices...</span>
                 </div>
                 <div class="table-container table-selection-list" *ngIf="!readytoTestDevicesLoader">
-                    <p-table #readyToTestTable [value]="readyToTestDevices" [globalFilterFields]="['product_code','main_category_name','sub_category','test_types.name','created_at','last_updated_at','last_updated_by_name', 'valid_till', 'comments']">
+                    <p-table #readyToTestTable [value]="readyToTestDevices" 
+                    [globalFilterFields]="['product_code','main_category_name','sub_category_name','test_types.name','valid_till','created_at','last_updated_at','last_updated_by_name']">
                         <ng-template pTemplate="caption">
                             <div class="table-title-with-search">
                                 <div class="title">                                    

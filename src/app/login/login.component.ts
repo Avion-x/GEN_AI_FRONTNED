@@ -99,6 +99,8 @@ onSubmit() {
     if(result.token){
       localStorage.removeItem('currentUser');
       localStorage.setItem('currentUser', JSON.stringify(result));
+      const userData:any = localStorage.getItem('currentUser')
+      console.log('userData----',JSON.parse(userData));
      // this.authenticationService.userSubject = JSON.stringify(result);
       const returnUrl = '/home'
       this.router.navigateByUrl(returnUrl);
@@ -106,7 +108,7 @@ onSubmit() {
       this.errorMessage = result.error;
       this.loading = false;
     }
-  }, error => {
+  }, (error:any) => {
     console.log('Login Error:', error);
     //this.apolloMetaMenuLoade = false;
     this.loading = false;

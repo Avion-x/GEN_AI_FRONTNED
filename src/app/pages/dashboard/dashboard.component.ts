@@ -20,7 +20,8 @@ export class DashboardComponent implements OnInit {
   constructor(private dataService:DataService) { }
 
   ngOnInit(): void {
-    this.getProductsCat();
+    this.getWidgets();
+    this.getMoreDetails('total_devices');
     // this.widgetsTopSection = [
     //   {
     //     title:'Total Devices',
@@ -149,7 +150,7 @@ export class DashboardComponent implements OnInit {
     };
   }
 
-  getProductsCat(){
+  getWidgets(){
     this.widgetsLoader = true;
     const getProductCategory = {
       action: 'product/dashboard_kpi/',
@@ -162,6 +163,24 @@ export class DashboardComponent implements OnInit {
       //this.productCategoryData = result;
       this.widgetsTopSection = result.data;
       this.widgetsLoader = false;
+      //console.log('this.productCategoryData', this.productCategoryData);
+    })
+  }
+
+  getMoreDetails(seletedWidgets:any){
+    //this.widgetsLoader = true;
+    const getProductCategory = {
+      action: 'product/dashboard_chart/',
+      method: 'get',
+      params: {
+        chart_data_point: seletedWidgets
+      }
+    }
+    this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
+      //this.productCategoryData = result;
+      console.log('result', result);
+      //this.widgetsTopSection = result.data;
+      //this.widgetsLoader = false;
       //console.log('this.productCategoryData', this.productCategoryData);
     })
   }

@@ -8,6 +8,8 @@ import { environment } from 'src/environments/environment';
 // const apiUrl = 'http://127.0.0.1:8000';
 //const apiUrl = 'http://44.235.235.248:8000';
 const apiUrl = environment.apiUrl;
+console.log('environment.apiUrl', environment.apiUrl);
+
 export class User {
   email?: string;
   token?: string;
@@ -33,13 +35,15 @@ export class AuthService {
     return this.userSubject.value;
   }
 
-  // async getUserInfo(){
-  //   const userInfo =  await JSON.parse(localStorage.getItem('currentUser') || '{}');
-  //   return userInfo
-  // }
+  async getUserInfo(){
+    const userInfo =  await JSON.parse(localStorage.getItem('currentUser') || '{}');
+    return userInfo
+  }
 
 
   login(username: string, password: string) {
+    // alert(apiUrl);
+    // console.log('---------', apiUrl);
     return this.http
       .post<any>(`${apiUrl}/login/`, { username: username, password: password })
       .pipe(
