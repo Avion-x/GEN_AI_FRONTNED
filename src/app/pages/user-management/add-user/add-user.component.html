@@ -1,0 +1,209 @@
+<div class="page-container-header">
+    <div class="title-section">
+            <button class="backBtn" [routerLink]="backUrl" [disabled]="backUrl.length == 0">
+                <span class="material-symbols-rounded">arrow_back</span>
+            </button>
+            <div class="title-container">
+                <h1 class="title">
+                   {{pageTitle}}
+                </h1>
+                <h2 class="sub-title">
+                    <span>{{subTitle}}</span>
+                    <!-- <span *ngIf="productSubCategory"><i class="icofont-simple-right"></i></span>
+                    <span *ngIf="productSubCategory">{{productSubCategory.sub_category}}</span> -->
+                </h2>
+            </div>
+    </div>
+    
+    <div class="header-right-section">
+        <!-- <button class="btn" (click)="generateTestCases()">Generate Test Cases</button> -->
+    </div>
+</div>
+<ul class="breadcrumb">
+    <li *ngFor="let item of breadcrumblist">
+        <button class="btn home" *ngIf="item.name == 'Home'" [routerLink]="item.url" [disabled]="item.disabled"> 
+            <i class="material-symbols-rounded">home</i> 
+        </button>
+        <button class="btn" *ngIf="item.name !== 'Home'" [routerLink]="item.url" [disabled]="item.disabled"> {{item.name}} </button>
+    </li>    
+    <!-- <li><button class="btn" disabled> Devices </button></li> -->
+</ul>
+
+<div class="content-wrapper">
+
+    <h1 class="main-title">{{formTitle}}</h1>
+    
+    <div class="card">
+        <div class="form-container col4 validateUserSection" *ngIf="formState !== 'editUser'">
+            <div class="field p-float-label">
+                <input id="userName" class="ng-invalid ng-dirty" (keyup)="validateRegularExpression()" [(ngModel)]="usernameValue" type="text" pInputText [ngClass]="{'ng-invalid':usernameValue == '', 'ng-dirty':validateRegex}"> 
+                <label for="userName">Username</label>
+                <div class="usernameAvailabelMessage" *ngIf="!userNameValidation && userNameSubmitted"><i class="pi pi-check-circle"></i> Congrats! The Username is available.</div>
+                <div class="usernameErrorMessage" *ngIf="userNameValidation && userNameSubmitted"><i class="pi pi-exclamation-circle"></i> This Username is taken. Try another.</div>
+                <!-- <small class="p-error block">Username is not available.</small> -->
+                <ul class="userNameDirty" *ngIf="!validateRegex && usernameValue !== ''">
+                    <li>Does not start with a number.</li>
+                    <li>Contains at least one letter.</li>
+                    <li>Contains only alphanumeric characters (letters and digits).</li>
+                    <li>Is between 8 and 20 characters in length.</li>
+                </ul>
+            </div>
+            <button class="btn primary-btn" (click)="validateUserName()">
+                <span class="material-symbols-rounded icon">how_to_reg</span>
+                Validate
+            </button>
+        </div>
+        <form [formGroup]="userForm" class="form-container col4">
+            <div class="end-row"></div>
+
+            <!-- <p-fileUpload name="myfile[]" url="https://www.primefaces.org/cdn/api/upload.php"  accept="image/*"  (onUpload)="fileChangeEvent($event)" ></p-fileUpload> -->
+
+            <!-- <input type="file" accept=".jpg, .jpeg, .png" (change)="fileChangeEvent($event)" />
+
+            <image-cropper
+                [imageChangedEvent]="imageChangedEvent"
+                [maintainAspectRatio]="true"
+                [aspectRatio]="2 / 2"
+                format="png"
+                (imageCropped)="imageCropped($event)"
+                (imageLoaded)="imageLoaded($event)"
+                (cropperReady)="cropperReady($event)"
+                (loadImageFailed)="loadImageFailed()"
+            ></image-cropper>
+
+            <img [src]="croppedImage" /> -->
+
+            <div class="field p-float-label">
+                <input id="firstName"  formControlName="first_name" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['first_name'].errors }"> 
+                <label for="firstName">First Name</label>
+                <div *ngIf="submitted && f['first_name'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['first_name'].errors['required']">First Name is required</div>
+                </div>
+                <!-- <div *ngIf="formSubmitted && f['first_name'].errors" class="invalid-feedback">
+                    <div *ngIf="f['first_name'].errors['required']">First Name is required</div>
+                </div> -->
+                <!-- <small class="p-error block" *ngIf="userForm.get('firstName')?.invalid && userForm.get('firstName')?.dirty">
+                 First name is required
+                </small> -->
+            </div>
+            <div class="field p-float-label">
+                <input id="lastName" formControlName="last_name" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['last_name'].errors }"> 
+                <label for="lastName">Last Name</label>
+                <div *ngIf="submitted && f['last_name'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['last_name'].errors['required']">Last Name is required</div>
+                </div>
+            </div>
+            <div class="field p-float-label">
+                <input id="email" required formControlName="email" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"> 
+                <label for="email">Email</label>
+                <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['email'].errors['required']">Email is required</div>
+                    <div class="p-error" *ngIf="f['email'].errors['email']">Email is invalid</div>
+                </div>
+            </div>
+            <div class="field p-float-label">
+                <!-- <input id="roleName" formControlName="role_name" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['role_name'].errors }">  -->
+                <p-dropdown [options]="rolesList" formControlName="role_name" placeholder="Select a Role" [ngClass]="{ 'is-invalid': submitted && f['role_name'].errors }"></p-dropdown>
+                <label for="roleName">Role Name</label>
+                <div *ngIf="submitted && f['role_name'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['role_name'].errors['required']">Role Name is required</div>
+                </div>
+            </div>         
+            <div class="field p-float-label">
+                <!-- <input id="isActive" formControlName="is_active" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                <p-dropdown [options]="booleanOptions" formControlName="is_active" optionLabel="name" optionValue="value" placeholder="Select an Option" [ngClass]="{ 'is-invalid': submitted && f['is_active'].errors }"></p-dropdown>
+                <label for="isActive">Is Active</label>
+                <div *ngIf="submitted && f['is_active'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['is_active'].errors['required']">Is Active is required</div>
+                </div>
+            </div>
+            <div class="field p-float-label">
+                <!-- <input id="isStaff" formControlName="is_staff" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                <p-dropdown [options]="booleanOptions" formControlName="is_staff" optionLabel="name" optionValue="value" placeholder="Select an Option" [ngClass]="{ 'is-invalid': submitted && f['is_staff'].errors }"></p-dropdown>
+                <label for="isStaff">Is Staff</label>
+                <div *ngIf="submitted && f['is_staff'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['is_staff'].errors['required']">Is Staff is required</div>
+                </div>
+            </div>
+            <div class="field p-float-label position-relative">
+                <p-calendar formControlName="valid_till" dateFormat="yy-mm-dd" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && f['valid_till'].errors }"></p-calendar>
+                <!-- <input id="validTill" formControlName="valid_till" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                <label for="validTill">Valid Till</label>
+                <div *ngIf="submitted && f['valid_till'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['valid_till'].errors['required']">Valid Till is required</div>
+                </div>
+            </div>            
+            <div class="field p-float-label">
+                <input id="comments" (onBlur)="showDate()" formControlName="comments" type="text" pInputText> 
+                <label for="comments">Comments</label>
+            </div>
+            <div class="field p-float-label" *ngIf="formState !== 'editUser'">
+                <!-- <input id="password" formControlName="password" type="password" pInputText [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">  -->
+                <p-password id="password" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }">
+                    <ng-template pTemplate="header">
+                        <h6>Pick a password</h6>
+                    </ng-template>
+                    <ng-template pTemplate="footer">
+                        
+                        <p class="mt-2">Suggestions</p>
+                        <ul class="pl-2 ml-2 mt-0" style="line-height: 1.5">
+                            <li>At least one lowercase</li>
+                            <li>At least one uppercase</li>
+                            <li>At least one numeric</li>
+                            <li>Minimum 8 characters</li>
+                        </ul>
+                    </ng-template>
+                </p-password>
+                <label for="password">Password</label>
+                
+                <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['password'].errors['required']">Password is required</div>
+                    <div class="p-error" *ngIf="f['password'].errors['minlength']">
+                      Password must be at least 6 characters
+                    </div>
+                    <div class="p-error" *ngIf="f['password'].errors['maxlength']">
+                      Username must not exceed 40 characters
+                    </div>
+                </div>
+            </div>
+            <div class="field p-float-label" *ngIf="formState !== 'editUser'">
+                <input id="confirmPassword" formControlName="confirmPassword" type="password" pInputText [ngClass]="{ 'is-invalid': submitted && f['confirmPassword'].errors }"> 
+                <label for="confirmPassword">Confirm Password</label>
+                <div *ngIf="submitted && f['confirmPassword'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['confirmPassword'].errors['required']">
+                        Confirm Password is required
+                    </div>
+                    <div class="p-error" *ngIf="f['confirmPassword'].errors['matching']">
+                        Confirm Password does not match
+                    </div>
+                </div>
+            </div>
+
+            <div class="end-row"></div>
+
+            
+            <p-toast></p-toast>
+            <p-messages [(value)]="successMessage" [enableService]="false"></p-messages>
+
+        </form>    
+        <div class="card-actions">
+          <button type="submit" class="btn primary-btn submitBtn" (click)="submitData()" *ngIf="formState !== 'editUser'">Submit</button>
+          <button type="submit" class="btn primary-btn submitBtn" (click)="updateUser()" [disabled]="!isValueChanged" *ngIf="formState == 'editUser'">Update</button>
+        </div>
+        <!-- <div class="form-container">
+            <div class="field-checkbox">
+                <p-checkbox [(ngModel)]="hasSubCategory" [binary]="true" inputId="binary"></p-checkbox>
+                <label for="binary">Has Sub Category</label>
+            </div>   
+        </div> -->
+        
+    </div>
+</div>
+
+<p-dialog header="Success" [modal]="true" [style]="{width: '30vw'}" [(visible)]="successResponcePopup">
+  <!-- {{successResponce?.message}} -->
+  <p>User created successfully</p>
+  <ng-template pTemplate="footer">
+    <p-button icon="pi pi-check" (click)="afterSuccess()" label="Ok" styleClass="p-button-text"></p-button>
+  </ng-template>
+</p-dialog>

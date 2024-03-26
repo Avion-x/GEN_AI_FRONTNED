@@ -1,0 +1,405 @@
+<div class="page-container-header">
+    <div class="title-section">
+        <button class="backBtn" [routerLink]="backUrl" [disabled]="backUrl.length == 0">
+            <span class="material-symbols-rounded">arrow_back</span>
+        </button>
+        <div class="title-container">
+            <h1 class="title">
+                {{productData?.product_code}}
+             </h1>
+             <h2 class="sub-title">
+                <span *ngIf="productMainCategory">{{productMainCategory.category}}-{{productMainCategory.id}}</span>
+                <span *ngIf="productSubCategory"><i class="icofont-simple-right"></i></span>
+                <span *ngIf="productSubCategory">{{productSubCategory.sub_category}}</span>
+             </h2>
+        </div>        
+    </div>
+    
+    <div class="header-right-section">
+        <button class="btn primary-btn" [disabled]="true">
+            <span class="material-symbols-rounded icon">speed</span>
+            Run Test
+        </button>
+    </div>
+</div>
+
+<ul class="breadcrumb" *ngIf="breadcrumblist">
+    <li *ngFor="let item of breadcrumblist">
+        <button class="btn home" *ngIf="item.name == 'Home'" [routerLink]="item.url" [disabled]="item.disabled"> 
+            <i class="material-symbols-rounded">home</i> 
+        </button>
+        <button class="btn" *ngIf="item.name !== 'Home'"  [routerLink]="item.url" [disabled]="item.disabled"> {{item.name}} </button></li>    
+    <!-- <li><button class="btn" disabled> Devices </button></li> -->
+</ul>
+
+
+<div class="content-wrapper">
+    <div class="content-loader" *ngIf="productsLoader">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Loading Device Details...</span>
+    </div> 
+
+    <div class="products-container" *ngIf="!productsLoader">
+        <p-tabView class="productDetailTabs">
+            <p-tabPanel header="Category Details">
+                <div class="content-loader" *ngIf="mainCategoryLoader">
+                    <i class="pi pi-spin pi-spinner"></i>
+                    <span>Loading Category Details...</span>
+                </div>
+                <div class="product-details-section" *ngIf="!mainCategoryLoader"> 
+                    <div class="item">
+                        <label>Category</label>
+                        <span>{{productMainCategory?.category}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Description</label>
+                        <span>{{productMainCategory?.description}}</span>
+                    </div> 
+                    <div class="item">
+                        <label>Status</label>
+                        <span>{{productMainCategory?.status == true ? 'Active':'Inactive'}}</span>
+                    </div>    
+                    <div class="item">
+                        <label>Valid Till</label>
+                        <span>{{productMainCategory?.valid_till}}</span>
+                    </div>      
+                    <div class="item">
+                        <label>Comments</label>
+                        <span>{{productMainCategory?.comments}}</span>
+                    </div>    
+                    <div class="item">
+                        <label>Created At</label>
+                        <span>{{productMainCategory?.created_at}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Last Updated At</label>
+                        <span>{{productMainCategory?.last_updated_at}}</span>
+                    </div> 
+                    <div class="item">
+                        <label>Last Updated By</label>
+                        <span>{{productMainCategory?.last_updated_by_name}}</span>
+                    </div> 
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Sub Category Details">
+                <div class="content-loader" *ngIf="subCategoryLoader">
+                    <i class="pi pi-spin pi-spinner"></i>
+                    <span>Loading Sub Category Details...</span>
+                </div>
+                
+                <div class="product-details-section" *ngIf="!subCategoryLoader">  
+                    <div class="item">
+                        <label>Category</label>
+                        <span>{{productSubCategory?.main_category_name}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Sub Category</label>
+                        <span>{{productSubCategory?.sub_category}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Description</label>
+                        <span>{{productSubCategory?.description}}</span>
+                    </div>  
+                    <div class="item">
+                        <label>Status</label>
+                        <span class="td-uppercase">{{productSubCategory?.status == true ? 'Active':'Inactive'}}</span>
+                    </div>       
+                    <div class="item">
+                        <label>Valid Till</label>
+                        <span>{{productSubCategory?.valid_till}}</span>
+                    </div>     
+                    <div class="item">
+                        <label>Comments</label>
+                        <span>{{productSubCategory?.comments}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Created At</label>
+                        <span>{{productSubCategory?.created_at}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Last Updated At</label>
+                        <span>{{productSubCategory?.last_updated_at}}</span>
+                    </div>   
+                    <div class="item">
+                        <label>Last Updated By</label>
+                        <span>{{productSubCategory?.last_updated_by_name}}</span>
+                    </div> 
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Device Details" [selected]="true">
+                <div class="product-details-section" *ngIf="productData">                
+                    <div class="item">
+                        <label>Device Name</label>
+                        <span>{{productData?.product_code}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Category</label>
+                        <span>{{productData?.main_category_name}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Sub Category</label>
+                        <span>{{productData?.sub_category_name}}</span>
+                    </div>   
+                    <div class="item">
+                        <label>Status</label>
+                        <span class="td-uppercase">{{productData?.status == true ? 'Active':'Inactive'}}</span>
+                    </div>    
+                    <div class="item">
+                        <label>Valid Till</label>
+                        <span>{{productData?.valid_till}}</span>
+                    </div>         
+                    <div class="item">
+                        <label>Comments</label>
+                        <span>{{productData?.comments}}</span>
+                    </div>
+                    <div class="item">
+                        <label>Created At</label>
+                        <span>{{productData?.created_at}}</span>
+                    </div>                    
+                    <div class="item">
+                        <label>Last Updated At</label>
+                        <span>{{productData?.last_updated_at}}</span>
+                    </div>    
+                    <div class="item">
+                        <label>Last Updated By</label>
+                        <span>{{productData?.last_updated_by_name}}</span>
+                    </div>   
+                       
+                    
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+
+        <!-- <div class="categoryDetails">
+            <h1 class="main-title">
+                Category Details
+            </h1>
+        </div>   
+    
+        <div class="categoryDetails">
+            <h1 class="main-title">
+               Sub Category Details
+            </h1>
+        </div>
+
+        <div class="categoryDetails">
+            <h1 class="main-title">
+                Product Details
+            </h1>
+        </div>        -->
+
+
+        <!-- <h1 class="main-title">
+            Generate Test Cases
+        </h1> -->
+        
+        <!-- <div class="test-cases-container" *ngIf="productData && testTypes">
+            
+            <div class="p-float-label primeNgField" *ngIf="testTypes">
+                <p-multiSelect class="multiSelectField" [options]="testTypes" [(ngModel)]="selectedTestTypes" optionLabel="code" display="chip"></p-multiSelect>
+                <label for="multiselect">Select Test Types</label>
+            </div>            
+            <button class="btn btn-primary" (click)="generateTestCases()">Generate Test Cases</button>
+        </div> -->
+
+        <!-- <h1 class="main-title">
+            Test Cases
+        </h1>         -->
+
+        <div class="header-with-btns">
+            <div class="title-section">
+                <h1 class="main-title">Generated Test Cases</h1>
+            </div>
+            <div class="right-section">
+                <!-- <button class="btn secondary-btn">
+                    <span class="material-symbols-rounded icon">history</span>
+                    Previous Test Cases
+                </button> -->
+                <button *ngIf="showGenerateTestCase" class="btn primary-btn" (click)="showGenerateTestCasesSection()">
+                    <span class="material-symbols-rounded icon">smart_toy</span>
+                    Generate New Test Cases
+                </button>
+            </div>
+        </div>
+
+        <div class="testCasesTabs">
+            
+            <button class="testCaseTab" *ngFor="let testcase of productTestTypes"  [ngClass]="testcase.test_type_id == selectedTestCase.test_type_id?'active':''" (click)="getGeneratedTestCategories(testcase, productData.id)">
+              {{testcase.name}}
+            </button>
+        </div>
+
+        <div class="testCasesAccordian">
+            <p-accordion *ngIf="testCategorys">
+                <p-accordionTab *ngFor="let category of testCategorys; index as i" [header]="category.category_name" [selected]="i == 0" (click)="getTestCasesOfCategory(productData.id, selectedTestTypeId, category.test_category_id)">
+                    <div class="testCaseCard">
+                        <div class="testCaseCard-header">Test Cases</div>
+                        <div class="card-container">
+                            <div class="content-loader" *ngIf="testCaseCategoryLoader">
+                                <i class="pi pi-spin pi-spinner"></i>
+                                <span>Loading Test Cases...</span>
+                            </div>
+                            <div *ngFor="let testcase of generatedTestCases?.test_cases">
+                                <h1 class="title">
+                                   {{testcase.testname}}
+                                </h1>
+                                <h3 class="subTitle">{{testcase.objective}}</h3>
+                                <div class="steps">
+                                    <ul class="list">
+                                        <li *ngFor="let step of testcase.steps">{{step}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testCaseCard mb-0">
+                        <div class="testCaseCard-header">Test Scripts</div>
+                        <div class="card-container">
+                            <div class="content-loader" *ngIf="testCaseCategoryLoader">
+                                <i class="pi pi-spin pi-spinner"></i>
+                                <span>Loading Test Scripts...</span>
+                            </div>
+                            <div *ngFor="let testscripts of generatedTestCases?.test_scripts">
+                                <h1 class="title">
+                                   {{testscripts.testname}}
+                                </h1>
+                                <h3 class="subTitle">{{testscripts.objective}}</h3>
+                                <div class="markdownContainer"> 
+                                    <markdown [data]="testscripts.script"></markdown>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p-accordionTab>
+            </p-accordion>
+        </div>        
+
+        <!-- <div class="testCasesDataContainer">         
+            <div class="markdownContainer"> 
+                <div class="content-loader" *ngIf="loadingTestCases">
+                    <i class="pi pi-spin pi-spinner"></i>
+                    <span>Loading test cases, Please Wait...</span>
+                </div>   
+                <div class="noTestcasesMessage" *ngIf="!loadingTestCases && testCasesData == ''">No Test Cases Has Been Generated!</div> 
+                <markdown [data]="testCasesData" *ngIf="!loadingTestCases"></markdown>
+            </div>
+    
+            <h1 class="main-title">
+                Test Scripts
+            </h1>
+    
+            <div class="markdownContainer">
+                <div class="content-loader" *ngIf="generateTestcasesLoader">
+                    <i class="pi pi-spin pi-spinner"></i>
+                    <span>Generating test scripts, Please Wait...</span>
+                </div>  
+                <markdown [data]="testScriptsData" *ngIf="!generateTestcasesLoader"></markdown>
+            </div>
+        </div> -->
+        
+        
+        
+    </div>
+</div>
+
+<p-sidebar [(visible)]="generateTestCasesFormSidebar"  class="sidebar-section header-tabs-sidebar-section" [style]="{width:'85%'}" position="right">
+    <ng-template pTemplate="header">
+        <div class="page-container-header">
+            <div class="title-section">
+                <!-- <button class="backBtn" [routerLink]="backUrl" [disabled]="backUrl.length == 0">
+                    <span class="material-symbols-rounded">arrow_back</span>
+                </button> -->
+                <div class="title-container">
+                    <h1 class="title">
+                        {{productData?.product_code}}
+                     </h1>
+                     <h2 class="sub-title">
+                        <span *ngIf="productMainCategory">{{productMainCategory.category}}-{{productMainCategory.id}}</span>
+                        <span *ngIf="productSubCategory"><i class="icofont-simple-right"></i></span>
+                        <span *ngIf="productSubCategory">{{productSubCategory.sub_category}}</span>
+                     </h2>
+                </div>        
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <!-- <p-button (click)="activeIndex1 = 0" styleClass="p-button-text" label="Generate All Test Cases"></p-button>
+        <p-button (click)="activeIndex1 = 1" styleClass="p-button-text" label="Generate Individual Test Cases"></p-button> -->
+        <p-tabView [(activeIndex)]="generateTestCaseActiveIndex" class="productDetailTabs">
+            <p-tabPanel header="Generate All Test Cases">
+                <div class="card no-padding" *ngIf="testTypes">
+                    <h1 class="main-title">Generate Test Cases For All Selected Test Types</h1>
+                    <div class="checkbox-group">
+                        <div class="checkBoxChildGroup show-in-row" >
+                            <div class="field-checkbox" *ngFor="let test of testTypes">
+                                <p-checkbox name="group2" [value]="test.id" (onChange)="showSelectedVal()" [(ngModel)]="selectedAllTestTypes" [inputId]="test.id" [disabled]="true"></p-checkbox>
+                                <label [for]="test.id">{{test.description}}</label>
+                                <!-- <p-radioButton [inputId]="test.id" name="category" [value]="test.id" (onClick)="showTestCategories(test)" [(ngModel)]="selectedTestTypes"></p-radioButton>
+                                <label [for]="test.id">{{test.description}}</label> -->
+                            </div>                    
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Generate Individual Test Cases">
+                <div class="card no-padding" *ngIf="testTypes">
+                    <!-- <h1 class="main-title">Select Test Type</h1> -->
+                    <div class="checkbox-group">
+                        <div class="radioButtonGroup show-in-row" >
+                            <div class="title">
+                                Select Test Type
+                            </div>
+                            <div class="field-radiobutton" *ngFor="let test of testTypes">
+                                <!-- <p-checkbox name="group2" [value]="test.code" (onChange)="showTestCategories(test)" [(ngModel)]="selectedTestTypes" [inputId]="test.id"></p-checkbox>
+                                <label [for]="test.id">{{test.description}}</label> -->
+                                <p-radioButton [inputId]="'type'+test.id" name="category" [value]="test.id" (onClick)="showTestCategories(test)" [(ngModel)]="selectedTestTypes"></p-radioButton>
+                                <label [for]="'type'+test.id" [ngClass]="test.id == selectedTestTypes?'selected':''">{{test.description}}</label>
+                            </div>                    
+                        </div>
+                        <div class="content-loader" *ngIf="testCategoriesListLoader">
+                            <i class="pi pi-spin pi-spinner"></i>
+                            <span>Loading Test Categories of {{selectedTestType.description}}...</span>
+                        </div>
+                        <div class="checkBoxChildGroup" *ngIf="testCategoriesOfSelectedTestType.length !== 0">
+                            <div class="title">
+                                Categories of <span class="selectedCat">{{selectedTestType.description}}</span>
+                                <div class="field-checkbox">
+                                    <p-checkbox [(ngModel)]="selectAll" [binary]="true" (onChange)="toggleSelectAllCategories()" inputId="binary"></p-checkbox>
+                                    <label for="binary">{{selectAllCBTitle}}</label>
+                                </div>
+                            </div>
+                            
+                            <div class="field-checkbox" *ngFor="let category of testCategoriesOfSelectedTestType">
+                                <p-checkbox name="group2" [value]="category.id" (onChange)="showSelectedCategories()"  [(ngModel)]="selectedTestTypeCategories" [inputId]="category.id"></p-checkbox>
+                                <label [for]="category.id">{{category.name}}</label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            
+                        </div>
+                    </div>            
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+    
+        
+        
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="pageActions">
+            <button class="btn secondary-btn" (click)="closeGenerateTestCasesSection()">Cancel</button>
+            <button class="btn primary-btn" *ngIf="generateTestCaseActiveIndex == 0" (click)="generateAllTestCases()">Generate All Test Cases</button>
+            <button class="btn primary-btn" *ngIf="generateTestCaseActiveIndex == 1" (click)="generateTestCases()">Submit</button>
+        </div>
+    </ng-template>
+</p-sidebar>
+
+<p-toast></p-toast>
+<p-dialog header="Success" [modal]="true" [style]="{width: '30vw'}" [(visible)]="successResponcePopup">
+    <p>{{generateTestCaseResponceData}}</p>
+    <ng-template pTemplate="footer">
+      <p-button icon="pi pi-check" (click)="afterSuccess()" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>

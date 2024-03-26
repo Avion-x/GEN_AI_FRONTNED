@@ -1,0 +1,49 @@
+@use '/src/assets/styles/vars';
+.form-container{
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    &.newUserForm{
+      .field{
+        width: 24%;
+      }
+    }
+}
+
+.validateUserSection{
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 30px;
+}
+
+.userNameDirty{
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    li{
+        font-size: 11px;
+        color: vars.$error;
+    }
+}
+
+.usernameAvailabelMessage,
+.usernameErrorMessage {
+  font-size: 12px;
+  margin-top: 5px;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  i{
+    font-size: 14px;
+    margin-right:5px;
+  }
+}
+
+.usernameErrorMessage{
+  color: vars.$error;
+}
+.usernameAvailabelMessage{
+  color: vars.$success;
+}

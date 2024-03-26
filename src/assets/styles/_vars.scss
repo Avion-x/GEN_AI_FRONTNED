@@ -1,0 +1,132 @@
+$primary-color: #5b54bb;
+$primary-light:#6c64d6;
+$primary-dark: #2b2491;
+$primary-darker:#0a045b;
+$secondary-color: #1e2d4a;
+$primary-box-shoadow: 2px 5px 15px rgb(91 84 187 / 59%);
+$error: #e24c4c;
+$success:#31C703;
+// $primary-color: #e31e24;
+// $primary-light:#f15156;
+// $primary-dark: #a5040a;
+// $primary-darker:#6f0105;
+// $secondary-color: #1e2d4a;
+// $primary-box-shoadow: 2px 5px 15px rgb(227 30 36 / 59%);
+
+
+$menu-bg: #fff;
+$menu-title: #466f92;
+$menu-link: #5a5c61;
+$menu-hover-light: #f5f5f5;
+$secondary-opacity: rgba(255, 153, 0, 0.1);
+$primary-hover: #0076eb;
+//$breadcrumb-bg : #ddd;
+//$breadcrumb-bg : #eaeef1;
+$breadcrumb-bg : #fff;
+$bg-light : #e3e7f7;
+
+//$body-bg: #f6f6fb;
+//$body-bg: #f3f6f9;
+$body-bg:#f3f6ff;
+$body-bg-dark:#eaeef9;
+$darkblue: #1b2642;
+$titleClr: #24243a;
+$cardTitleClr: #303e67;
+//$fontclr: #7286a2;
+$fontclr:#a2a9c8;
+$fontLight: #7081b9;
+//$devider: #e1e1e1;
+$devider:#e3e7f3;
+//$titleClrLight: #303e67;
+$titleClrLight: #a2a9c8;
+//$th-color: #303e67;
+$th-color: #a2a9c8;
+$th-bg: #eff2f9;
+$th-border-color: #eaf0f7;
+//$td-color: #7286a2;
+$td-color:#90a7c8;
+$td-border-color: #eaf0f7;
+/******/
+$border: #eceff5;
+$border_2: #e8ebf3;
+$fieldBorderColor:#d4d8e4;
+$cardBorderColor:#e4e6ef;
+$header-title: #303e67;
+$leftbar-box-shadow: 0 8px 8px 0 rgba(31, 30, 47, 0.06);
+$topbar-box-shadow: 6px 0px 6px rgba(31, 30, 47, 0.06);
+    //Font variables
+$font-primary: "Poppins", sans-serif;
+$font-secondary: "Roboto", sans-serif;
+$scrollbar-track-color: #eceff5;
+$scrollbar-thumb-color: #0066cc;
+
+// System Colors
+$colorGreyLight: rgb(246, 246, 246);
+//$colorBluePrimary: rgb(62, 100, 245);
+$colorBluePrimary:rgb(62, 88, 215);
+$colorBlueDark: rgb(29, 34, 53);
+$colorBlueDark50: rgba(29, 34, 53, 0.5);
+$colorVioletDark: rgb(34, 2, 109);
+$colorRed: rgb(255, 52, 52);
+$colorRedMedium: rgb(193, 0, 1);
+
+$screenWidthSmall: 1000px;
+$screenWidthLarge: 2000px;
+
+$navIconSize: 3em;
+
+@mixin fontRobotoCondensed {
+    font-family: "Roboto Condensed", sans-serif;
+}
+@mixin fontFamilyPrimary {
+    font-family: 'Poppins', sans-serif;
+    //font-family: 'Lato', sans-serif;
+}
+@mixin fontFamilySecondary {
+    font-family: "Roboto Condensed", sans-serif;
+}
+@mixin fontTitle {
+    font-family: "Roboto Condensed", sans-serif;
+}
+// @mixin fontGeorgia {
+//     font-family: Georgia, serif;
+// }
+
+// @mixin fontUbuntuMono {
+//     font-family: "Ubuntu Mono", monospace;
+// }
+
+// @mixin fontBebasNeue {
+//     font-family: 'Bebas Neue', sans-serif;
+// }
+
+@mixin gradientGray {
+    background: rgb(242, 242, 242);
+    background: -moz-linear-gradient(135deg, rgba(242, 242, 242, 1) 0%, rgba(230, 230, 230, 1) 100%);
+    background: -webkit-linear-gradient(135deg, rgba(242, 242, 242, 1) 0%, rgba(230, 230, 230, 1) 100%);
+    background: linear-gradient(135deg, rgba(242, 242, 242, 1) 0%, rgba(230, 230, 230, 1) 100%);
+    // filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f2f2f2",endColorstr="#e6e6e6",GradientType=1);
+}
+
+@mixin gradientGrayDark {
+    background: rgb(71, 72, 77);
+    background: -moz-linear-gradient(0deg, rgba(71, 72, 77, 1) 0%, rgba(141, 144, 153, 1) 100%);
+    background: -webkit-linear-gradient(0deg, rgba(71, 72, 77, 1) 0%, rgba(141, 144, 153, 1) 100%);
+    background: linear-gradient(0deg, rgba(71, 72, 77, 1) 0%, rgba(141, 144, 153, 1) 100%);
+}
+
+@mixin gradientBlue {
+    background: $colorBluePrimary;
+    background: -moz-linear-gradient(135deg, $colorBluePrimary 0%, $colorVioletDark 100%);
+    background: -webkit-linear-gradient(135deg, $colorBluePrimary 0%, $colorVioletDark 100%);
+    background: linear-gradient(135deg, $colorBluePrimary 0%, $colorVioletDark 100%);
+    // filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f2f2f2",endColorstr="#e6e6e6",GradientType=1);
+}
+
+@mixin gradientBlueVertical {
+    background: $colorBluePrimary;
+    background: -moz-linear-gradient(180deg, $colorBluePrimary 0%, $colorVioletDark 100%);
+    background: -webkit-linear-gradient(180deg, $colorBluePrimary 0%, $colorVioletDark 100%);
+    background: linear-gradient(180deg, $colorBluePrimary 0%, $colorVioletDark 100%);
+    // filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#f2f2f2",endColorstr="#e6e6e6",GradientType=1);
+}

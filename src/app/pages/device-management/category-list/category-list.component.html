@@ -1,0 +1,334 @@
+<div class="page-container-header">
+    <div class="title-section">
+            <button class="backBtn" [routerLink]="backUrl" [disabled]="backUrl.length == 0">
+                <span class="material-symbols-rounded">router</span>
+            </button>
+            <div class="title-container">
+                <h1 class="title">
+                    Device Management
+                </h1>
+                <h2 class="sub-title">
+                    <span>Category Management</span>
+                    <!-- <span *ngIf="productSubCategory"><i class="icofont-simple-right"></i></span>
+                    <span *ngIf="productSubCategory">{{productSubCategory.sub_category}}</span> -->
+                </h2>
+            </div>
+    </div>
+    
+    <div class="header-right-section">
+        <!-- <button class="btn" (click)="generateTestCases()">Generate Test Cases</button> -->
+    </div>
+</div>
+<ul class="breadcrumb">
+    <li *ngFor="let item of breadcrumblist">
+        <button class="btn home" *ngIf="item.name == 'Home'" [routerLink]="item.url" [disabled]="item.disabled"> 
+            <i class="material-symbols-rounded">home</i> 
+        </button>
+        <button class="btn" *ngIf="item.name !== 'Home'" [routerLink]="item.url" [disabled]="item.disabled"> {{item.name}} </button>
+    </li>    
+    <!-- <li><button class="btn" disabled> Devices </button></li> -->
+</ul>
+
+<div class="content-wrapper">
+
+    <p-menu #mainActionMenu [popup]="true" [model]="mainCatActionMenuItems"></p-menu>
+    <p-menu #subActionMenu [popup]="true" [model]="subCatActionMenuItems"></p-menu>
+    <p-sidebar [(visible)]="mainCategoryFormSidebar"  class="sidebar-section" [style]="{width:'30%'}" position="right">
+        <ng-template pTemplate="header">{{mainCategoryFormTitle}}</ng-template>
+        <ng-template pTemplate="content">
+            <div class="card">
+                <form [formGroup]="mainCategoryForm" class="form-container display-column">
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="category" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && fMain['category'].errors }"> 
+                        <label for="float-input">Category Name<small class="star">*</small></label>
+                        <div *ngIf="submitted && fMain['category'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fMain['category'].errors['required']">Category Name is required</div>
+                        </div>
+                    </div>
+                    <!-- <div class="field p-float-label">
+                        <input id="float-input" formControlName="status" type="text" pInputText> 
+                        <label for="float-input">Status</label>
+                    </div> -->
+                    <div class="field p-float-label">
+                        <!-- <input id="isActive" formControlName="is_active" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                        <p-dropdown [options]="statusOptions" formControlName="status" optionLabel="name" optionValue="value" placeholder="Select an Option" [ngClass]="{ 'is-invalid': submitted && fMain['status'].errors }"></p-dropdown>
+                        <label for="isActive">Status<small class="star">*</small></label>
+                        <div *ngIf="submitted && fMain['status'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fMain['status'].errors['required']">Status is required</div>
+                        </div>
+                    </div>
+                    <!-- <div class="field p-float-label">
+                        <input id="float-input" formControlName="valid_till" type="text" pInputText> 
+                        <label for="float-input">Valid Till</label>
+                    </div> -->
+                    <div class="field p-float-label position-relative">
+                        <p-calendar formControlName="valid_till" dateFormat="yy-mm-dd" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && fMain['valid_till'].errors }"></p-calendar>
+                        <!-- <input id="validTill" formControlName="valid_till" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                        <label for="validTill">Valid Till<small class="star">*</small></label>
+                        <div *ngIf="submitted && fMain['valid_till'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fMain['valid_till'].errors['required']">Valid Till is required</div>
+                        </div>
+                    </div>
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="comments" type="text" pInputText> 
+                        <label for="float-input">Comments</label>
+                    </div>
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="description" type="text" pInputText> 
+                        <label for="float-input">Description</label>
+                    </div>  
+                </form>   
+            </div>
+            
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="pageActions">
+                <button class="btn secondary-btn" (click)="mainCategoryCancelBtn()">Cancel</button>
+                <button class="btn primary-btn" (click)="createNewCategory()">Submit</button>
+            </div>
+        </ng-template>
+        
+    </p-sidebar>
+    <p-sidebar [(visible)]="subCategoryFormSidebar" (onHide)="subCategoryCancelBtn()"  class="sidebar-section" [style]="{width:'85%'}" position="right">
+        <ng-template pTemplate="header">{{subCategoryFormTitle}} Sub Category for <div class="count">{{seletedMainProductToAddSubCategory.category}}</div></ng-template>
+        <ng-template pTemplate="content">
+            <div class="card">
+                <form [formGroup]="subCategoryForm" class="form-container">
+                    
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="sub_category" type="text" pInputText> 
+                        <label for="float-input">Sub Category Name<small class="star">*</small></label>
+                        <div *ngIf="submitted && fSub['sub_category'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fSub['sub_category'].errors['required']">Sub Category Name is required</div>
+                        </div>
+                    </div>
+                   
+                    <div class="field p-float-label">
+                       <p-dropdown [options]="statusOptions" formControlName="status" optionLabel="name" optionValue="value" placeholder="Select an Option"></p-dropdown>
+                        <label for="isActive">Status<small class="star">*</small></label>
+                        <div *ngIf="submitted && fSub['status'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fSub['status'].errors['required']">Status is required</div>
+                        </div>
+                    </div>
+                    
+                    <div class="field p-float-label position-relative">
+                        <p-calendar formControlName="valid_till" dateFormat="yy-mm-dd" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker"></p-calendar>
+                        <label for="validTill">Valid Till<small class="star">*</small></label>
+                        <div *ngIf="submitted && fSub['valid_till'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fSub['valid_till'].errors['required']">Valid Till is required</div>
+                        </div>
+                    </div>
+                    <div class="end-row"></div>
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="comments" type="text" pInputText> 
+                        <label for="float-input">Comments</label>
+                    </div>
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="description" type="text" pInputText> 
+                        <label for="float-input">Description</label>
+                    </div>
+                </form>      
+                <div class="card-actions">
+                    <button class="btn primary-btn" (click)="addSubCaterory()" *ngIf="this.subCategoryFormType == 'add'">
+                        <span class="material-symbols-rounded icon">add</span>
+                        Add
+                    </button>
+                    <button class="btn primary-btn" (click)="addSubCaterory()" *ngIf="this.subCategoryFormType == 'edit'">
+                        Update
+                    </button>
+                </div> 
+            </div>
+            <div class="content-loader" *ngIf="productSubCategoryLoader">
+                <i class="pi pi-spin pi-spinner"></i>
+                <span>Loading Sub Categories...</span>
+            </div>
+            <div class="table-container table-selection-list" *ngIf="!productSubCategoryLoader">
+                <p-table #subProductsTable [value]="productSubCategoryData" [globalFilterFields]="['sub_category','description','valid_till','created_at','last_updated_at', 'last_updated_by_name']">
+                    <ng-template pTemplate="caption">
+                        <div class="table-title-with-search">
+                            <div class="title">Sub Categories of {{seletedMainProductToAddSubCategory.category}}<div class="count">{{productSubCategoryData.length}}</div></div>
+                            <div class="right-section">   
+                                <div class="search-box">
+                                    <i class="pi pi-search"></i>
+                                   <input pInputText type="text" #filter (input)="subProductsTable.filterGlobal(filter.value, 'contains')" placeholder="Sub Category Search" />
+                                </div>                                
+                            </div>
+                        </div>                
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <!-- <th>Id</th> -->                                            
+                            <!-- <th>Category</th> -->
+                            <th>Sub category</th>
+                            <th style="width: 250px; min-width:250px; max-width:250px;">Description</th>
+                            <th>Status</th>
+                            <th>Valid till</th>
+                            <!-- <th>Comments</th>                                            -->
+                            <th>Created At</th>
+                            <th>Last Updated At</th>
+                            <th>Last updated By</th>   
+                            <th style="width: 50px; min-width: 50px; max-width: 50px;"></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-subProduct>
+                        <tr>
+                            <!-- <td>{{subProduct.category}}</td> -->
+                            <td>{{subProduct.sub_category}}</td>
+                            <td style="width: 250px; min-width:250px; max-width:250px;">{{subProduct.description}}</td>
+                            <td class="td-uppercase">{{subProduct.status==true?'Active':'Inactive'}}</td>
+                            <td>{{subProduct.valid_till}}</td>
+                                            <!-- <td (click)="navigateToProducts(subProduct.id)">{{subProduct.comments}}</td> -->
+                            <td>{{subProduct.created_at}}</td>
+                            <td>{{subProduct.last_updated_at}}</td>
+                            <td>{{subProduct.last_updated_by_name}}</td>
+                            <td style="width: 50px; min-width: 50px; max-width: 50px;">
+                                                <button type="button" class="td-menu-btn" (click)="subActionMenu.toggle($event); setSubCatActionMenu(subProduct)">
+                                                    <span class="material-symbols-rounded icon">more_vert</span>
+                                                </button>                        
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="pageActions">
+                <button class="btn secondary-btn" (click)="subCategoryCancelBtn()">Cancel</button>
+                <button class="btn primary-btn" (click)="subCategoryCancelBtn()">Done</button>
+            </div>
+        </ng-template>
+        
+    </p-sidebar>
+
+    <div class="content-loader" *ngIf="productsLoader">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Loading Device Categories...</span>
+    </div>
+
+    <div class="table-container table-selection-list mt-30"  *ngIf="!productsLoader">
+        <p-table #productsTable class="selectableTable expantionTable" [value]="productCategoryData" 
+        [globalFilterFields]="['category','description','valid_till', 'created_at', 'last_updated_at', 'last_updated_by_name']">
+            <ng-template pTemplate="caption">
+                <div class="table-title-with-search">
+                    <div class="title">Categories <div class="count">{{productCategoryData.length}}</div></div>
+                    <div class="right-section">   
+                        <div class="search-box">
+                            <i class="pi pi-search"></i>
+                            <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
+                            <input pInputText type="text" #filter (input)="productsTable.filterGlobal(filter.value, 'contains')" placeholder="Main Category Search" />
+                        </div>
+                        <button class="btn primary-btn" (click)="showCreateNewCategory()">
+                            <span class="material-symbols-rounded icon">add</span>
+                            Create Category
+                        </button>
+                    </div>
+                </div>                
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="tdFirstCol"></th>
+                    <th>Category</th>
+                    <th style="width: 250px; min-width:250px; max-width:250px;">Description</th>
+                    <th>Status</th>
+                    <th>Valid till</th>
+                    <!-- <th>Comments</th> -->
+                    <th>Created At</th>
+                    <th>Last updated At</th>
+                    <th>Last Updated By</th>
+                    
+                    <!-- <th>Customer</th> -->
+                    <th style="width: 50px; min-width: 50px; max-width: 50px;"></th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product >
+                <tr [ngClass]="{'active': selectedProductId === product.id}">
+                    <td (click)="getProductsSubCategory(product)" class="tdFirstCol"></td>
+                    <td (click)="getProductsSubCategory(product)">{{product.category}}</td>
+                    <td style="width: 250px; min-width:250px; max-width:250px;" (click)="getProductsSubCategory(product)">{{product.description}}</td>
+                    <td class="td-uppercase" (click)="getProductsSubCategory(product)">{{product.status==true?'Active':'Inactive'}}</td>
+                    <td (click)="getProductsSubCategory(product)">{{product.valid_till}}</td>
+                    <!-- <td (click)="getProductsSubCategory(product.id)">{{product.comments}}</td> -->
+                    <td (click)="getProductsSubCategory(product)">{{product.created_at}}</td>
+                    <td (click)="getProductsSubCategory(product)">{{product.last_updated_at}}</td>
+                    <td (click)="getProductsSubCategory(product)">{{product.last_updated_by_name}}</td>
+                    
+                    <!-- <td (click)="getProductsSubCategory(product.id)">{{product.customer}}</td> -->
+                    <td style="width: 50px; min-width: 50px; max-width: 50px;">
+                        <button type="button" class="td-menu-btn" (click)="mainActionMenu.toggle($event); setMainCatActionMenu(product)">
+                            <span class="material-symbols-rounded icon">more_vert</span>
+                        </button>                        
+                    </td>
+                </tr>
+                <tr [id]="'tableExpantion'+product.id" class="expantionPanel" *ngIf="selectedRowId == 'tableExpantion'+product.id">
+                    <td class="expantionPanel-tableData" colspan="8">
+                        <div class="expanded-table">
+                            <div class="content-loader" *ngIf="productSubCategoryLoader">
+                                <i class="pi pi-spin pi-spinner"></i>
+                                <span>Loading Sub Categories...</span>
+                            </div>
+                                                    
+                            <div class="table-container table-selection-list" *ngIf="!productSubCategoryLoader">
+                                <p-table #subProductsTable class="selectableTable" [value]="productSubCategoryData" 
+                                [globalFilterFields]="['sub_category','description','valid_till','created_at','last_updated_at', 'last_updated_by_name']">
+                                    <ng-template pTemplate="caption">
+                                        <div class="table-title-with-search">
+                                            <div class="title">Sub Categories of {{product.category}}<div class="count">{{productSubCategoryData.length}}</div></div>
+                                            <div class="right-section">   
+                                                <div class="search-box">
+                                                    <i class="pi pi-search"></i>
+                                                    <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
+                                                    <input pInputText type="text" #filter (input)="subProductsTable.filterGlobal(filter.value, 'contains')" placeholder="Sub Category Search" />
+                                                </div>
+                                                <button class="btn primary-btn" (click)="showCreateSubCategory(product)">
+                                                    <span class="material-symbols-rounded icon">add</span>
+                                                    Add Sub Category
+                                                </button>
+                                            </div>
+                                        </div>                
+                                    </ng-template>
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <!-- <th>Id</th> -->                                            
+                                            <!-- <th>Category</th> -->
+                                            <th>Sub category</th>
+                                            <th style="width: 250px; min-width:250px; max-width:250px;">Description</th>
+                                            <th>Status</th>
+                                            <th>Valid till</th>
+                                            <!-- <th>Comments</th>                                            -->
+                                            <th>Created At</th>
+                                            <th>Last Updated At</th>
+                                            <th>Last updated By</th>   
+                                            <th style="width: 50px; min-width: 50px; max-width: 50px;"></th>
+                                        </tr>
+                                    </ng-template>
+                                    <ng-template pTemplate="body" let-subProduct>
+                                        <tr>
+                                            <!-- <td (click)="navigateToProducts(subProduct.id)">{{subProduct.id}}</td> -->
+                                            <!-- <td (click)="navigateToProducts(subProduct.id)">{{subProduct.main_category_name}}</td> -->
+                                            <td (click)="navigateToProducts(subProduct.id)">{{subProduct.sub_category}}</td>
+                                            <td (click)="navigateToProducts(subProduct.id)" style="width: 250px; min-width:250px; max-width:250px;">{{subProduct.description}}</td>
+                                            <td class="td-uppercase" (click)="navigateToProducts(subProduct.id)">{{subProduct.status==true?'Active':'Inactive'}}</td>
+                                            <td (click)="navigateToProducts(subProduct.id)">{{subProduct.valid_till}}</td>
+                                            <!-- <td (click)="navigateToProducts(subProduct.id)">{{subProduct.comments}}</td> -->
+                                            <td (click)="navigateToProducts(subProduct.id)">{{subProduct.created_at}}</td>
+                                            <td (click)="navigateToProducts(subProduct.id)">{{subProduct.last_updated_at}}</td>
+                                            <td (click)="navigateToProducts(subProduct.id)">{{subProduct.last_updated_by_name}}</td>
+                                            <td style="width: 50px; min-width: 50px; max-width: 50px;">
+                                                <button type="button" class="td-menu-btn" (click)="subActionMenu.toggle($event); setSubCatActionMenu(subProduct)">
+                                                    <span class="material-symbols-rounded icon">more_vert</span>
+                                                </button>                        
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+            
+        </p-table>
+    </div>
+</div>
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<p-toast></p-toast>

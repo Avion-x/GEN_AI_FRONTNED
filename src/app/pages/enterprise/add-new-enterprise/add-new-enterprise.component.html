@@ -1,0 +1,68 @@
+<div class="page-container-header">
+    <div class="title-section">
+            <button class="backBtn" [routerLink]="backUrl" [disabled]="backUrl.length == 0">
+                <span class="material-symbols-rounded">arrow_back</span>
+            </button>
+            <div class="title-container">
+                <h1 class="title">
+                    Add New Enterprise
+                </h1>
+                <h2 class="sub-title">
+                    <span>Enterprise Management</span>
+                    <!-- <span *ngIf="productSubCategory"><i class="icofont-simple-right"></i></span>
+                    <span *ngIf="productSubCategory">{{productSubCategory.sub_category}}</span> -->
+                </h2>
+            </div>
+    </div>
+    
+    <div class="header-right-section">
+        <!-- <button class="btn" (click)="generateTestCases()">Generate Test Cases</button> -->
+    </div>
+</div>
+<ul class="breadcrumb">
+    <li *ngFor="let item of breadcrumblist">
+        <button class="btn home" *ngIf="item.name == 'Home'" [routerLink]="item.url" [disabled]="item.disabled"> 
+            <i class="material-symbols-rounded">home</i> 
+        </button>
+        <button class="btn" *ngIf="item.name !== 'Home'" [routerLink]="item.url" [disabled]="item.disabled"> {{item.name}} </button>
+    </li>    
+    <!-- <li><button class="btn" disabled> Devices </button></li> -->
+</ul>
+
+<div class="content-wrapper">
+    <h1 class="main-title">Add New Enterprise</h1>
+    <div class="card">
+        <form [formGroup]="enterpriseForm" class="form-container">
+            <div class="field p-float-label">
+                <input id="mainCategoryName" formControlName="enterpriseName" type="text" pInputText> 
+                <label for="mainCategoryName">Enterprise Name</label>
+            </div>
+            <div class="field p-float-label">
+                <input id="mainCustomer" formControlName="logo" type="text" pInputText> 
+                <label for="mainCustomer">Logo</label>
+            </div>           
+            <div class="field p-float-label">
+                <input id="maindescription" formControlName="createdAt" type="text" pInputText> 
+                <label for="maindescription">Created At</label>
+            </div>
+            <div class="field p-float-label">
+                <input id="mainCreatedBy" formControlName="createdBy" type="text" pInputText> 
+                <label for="mainCreatedBy">Created By</label>
+            </div>
+            <div class="field p-float-label">
+                <input id="mainValidTill" formControlName="validTill" type="text" pInputText> 
+                <label for="mainValidTill">Valid Till</label>
+            </div>
+            <div class="field p-float-label">
+                <input id="mainComments" formControlName="comments" type="text" pInputText> 
+                <label for="mainComments">Comments</label>
+            </div>
+            <div class="end-row"></div>            
+        </form>           
+    </div>
+
+    <div class="pageActions">
+        <button class="btn secondary-btn">Cancel</button>
+        <button class="btn primary-btn">Submit</button>
+    </div>
+</div>

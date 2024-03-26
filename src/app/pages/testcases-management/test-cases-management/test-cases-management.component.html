@@ -1,0 +1,458 @@
+<div class="page-container-header">
+    <div class="title-section">
+            <button class="backBtn" [routerLink]="backUrl" [disabled]="backUrl.length == 0">
+                <span class="material-symbols-rounded">psychology</span>
+            </button>
+            <div class="title-container">
+                <h1 class="title">
+                    Test Settings
+                </h1>
+                <!-- <h2 class="sub-title">
+                    <span *ngIf="productMainCategory">{{productMainCategory.category}}-{{productMainCategory.id}}</span>
+                    <span *ngIf="productSubCategory"><i class="icofont-simple-right"></i></span>
+                    <span *ngIf="productSubCategory">{{productSubCategory.sub_category}}</span>
+                </h2> -->
+            </div>
+    </div>
+    
+    <div class="header-right-section">
+        <!-- <button class="btn" (click)="generateTestCases()">Generate Test Cases</button> -->
+    </div>
+</div>
+<ul class="breadcrumb">
+    <li *ngFor="let item of breadcrumblist">
+        <button class="btn home" *ngIf="item.name == 'Home'" [routerLink]="item.url" [disabled]="item.disabled"> 
+            <i class="material-symbols-rounded">home</i> 
+        </button>
+        <button class="btn" *ngIf="item.name !== 'Home'" [routerLink]="item.url" [disabled]="item.disabled"> {{item.name}} </button>
+    </li>    
+    <!-- <li><button class="btn" disabled> Devices </button></li> -->
+</ul>
+
+<div class="content-wrapper">
+    <div class="custom-nav-tabs-header">
+        <!-- <h1 class="main-title">Tabs List</h1> -->
+        <div class="nav-tabs-container" *ngIf="userRole == 'admin'">
+            <button class="nav-tab btn" (click)="tabActiveIndex = 0" [ngClass]="tabActiveIndex === 0 ? 'active':''">Test Types</button>
+            <button class="nav-tab btn" (click)="tabActiveIndex = 1" [ngClass]="tabActiveIndex === 1 ? 'active':''">Pending Approvals</button>
+        </div>        
+    </div>
+    <div class="custom-nav-tabs-container">
+    <p-tabView [(activeIndex)]="tabActiveIndex">
+        <p-tabPanel header="Test Types">
+            <div class="content-loader" *ngIf="testTypesLoader">
+                <i class="pi pi-spin pi-spinner"></i>
+                <span>Loading Test Types...</span>
+            </div>
+            <div class="table-container table-selection-list" *ngIf="!testTypesLoader">
+                <p-table #testTypesTable class="selectableTable expantionTable" [value]="testTypesData" [globalFilterFields]="['code','description','valid_till','created_at', 'last_updated_at', 'last_updated_by']">
+                    <ng-template pTemplate="caption">
+                        <div class="table-title-with-search">
+                            <div class="title">Test Types
+                                <!-- <div class="count">{{testTypesData.length}}</div> -->
+                            </div>
+                            <div class="right-section">   
+                                <div class="search-box">
+                                    <i class="pi pi-search"></i>
+                                    <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
+                                    <input pInputText type="text" #filter (input)="testTypesTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
+                                </div>
+                                <button class="btn primary-btn" *ngIf="userRole == 'admin'" (click)="showTestTypeForm()">
+                                    <span class="material-symbols-rounded icon">add</span>
+                                   Add New Test Type
+                                </button>
+                            </div>
+                        </div>                
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th class="tdFirstCol"></th>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Valid Till</th>
+                            <!-- <th>Comments</th> -->
+                            <th>Created At</th>                   
+                            <th>Last updated At</th>
+                            <th>Last Updated By</th>
+                            <th style="width: 50px; min-width: 50px; max-width: 50px;"></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-testType>
+                        <tr [ngClass]="{'active': selectedTestId === testType.id}">
+                            <td (click)="getTestTypeCategory(testType)" class="tdFirstCol"></td>
+                            <td (click)="getTestTypeCategory(testType)">{{testType.code}}</td>
+                            <td (click)="getTestTypeCategory(testType)">{{testType.description}}</td>
+                            <td (click)="getTestTypeCategory(testType)" class="td-uppercase">{{testType.status==true?'Active':'Inactive'}}</td>
+                            <td (click)="getTestTypeCategory(testType)">{{testType.valid_till}}</td>
+                            <!-- <td>{{testType.comments}}</td> -->
+                            <td (click)="getTestTypeCategory(testType)">{{testType.created_at}}</td>
+                            <td (click)="getTestTypeCategory(testType)">{{testType.last_updated_at}}</td>
+                            <td (click)="getTestTypeCategory(testType)">{{testType.last_updated_by}}</td>
+                            <td style="width: 50px; min-width: 50px; max-width: 50px;">
+                                <button type="button" class="td-menu-btn" (click)="mainActionMenu.toggle($event); setTestTypeActionMenu(testType)">
+                                    <span class="material-symbols-rounded icon">more_vert</span>
+                                </button>                        
+                            </td>
+                        </tr>
+                        <tr [id]="'tableExpantion'+testType.id" class="expantionPanel" *ngIf="'tableExpantion'+testType.id == 'tableExpantion'+selectedTestId">
+                            <td class="expantionPanel-tableData" colspan="9">
+                                <div class="expanded-table">
+                                    <div class="content-loader" *ngIf="testCategoriesLoader">
+                                        <i class="pi pi-spin pi-spinner"></i>
+                                        <span>Loading Test Categories...</span>
+                                    </div>
+                                    <div class="noData" *ngIf="!testCategoriesLoader && testTypeCategories?.length == 0">
+                                        No Categories found for {{testType.description}}
+                                        <div class="table-title-with-search">
+                                            <div class="title"></div>
+                                            <div class="right-section">   
+                                                <div class="search-box">
+                                                </div>
+                                                <button class="btn primary-btn" (click)="showCreateTestCategoryForm()">
+                                                    <span class="material-symbols-rounded icon">add</span>
+                                                    Add Test Category
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>                       
+                                    <div class="table-container table-selection-list" *ngIf="!testCategoriesLoader && testTypeCategories?.length !== 0">
+                                        <p-table #testTypeCategoryTable class="selectableTable noHover" [value]="testTypeCategories" 
+                                        [globalFilterFields]="['name','description','valid_till','created_at','approved_by_name', 'last_updated_at', 'last_updated_by_name']" [paginator]="true" [alwaysShowPaginator]="false" paginatorPosition="bottom" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
+                                            <ng-template pTemplate="caption">
+                                                <div class="table-title-with-search">
+                                                    <div class="title">Test Categories of {{testType.description}}<div class="count">{{testTypeCategories.length}}</div></div>
+                                                    <div class="right-section">   
+                                                        <div class="search-box">
+                                                            <i class="pi pi-search"></i>
+                                                            <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
+                                                            <input pInputText type="text" #filter (input)="testTypeCategoryTable.filterGlobal(filter.value, 'contains')" placeholder="Test Category Search" />
+                                                        </div>
+                                                        <button class="btn primary-btn" (click)="showCreateTestCategoryForm()">
+                                                            <span class="material-symbols-rounded icon">add</span>
+                                                            Add Test Category
+                                                        </button>
+                                                    </div>
+                                                </div>                
+                                            </ng-template>
+                                            <ng-template pTemplate="header">
+                                                <tr>
+                                                    <th style="width: 200px; min-width:200px; max-width:200px">Name</th>
+                                                    <th style="width: 200px; min-width:200px; max-width:200px">Description</th>
+                                                    <th style="width: 100px; min-width:100px; max-width:100px">Status</th>
+                                                    <th style="width: 120px; min-width:120px; max-width:120px">Is Approved</th>
+                                                    <th>Valid till</th>  
+                                                    <!-- <th style="width: 250px; min-width:250px; max-width:250px">Comments</th> -->
+                                                    <th>Created At</th>
+                                                    <th>Approved By</th>
+                                                    <th>Last Updated At</th>
+                                                    <th>Last Updated By</th>  
+                                                    <th style="width: 50px; min-width: 50px; max-width: 50px;"></th>
+                                                </tr>
+                                            </ng-template>
+                                            <ng-template pTemplate="body" let-testCategory>
+                                                <tr>
+                                                    <td style="width: 200px; min-width:200px; max-width:200px">{{testCategory.name}}</td>
+                                                    <td style="width: 200px; min-width:200px; max-width:200px">{{testCategory.description}}</td>
+                                                    <td style="width: 100px; min-width:100px; max-width:100px"class="td-uppercase">{{testCategory.status==true?'Active':'Inactive'}}</td>
+                                                    <td style="width: 120px; min-width:120px; max-width:120px">
+                                                        <div class="tdChip" [ngClass]="testCategory.is_approved==true?'approved':'pending'">{{testCategory.is_approved==true?'Approved':'Pending'}}</div>                                
+                                                    </td>
+                                                    <td>{{testCategory.valid_till}}</td>
+                                                    <!-- <td style="width: 250px; min-width:250px; max-width:250px">{{testCategory.comments}}</td> -->
+                                                    <td>{{testCategory.created_at}}</td>
+                                                    <td>{{testCategory.approved_by_name}}</td>
+                                                    <td>{{testCategory.last_updated_at}}</td>
+                                                    <td>{{testCategory.last_updated_by_name}}</td>
+                                                    <td style="width: 50px; min-width: 50px; max-width: 50px;">
+                                                        <button type="button" class="td-menu-btn" [disabled]="!testCategory.is_approved" (click)="subActionMenu.toggle($event); setTestCatActionMenu(testCategory)">
+                                                            <span class="material-symbols-rounded icon">more_vert</span>
+                                                        </button>                        
+                                                    </td>
+                                                </tr>
+                                            </ng-template>
+                                        </p-table>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </p-tabPanel>
+        <p-tabPanel header="Test Categories waiting for approval">
+            <div class="content-loader" *ngIf="pendingApprovalsDataLoader">
+                <i class="pi pi-spin pi-spinner"></i>
+                <span>Loading Approval Pending Test Categories...</span>
+            </div>
+            <div class="table-container table-selection-list" *ngIf="!pendingApprovalsDataLoader">
+                <p-table #pendingApprovelTestCategoriesTable class="selectableTable" [value]="pendingApprovalsData" 
+                [globalFilterFields]="['name','test_type_name','description','valid_till', 'created_at', 'last_updated_at', 'last_updated_by_name']">
+                    <ng-template pTemplate="caption">
+                        <div class="table-title-with-search">
+                            <div class="title">Test Categories
+                                <!-- <div class="count">{{testTypesData.length}}</div> -->
+                            </div>
+                            <div class="right-section">   
+                                <div class="search-box">
+                                    <i class="pi pi-search"></i>
+                                    <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
+                                    <input pInputText type="text" #filter (input)="pendingApprovelTestCategoriesTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
+                                </div>
+                                <!-- <button class="btn primary-btn" (click)="showTestTypeForm()">
+                                    <span class="material-symbols-rounded icon">add</span>
+                                   Add New Test Type
+                                </button> -->
+                            </div>
+                        </div>                
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th class="tdFirstCol"></th>
+                            <th>Category Name</th>
+                            <th>Test Type</th>                            
+                            <th>Description</th>
+                            <th>Is Approved</th>
+                            <th>Status</th>
+                            <th>Valid Till</th>
+                            <!-- <th>Comments</th> -->
+                            <th>Created At</th>                   
+                            <th>Last updated At</th>
+                            <th>Last Updated By</th>
+                            <!-- <th style="width: 50px; min-width: 50px; max-width: 50px;"></th> -->
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-testcategory>
+                        <tr (click)="showPendingApprovalTestCategory(testcategory)">
+                            <td class="tdFirstCol"></td>
+                            <td>{{testcategory.name}}</td>
+                            <td>{{testcategory.test_type_name}}</td>                            
+                            <td>{{testcategory.description}}</td>
+                            <td>
+                                <div class="tdChip" [ngClass]="testcategory.is_approved==true?'approved':'pending'">{{testcategory.is_approved==true?'Approved':'Pending'}}</div>                                
+                            </td>
+                            <td class="td-uppercase">{{testcategory.status==true?'Active':'Inactive'}}</td>
+                            <td>{{testcategory.valid_till}}</td>
+                            <!-- <td>{{testType.comments}}</td> -->
+                            <td>{{testcategory.created_at}}</td>
+                            <td>{{testcategory.last_updated_at}}</td>
+                            <td>{{testcategory.last_updated_by_name}}</td>
+                            <!-- <td style="width: 50px; min-width: 50px; max-width: 50px;">
+                                <button type="button" class="td-menu-btn" (click)="mainActionMenu.toggle($event); setTestTypeActionMenu(testType)">
+                                    <span class="material-symbols-rounded icon">more_vert</span>
+                                </button>                        
+                            </td> -->
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </p-tabPanel>
+    </p-tabView>
+    </div>
+
+    <p-menu #mainActionMenu [popup]="true" [model]="mainActionMenuItems"></p-menu>
+    <p-menu #subActionMenu [popup]="true" [model]="subActionMenuItems"></p-menu>
+
+    <!-- <p-selectButton [options]="testTypes" [(ngModel)]="selectedTestType" optionLabel="icon">
+        <ng-template let-item>
+            <i [class]="item.icon"></i>
+        </ng-template>
+    </p-selectButton> -->
+    
+
+    <p-sidebar [(visible)]="testTypeFormSidebar"  class="sidebar-section" [style]="{width:'30%'}" position="right">
+        <ng-template pTemplate="header">{{testTypeFormTitle}}</ng-template>
+        <ng-template pTemplate="content">
+            <div class="card">
+                <form [formGroup]="testTypeForm" class="form-container display-column">
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="name" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && fTestType['name'].errors }"> 
+                        <label for="float-input">Test Type Name<small class="star">*</small></label>
+                        <div *ngIf="submitted && fTestType['name'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fTestType['name'].errors['required']">Test Type is required</div>
+                        </div>
+                    </div>
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="code" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && fTestType['code'].errors }"> 
+                        <label for="float-input">Code<small class="star">*</small></label>
+                        <div *ngIf="submitted && fTestType['code'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fTestType['code'].errors['required']">Code is required</div>
+                        </div>
+                    </div>
+
+                    <div class="field p-float-label">
+                        <!-- <input id="isActive" formControlName="is_active" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                        <p-dropdown [options]="statusOptions" formControlName="status" optionLabel="name" optionValue="value" placeholder="Select an Option" [ngClass]="{ 'is-invalid': submitted && fTestType['status'].errors }"></p-dropdown>
+                        <label for="isActive">Status<small class="star">*</small></label>
+                        <div *ngIf="submitted && fTestType['status'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fTestType['status'].errors['required']">Status is required</div>
+                        </div>
+                    </div>
+                    <!-- <div class="field p-float-label">
+                        <input id="float-input" formControlName="valid_till" type="text" pInputText> 
+                        <label for="float-input">Valid Till</label>
+                    </div> -->
+                    <div class="field p-float-label position-relative">
+                        <p-calendar formControlName="valid_till" dateFormat="yy-mm-dd" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && fTestType['valid_till'].errors }"></p-calendar>
+                        <!-- <input id="validTill" formControlName="valid_till" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                        <label for="validTill">Valid Till<small class="star">*</small></label>
+                        <div *ngIf="submitted && fTestType['valid_till'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fTestType['valid_till'].errors['required']">Valid Till is required</div>
+                        </div>
+                    </div>
+                    
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="comments" type="text" pInputText> 
+                        <label for="float-input">Comments</label>
+                    </div>
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="description" type="text" pInputText> 
+                        <label for="float-input">Description</label>
+                    </div>  
+                </form>   
+            </div>
+            
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="pageActions">
+                <button class="btn secondary-btn" (click)="testTypeCancelBtn()">Cancel</button>
+                <button class="btn primary-btn" (click)="createTestType()">Submit</button>
+            </div>
+        </ng-template>
+        
+    </p-sidebar>
+
+    <p-sidebar [(visible)]="testCategoryFormSidebar"  class="sidebar-section" [style]="{width:'30%'}" position="right">
+        <ng-template pTemplate="header">{{testCategoryFormTitle}}</ng-template>
+        <ng-template pTemplate="content">
+            <div class="card">
+                <form [formGroup]="testCategoryForm" class="form-container display-column">
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="name" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && fTestCat['name'].errors }"> 
+                        <label for="float-input">Test Category Name<small class="star">*</small></label>
+                        <div *ngIf="submitted && fTestCat['name'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fTestCat['name'].errors['required']">Test Category Name is required</div>
+                        </div>
+                    </div>
+                    <!-- <div class="field p-float-label">
+                        <input id="float-input" formControlName="test_type" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && fTestCat['test_type'].errors }"> 
+                        <label for="float-input">test_type<small class="star">*</small></label>
+                        <div *ngIf="submitted && fTestCat['test_type'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fTestCat['test_type'].errors['required']">Test type is required</div>
+                        </div>
+                    </div> -->
+
+                    <div class="field p-float-label">
+                        <!-- <input id="isActive" formControlName="is_active" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                        <p-dropdown [options]="statusOptions" formControlName="status" optionLabel="name" optionValue="value" placeholder="Select an Option" [ngClass]="{ 'is-invalid': submitted && fTestCat['status'].errors }"></p-dropdown>
+                        <label for="isActive">Status<small class="star">*</small></label>
+                        <div *ngIf="submitted && fTestCat['status'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fTestCat['status'].errors['required']">Status is required</div>
+                        </div>
+                    </div>
+                    <!-- <div class="field p-float-label">
+                        <input id="float-input" formControlName="valid_till" type="text" pInputText> 
+                        <label for="float-input">Valid Till</label>
+                    </div> -->
+                    <div class="field p-float-label position-relative">
+                        <p-calendar formControlName="valid_till" dateFormat="yy-mm-dd" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && fTestCat['valid_till'].errors }"></p-calendar>
+                        <!-- <input id="validTill" formControlName="valid_till" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                        <label for="validTill">Valid Till<small class="star">*</small></label>
+                        <div *ngIf="submitted && fTestCat['valid_till'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="fTestCat['valid_till'].errors['required']">Valid Till is required</div>
+                        </div>
+                    </div>
+                    
+                    <!-- <div class="field p-float-label">
+                        <input id="float-input" formControlName="comments" type="text" pInputText> 
+                        <label for="float-input">Comments</label>
+                    </div> -->
+                    <div class="field p-float-label">
+                        <input id="float-input" formControlName="description" type="text" pInputText> 
+                        <label for="float-input">Description</label>
+                    </div>  
+                </form>   
+            </div>
+            
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="pageActions">
+                <button class="btn secondary-btn" (click)="testCategoryCancelBtn()">Cancel</button>
+                <button class="btn primary-btn" (click)="createTestCategory()">Submit</button>
+            </div>
+        </ng-template>
+        
+    </p-sidebar>
+
+    <p-sidebar [(visible)]="approvalPendingDetailsSideBar" class="sidebar-section" [style]="{width:'30%'}" position="right">
+        <ng-template pTemplate="header">Details of <span class="clr-primary">{{selectedPendingApprovalTestCategory.name}}</span> </ng-template>
+        <ng-template pTemplate="content">
+            <div class="sideBarContent">                
+                <div class="sidebarFields">
+                    <div class="field">
+                        <label for="">Category Name</label>
+                        <span>{{selectedPendingApprovalTestCategory.name}}</span>
+                    </div>
+                    <div class="field">
+                        <label for="">Test Type Name</label>
+                        <span>{{selectedPendingApprovalTestCategory.test_type_name}}</span>
+                    </div>
+                    <div class="field">
+                        <label for="">Description</label>
+                        <span>{{selectedPendingApprovalTestCategory.description}}</span>
+                    </div>
+                    <div class="field">
+                        <label for="">Status</label>
+                        <span>{{selectedPendingApprovalTestCategory.status}}</span>
+                    </div>
+                    <div class="field">
+                        <label for="">Valid Till</label>
+                        <span>{{selectedPendingApprovalTestCategory.valid_till}}</span>
+                    </div>
+                    <div class="field">
+                        <label for="">Created At</label>
+                        <span>{{selectedPendingApprovalTestCategory.created_at}}</span>
+                    </div>
+                    <div class="field">
+                        <label for="">last_updated_at</label>
+                        <span>{{selectedPendingApprovalTestCategory.last_updated_at}}</span>
+                    </div>
+                    <div class="field">
+                        <label for="">last_updated_by_name</label>
+                        <span>{{selectedPendingApprovalTestCategory.last_updated_by_name}}</span>
+                    </div>
+                    <!-- <div class="field">
+                        <label for="">Comments</label>
+                        <span>{{selectedPendingApprovalTestCategory.comments}}</span>
+                    </div> -->
+                </div>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="footer">
+            <div class="pageActions">
+                <button class="btn secondary-btn" (click)="rejectTestCategory()" disabled>Reject</button>
+                <button class="btn primary-btn" (click)="approveTestCategory()">Approve</button>
+            </div>
+        </ng-template>
+    </p-sidebar>
+</div>
+<p-toast></p-toast>
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<!-- <p-dialog header="Success" [modal]="true" [style]="{width: '30vw'}" [(visible)]="confirmDeletionPopup">
+    
+    <div class="confirmatinMessage" *ngIf="!testCategoryDeletionLoader && !testCategoryDetionSuccess">
+        <p>Are you sure you want to delete <br>the test category <span class="clr-primary"><b>{{selectedTestCategoryToDelete?.name}}</b></span>?</p>
+    </div>
+    <div class="content-loader" *ngIf="testCategoryDeletionLoader">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Deleting Category <span class="clr-primary"><b>{{selectedTestCategoryToDelete?.name}}</b></span>...</span>
+    </div> 
+    <div class="confirmatinMessage" *ngIf="!testCategoryDeletionLoader && !testCategoryDetionSuccess">
+        <p>{{testCategoryDetionMessage}}</p>
+    </div>
+    <ng-template pTemplate="footer">
+        <p-button icon="pi pi-check" (click)="closeDeleteConformaion()" label="Cancel" styleClass="p-button-text" *ngIf="!testCategoryDeletionLoader && !testCategoryDetionSuccess"></p-button>
+      <p-button icon="pi pi-check" (click)="confirmDelete()" label="Delete" styleClass="p-button-text" *ngIf="!testCategoryDeletionLoader && !testCategoryDetionSuccess"></p-button>
+      <p-button icon="pi pi-check" (click)="closeDeleteConformaion()" label="Ok" styleClass="p-button-text" *ngIf="testCategoryDetionSuccess"></p-button>
+    </ng-template>
+</p-dialog> -->

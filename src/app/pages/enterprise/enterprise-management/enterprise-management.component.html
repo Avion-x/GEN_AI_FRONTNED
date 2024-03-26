@@ -1,0 +1,83 @@
+<div class="page-container-header">
+    <div class="title-section">
+            <button class="backBtn" [routerLink]="backUrl" [disabled]="backUrl.length == 0">
+                <span class="material-symbols-rounded">category</span>
+            </button>
+            <div class="title-container">
+                <h1 class="title">
+                    Enterprise Management
+                </h1>
+                <!-- <h2 class="sub-title">
+                    <span *ngIf="productMainCategory">{{productMainCategory.category}}-{{productMainCategory.id}}</span>
+                    <span *ngIf="productSubCategory"><i class="icofont-simple-right"></i></span>
+                    <span *ngIf="productSubCategory">{{productSubCategory.sub_category}}</span>
+                </h2> -->
+            </div>
+    </div>
+    
+    <div class="header-right-section">
+        <!-- <button class="btn" (click)="generateTestCases()">Generate Test Cases</button> -->
+    </div>
+</div>
+<ul class="breadcrumb">
+    <li *ngFor="let item of breadcrumblist">
+        <button class="btn home" *ngIf="item.name == 'Home'" [routerLink]="item.url" [disabled]="item.disabled"> 
+            <i class="material-symbols-rounded">home</i> 
+        </button>
+        <button class="btn" *ngIf="item.name !== 'Home'" [routerLink]="item.url" [disabled]="item.disabled"> {{item.name}} </button>
+    </li>    
+    <!-- <li><button class="btn" disabled> Devices </button></li> -->
+</ul>
+
+<div class="content-wrapper">
+    <!-- <div class="content-loader" *ngIf="productsLoader">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Loading Product Categories List...</span>
+    </div> -->
+
+    <div class="table-container table-selection-list mt-30" >
+        <p-table #enterpriseTable class="selectableTable" [value]="enterpriseList" [globalFilterFields]="['id','name','created_at','created_by', 'valid_till', 'comments']">
+            <ng-template pTemplate="caption">
+                <div class="table-title-with-search">
+                    <div class="title">Enterprise List<div class="count">{{enterpriseList.length}}</div></div>
+                    <div class="right-section">   
+                        <div class="search-box">
+                            <i class="pi pi-search"></i>
+                            <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
+                            <input pInputText type="text" #filter (input)="enterpriseTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
+                        </div>
+                        <button class="btn primary-btn" (click)="navigateToAddNewEnterprise()">
+                            <span class="material-symbols-rounded icon">add</span>
+                            Add New Enterprise
+                        </button>
+                    </div>
+                </div>                
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Id</th>
+                    <th>Enterprice</th>
+                    <th>Name</th>
+                    <th>Created At</th>
+                    <th>Created By</th>
+                    <th>Valid till</th>
+                    <th>Comments</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-enterprise>
+                <tr>
+                    <td>{{enterprise.id}}</td>
+                    <td>
+                        <img class="td-clientlogo" [src]='enterprise.logo'>
+                    </td>
+                    <td>{{enterprise.name}}</td>
+                    <td>{{enterprise.created_at}}</td>
+                    <td>{{enterprise.created_by}}</td>
+                    <td>{{enterprise.valid_till}}</td>
+                    <td>{{enterprise.comments}}</td>
+                </tr>                
+            </ng-template>
+            
+        </p-table>
+    </div>
+</div>
