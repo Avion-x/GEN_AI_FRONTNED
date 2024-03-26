@@ -73,12 +73,24 @@ h1,h2,h3,h4,h5,h6{
   padding-bottom: 10px !important;
 }
 
+.pt-5{
+  padding-top: 5px !important;
+}
+
+.pt-10{
+  padding-top: 10px !important;
+}
+
 .pt-15{
   padding-top: 15px !important;
 }
 
 .position-relative{
   position: relative;
+}
+
+.no-padding{
+  padding: 0px !important;
 }
 
 input::placeholder{
@@ -1145,6 +1157,47 @@ input::-ms-input-placeholder {
       }
     }
   }  
+  &.header-tabs-sidebar-section{
+    .p-sidebar{
+      .p-sidebar-header{
+        padding: 10px 20px;
+        border-bottom: 1px solid vars.$cardBorderColor;   
+        .page-container-header{
+          margin: 0px;
+          padding: 0px;
+          border: 0px;
+          .sub-title{
+            span{
+              margin: 0px;
+            }
+          }
+        } 
+      }      
+      .p-sidebar-content{
+        height: calc(100vh - 100px);
+      }
+    }  
+    .productDetailTabs{
+      margin-top: 0px;
+      .p-tabview .p-tabview-nav-container .p-tabview-nav-content .p-tabview-nav li .p-tabview-nav-link{
+        font-size: 14px;
+        padding: 20px;
+      }
+    }
+  }
+  &.gray-body{
+    .p-sidebar-content{
+      background: vars.$body-bg;
+    }
+  }
+  &.no-footer{
+    .p-sidebar-content{
+      height: calc(100vh - 70px);
+    }
+    .p-sidebar-footer{
+      display: none;
+    }
+  }
 }
 
 .expantionTable{
@@ -1427,12 +1480,55 @@ input::-ms-input-placeholder {
 }
 .radioButtonGroup{
   display: flex;
+  margin-top: 20px;
   margin-bottom: 20px;
-  .field-radioBtn{
+  border: 1px solid vars.$cardBorderColor;
+  border-radius: 4px;
+  padding: 15px 15px;
+  position: relative;
+  .title{
+    position: absolute;
+    top: -10px;
+    font-size: 14px;
+    color: vars.$titleClr;
+    @include vars.fontFamilySecondary;
+    font-weight: 600;
+    background: #fff;
+    padding: 0 5px;
+    display: flex;
+    span.selectedCat{
+      margin-left: 5px;
+      //color: vars.$primary-color;
+      text-transform: uppercase;
+    }
+  }
+  .field-radiobutton{
+    display: flex;
+    align-items: center;
     label{
       color: vars.$fontclr;
       margin-left: 5px;
       font-size: 12px;
+      &.selected{
+        color: vars.$primary-color;
+        font-weight: 500;
+      }
+    }
+    // p-radiobutton{
+    //   &.ng-touched ~ label{
+    //     color: vars.$primary-color;
+    //   }
+    // }
+    .p-radiobutton{
+      .p-radiobutton-box{
+        &.p-highlight{
+          border-color: vars.$primary-color;
+          background: vars.$primary-color;
+        }
+        &:not(.p-disabled).p-focus{
+          box-shadow: none;
+        }
+      }
     }
   }
 }
@@ -1449,11 +1545,11 @@ input::-ms-input-placeholder {
     flex-grow: 1;
     border: 1px solid vars.$cardBorderColor;
     border-radius: 4px;
-    padding: 15px;
+    padding: 30px 15px 15px;
     margin-top: 15px;
     position: relative;
     .field-checkbox{
-      width: 25%;
+      width: calc(25% - 25px);
     }
     .title{
       position: absolute;
@@ -1464,6 +1560,18 @@ input::-ms-input-placeholder {
       font-weight: 600;
       background: #fff;
       padding: 0 5px;
+      display: flex;
+      span.selectedCat{
+        margin-left: 5px;
+        //color: vars.$primary-color;
+        text-transform: uppercase;
+      }
+      .field-checkbox{
+        display: flex;
+        width: 95px;
+        padding-left: 10px;
+        align-items: center;
+      }
     }
   }
   .show-in-row{

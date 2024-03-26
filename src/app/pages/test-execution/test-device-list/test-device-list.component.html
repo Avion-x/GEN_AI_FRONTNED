@@ -52,7 +52,7 @@
         <h1 class="main-title">Select Test Type</h1>
 
         <div class="field-checkbox" *ngFor="let test of selectedDeviceTestTypes">
-            <p-checkbox name="group1" [value]="test.code" [(ngModel)]="selectedTestTypes" [inputId]="test.id"></p-checkbox>
+            <p-checkbox name="group1" [value]="test.code" [(ngModel)]="selectedTestTypes" (onChange)="checkboxSelected()" [inputId]="test.id"></p-checkbox>
             <label [for]="test.id">{{test.description}}</label>
         </div>
 

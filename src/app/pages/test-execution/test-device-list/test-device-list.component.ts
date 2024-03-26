@@ -191,6 +191,11 @@ export class TestDeviceListComponent implements OnInit {
     console.log('url', url)
     this._router.navigateByUrl(url);
   }
+
+
+  checkboxSelected(){
+    console.log('selectedTestTypes', this.selectedTestTypes);
+  }
   
 
 }

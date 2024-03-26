@@ -16,12 +16,20 @@ export class DashboardComponent implements OnInit {
   approvedChartData:any;
   approvedChartOptions:any;
   widgetsLoader:boolean = false;
+  public showSidebar:boolean = false;
+  public categoryStackedData:any;
+  public categoryStackedOptions:any;
+  public moreDetailsTableData:any[] =[];
+  public selectedWidget:string = '';
+  public widgetDetailsLoader:boolean = false;
+  public cols: any[] = [];
+  public tableSearchKeys:any[] = [];
 
   constructor(private dataService:DataService) { }
 
   ngOnInit(): void {
     this.getWidgets();
-    this.getMoreDetails('total_devices');
+    this.getCategoryDetails();
     // this.widgetsTopSection = [
     //   {
     //     title:'Total Devices',
@@ -148,6 +156,23 @@ export class DashboardComponent implements OnInit {
           }
       }
     };
+
+
+    this.categoryStackedOptions = {
+        tooltips: {
+            mode: 'index',
+            intersect: false
+        },
+        responsive: true,
+        scales: {
+            xAxes: [{
+                stacked: true,
+            }],
+            yAxes: [{
+                stacked: true
+            }]
+        }
+    };
   }
 
   getWidgets(){
@@ -167,8 +192,55 @@ export class DashboardComponent implements OnInit {
     })
   }
 
-  getMoreDetails(seletedWidgets:any){
+  getCategoryDetails(){
     //this.widgetsLoader = true;
+    const getCategoryDetails = {
+      action: '/product/category_details/',
+      method: 'get',
+      // params: {
+      //   unixid: this.userLogged
+      // }
+    }
+    this.dataService.apiDelegate(getCategoryDetails).subscribe((result: any) => {
+      //this.productCategoryData = result;
+      //this.widgetsTopSection = result.data;
+      //this.widgetsLoader = false;
+      console.log('getCategoryDetails', result.data);
+      const categoriesData:any[] = result.data;
+      const categorieNames:any[] = [];
+      const subCategoriesCount:any[] = [];
+      const devicesCount:any[] = [];
+      categoriesData.forEach(item=>{
+        categorieNames.push(item.category_name);
+        subCategoriesCount.push(item.sub_category_count);
+        devicesCount.push(item.device_count);
+      })
+      this.categoryStackedData = {
+        labels: [...categorieNames],
+        datasets: [{
+            type: 'bar',
+            label: 'Sub Categories',
+            backgroundColor: '#d9d6ff',
+            data: [...subCategoriesCount]
+        }, {
+            type: 'bar',
+            label: 'Devices',
+            backgroundColor: '#5b54bb',
+            data: [...devicesCount]
+        }]
+    };
+    })
+  }
+
+  showWidgetDetails(selectedWidget:any){
+    console.log('selectedWidget', selectedWidget);
+    this.selectedWidget = selectedWidget.title;
+    this.getMoreDetails(selectedWidget.chart_data_point);
+  }
+
+  getMoreDetails(seletedWidgets:any){
+    this.showSidebar = true;
+    this.widgetDetailsLoader = true;
     const getProductCategory = {
       action: 'product/dashboard_chart/',
       method: 'get',
@@ -178,11 +250,32 @@ export class DashboardComponent implements OnInit {
     }
     this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
       //this.productCategoryData = result;
-      console.log('result', result);
-      //this.widgetsTopSection = result.data;
-      //this.widgetsLoader = false;
-      //console.log('this.productCategoryData', this.productCategoryData);
+      
+      const responceData:any[] = result.data;
+      const colArr:any[] = [];
+      const keysArr:any[] = [];
+      Object.keys(responceData[0]).forEach(key=>{
+        if(key !== 'id'){
+            colArr.push({ field: key, header:key.replace('_', ' ')});
+            keysArr.push(key);
+        }        
+      })
+    //   responceData.forEach((obj) => {
+    //     Object.entries(obj).forEach(([key, value]) => {
+    //      colArr.push({ field: key, header: key });
+    //       //console.log(`${key} ${value}`);
+    //     });
+    //   });
+      this.tableSearchKeys = keysArr;
+      this.cols = colArr;
+      console.log('tableSearchKeys', this.tableSearchKeys);
+      this.moreDetailsTableData = responceData;
+      this.widgetDetailsLoader = false;
     })
+  }
+
+  numSequence(n: number): Array<number> {
+    return Array(n);
   }
 
 }

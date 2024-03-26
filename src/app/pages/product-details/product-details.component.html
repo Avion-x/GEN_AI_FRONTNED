@@ -303,46 +303,95 @@
     </div>
 </div>
 
-<p-sidebar [(visible)]="generateTestCasesFormSidebar"  class="sidebar-section" [style]="{width:'85%'}" position="right">
-    <ng-template pTemplate="header">Generate New Test Cases</ng-template>
-    <ng-template pTemplate="content">
-        
-        <div class="card" *ngIf="testTypes">
-            <h1 class="main-title">Select Test Type</h1>
-            <div class="checkbox-group">
-                <div class="radioButtonGroup show-in-row" >
-                    <div class="field-radioBtn" *ngFor="let test of testTypes">
-                        <!-- <p-checkbox name="group2" [value]="test.code" (onChange)="showTestCategories(test)" [(ngModel)]="selectedTestTypes" [inputId]="test.id"></p-checkbox>
-                        <label [for]="test.id">{{test.description}}</label> -->
-                        <p-radioButton [inputId]="test.id" name="category" [value]="test.id" (onClick)="showTestCategories(test)" [(ngModel)]="selectedTestTypes"></p-radioButton>
-                        <label [for]="test.id">{{test.description}}</label>
-                    </div>                    
-                </div>
-                <div class="content-loader" *ngIf="testCategoriesListLoader">
-                    <i class="pi pi-spin pi-spinner"></i>
-                    <span>Loading Test Categories of {{selectedTestType.description}}...</span>
-                </div>
-                <div class="checkBoxChildGroup" *ngIf="testCategoriesOfSelectedTestType.length !== 0">
-                    <div class="title">
-                        Categories of <span>{{selectedTestType.description}}</span>
-                    </div>
-                    <div class="field-checkbox" *ngFor="let category of testCategoriesOfSelectedTestType">
-                        <p-checkbox name="group2" [value]="category.id" (onChange)="showSelectedCategories()"  [(ngModel)]="selectedTestTypeCategories" [inputId]="category.id"></p-checkbox>
-                        <label [for]="category.id">{{category.name}}</label>
-                    </div>
-                </div>
-                
-                <div>
-                    
-                </div>
-            </div>            
+<p-sidebar [(visible)]="generateTestCasesFormSidebar"  class="sidebar-section header-tabs-sidebar-section" [style]="{width:'85%'}" position="right">
+    <ng-template pTemplate="header">
+        <div class="page-container-header">
+            <div class="title-section">
+                <!-- <button class="backBtn" [routerLink]="backUrl" [disabled]="backUrl.length == 0">
+                    <span class="material-symbols-rounded">arrow_back</span>
+                </button> -->
+                <div class="title-container">
+                    <h1 class="title">
+                        {{productData?.product_code}}
+                     </h1>
+                     <h2 class="sub-title">
+                        <span *ngIf="productMainCategory">{{productMainCategory.category}}-{{productMainCategory.id}}</span>
+                        <span *ngIf="productSubCategory"><i class="icofont-simple-right"></i></span>
+                        <span *ngIf="productSubCategory">{{productSubCategory.sub_category}}</span>
+                     </h2>
+                </div>        
+            </div>
         </div>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <!-- <p-button (click)="activeIndex1 = 0" styleClass="p-button-text" label="Generate All Test Cases"></p-button>
+        <p-button (click)="activeIndex1 = 1" styleClass="p-button-text" label="Generate Individual Test Cases"></p-button> -->
+        <p-tabView [(activeIndex)]="generateTestCaseActiveIndex" class="productDetailTabs">
+            <p-tabPanel header="Generate All Test Cases">
+                <div class="card no-padding" *ngIf="testTypes">
+                    <h1 class="main-title">Generate Test Cases For All Selected Test Types</h1>
+                    <div class="checkbox-group">
+                        <div class="checkBoxChildGroup show-in-row" >
+                            <div class="field-checkbox" *ngFor="let test of testTypes">
+                                <p-checkbox name="group2" [value]="test.id" (onChange)="showSelectedVal()" [(ngModel)]="selectedAllTestTypes" [inputId]="test.id" [disabled]="true"></p-checkbox>
+                                <label [for]="test.id">{{test.description}}</label>
+                                <!-- <p-radioButton [inputId]="test.id" name="category" [value]="test.id" (onClick)="showTestCategories(test)" [(ngModel)]="selectedTestTypes"></p-radioButton>
+                                <label [for]="test.id">{{test.description}}</label> -->
+                            </div>                    
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="Generate Individual Test Cases">
+                <div class="card no-padding" *ngIf="testTypes">
+                    <!-- <h1 class="main-title">Select Test Type</h1> -->
+                    <div class="checkbox-group">
+                        <div class="radioButtonGroup show-in-row" >
+                            <div class="title">
+                                Select Test Type
+                            </div>
+                            <div class="field-radiobutton" *ngFor="let test of testTypes">
+                                <!-- <p-checkbox name="group2" [value]="test.code" (onChange)="showTestCategories(test)" [(ngModel)]="selectedTestTypes" [inputId]="test.id"></p-checkbox>
+                                <label [for]="test.id">{{test.description}}</label> -->
+                                <p-radioButton [inputId]="'type'+test.id" name="category" [value]="test.id" (onClick)="showTestCategories(test)" [(ngModel)]="selectedTestTypes"></p-radioButton>
+                                <label [for]="'type'+test.id" [ngClass]="test.id == selectedTestTypes?'selected':''">{{test.description}}</label>
+                            </div>                    
+                        </div>
+                        <div class="content-loader" *ngIf="testCategoriesListLoader">
+                            <i class="pi pi-spin pi-spinner"></i>
+                            <span>Loading Test Categories of {{selectedTestType.description}}...</span>
+                        </div>
+                        <div class="checkBoxChildGroup" *ngIf="testCategoriesOfSelectedTestType.length !== 0">
+                            <div class="title">
+                                Categories of <span class="selectedCat">{{selectedTestType.description}}</span>
+                                <div class="field-checkbox">
+                                    <p-checkbox [(ngModel)]="selectAll" [binary]="true" (onChange)="toggleSelectAllCategories()" inputId="binary"></p-checkbox>
+                                    <label for="binary">{{selectAllCBTitle}}</label>
+                                </div>
+                            </div>
+                            
+                            <div class="field-checkbox" *ngFor="let category of testCategoriesOfSelectedTestType">
+                                <p-checkbox name="group2" [value]="category.id" (onChange)="showSelectedCategories()"  [(ngModel)]="selectedTestTypeCategories" [inputId]="category.id"></p-checkbox>
+                                <label [for]="category.id">{{category.name}}</label>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            
+                        </div>
+                    </div>            
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+    
+        
         
     </ng-template>
     <ng-template pTemplate="footer">
         <div class="pageActions">
             <button class="btn secondary-btn" (click)="closeGenerateTestCasesSection()">Cancel</button>
-            <button class="btn primary-btn" (click)="generateTestCases()">Submit</button>
+            <button class="btn primary-btn" *ngIf="generateTestCaseActiveIndex == 0" (click)="generateAllTestCases()">Generate All Test Cases</button>
+            <button class="btn primary-btn" *ngIf="generateTestCaseActiveIndex == 1" (click)="generateTestCases()">Submit</button>
         </div>
     </ng-template>
 </p-sidebar>
