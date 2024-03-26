@@ -78,7 +78,7 @@
     </div>
                             
     <div class="table-container table-selection-list" *ngIf="!widgetDetailsLoader">
-        <p-table #detailsTable class="selectableTable" [columns]="cols" [value]="moreDetailsTableData" 
+        <p-table #detailsTable [columns]="cols" [value]="moreDetailsTableData" 
         [globalFilterFields]="tableSearchKeys" [paginator]="true" [alwaysShowPaginator]="false" paginatorPosition="bottom" [rows]="10" [showCurrentPageReport]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [rowsPerPageOptions]="[10,25,50]">
             <ng-template pTemplate="caption">
                 <div class="table-title-with-search">

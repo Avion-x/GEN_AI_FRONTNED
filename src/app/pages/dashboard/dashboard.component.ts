@@ -195,7 +195,7 @@ export class DashboardComponent implements OnInit {
   getCategoryDetails(){
     //this.widgetsLoader = true;
     const getCategoryDetails = {
-      action: '/product/category_details/',
+      action: 'product/category_details/',
       method: 'get',
       // params: {
       //   unixid: this.userLogged
@@ -234,6 +234,9 @@ export class DashboardComponent implements OnInit {
 
   showWidgetDetails(selectedWidget:any){
     console.log('selectedWidget', selectedWidget);
+    if(selectedWidget.value == 0){
+        return
+    }
     this.selectedWidget = selectedWidget.title;
     this.getMoreDetails(selectedWidget.chart_data_point);
   }
@@ -255,7 +258,7 @@ export class DashboardComponent implements OnInit {
       const colArr:any[] = [];
       const keysArr:any[] = [];
       Object.keys(responceData[0]).forEach(key=>{
-        if(key !== 'id'){
+        if(key !== 'id' && key !== 'product_id'){
             colArr.push({ field: key, header:key.replace('_', ' ')});
             keysArr.push(key);
         }        
