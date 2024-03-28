@@ -98,6 +98,17 @@
         }
       }
     }
+    .sideBar{
+        .header{
+            .title{
+                @include vars.fontFamilySecondary;
+                color: vars.$secondary-color;
+                font-size: 16px;
+                font-weight: 600;
+                padding: 10px;
+            }
+        }
+    }
 }
 
 .sideBarContent{
@@ -162,4 +173,30 @@
             }
         }
     }
+}
+
+.operation-btns {
+    display: flex;
+    align-items: center;
+    .btn{
+        background: vars.$secondary-color;
+        color: #fff;
+        border: 0px;
+        border-radius: 4px;
+        margin-right: 10px;
+        height: 25px;
+        width: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: vars.$secondary-box-shoadow;
+        i{
+            font-size: 14px;
+        }
+    }
+}
+
+.header-right-section{
+    display: flex;
+    align-items: center;
 }

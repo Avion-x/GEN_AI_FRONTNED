@@ -83,10 +83,16 @@
         <div class="sideBarContainer" *ngIf="showSidePannel">
             <div class="sideBar">
                 <div class="header">
-                    <div class="title"></div>
-                    <button class="closeBtn" (click)="closeSidePanel()">
-                        <span class="material-symbols-rounded">close</span>
-                    </button>
+                    <div class="title">User Details</div>
+                    <div class="header-right-section">
+                        <div class="operation-btns">
+                            <button (click)="updateUser(this.selectedUser)" class="edit btn"><i class="pi pi-user-edit"></i></button>
+                            <button (click)="deleteUser(this.selectedUser.id)" class="delete btn"><i class="pi pi-trash"></i></button>
+                        </div>
+                        <button class="closeBtn" (click)="closeSidePanel()">
+                            <span class="material-symbols-rounded">close</span>
+                        </button>
+                    </div>                    
                 </div>
                 <div class="sideBarContent">
                     <div class="avatarSection">
@@ -100,8 +106,8 @@
                             mail
                             </span> {{this.selectedUser.email}}</div>
                     </div>
-                    <button (click)="updateUser(this.selectedUser)">Edit</button>
-                    <button (click)="deleteUser(this.selectedUser.id)">Delete</button>
+                    
+                    
                     <div class="userInfosection">
                         <div class="field">
                             <label for="">User Name</label>
