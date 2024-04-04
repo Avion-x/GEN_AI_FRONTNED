@@ -5,10 +5,10 @@
             </button>
             <div class="title-container">
                 <h1 class="title">
-                    Add New Enterprise
+                   {{pageTitle}}
                 </h1>
                 <h2 class="sub-title">
-                    <span>Enterprise Management</span>
+                    <span>{{subTitle}}</span>
                     <!-- <span *ngIf="productSubCategory"><i class="icofont-simple-right"></i></span>
                     <span *ngIf="productSubCategory">{{productSubCategory.sub_category}}</span> -->
                 </h2>
@@ -28,41 +28,79 @@
     </li>    
     <!-- <li><button class="btn" disabled> Devices </button></li> -->
 </ul>
-
-<div class="content-wrapper">
+<div class="content-loader" *ngIf="submitted">
+    <i class="pi pi-spin pi-spinner"></i>
+    <span>Submitting Data Please Wait...</span>
+</div>
+<div class="content-wrapper" *ngIf="!submitted">
     <h1 class="main-title">Add New Enterprise</h1>
-    <div class="card">
-        <form [formGroup]="enterpriseForm" class="form-container">
+    
+    <div class="card" >
+        <form [formGroup]="enterpriseForm" class="form-container">            
             <div class="field p-float-label">
-                <input id="mainCategoryName" formControlName="enterpriseName" type="text" pInputText> 
-                <label for="mainCategoryName">Enterprise Name</label>
+                <input id="enterpriseName"  formControlName="name" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"> 
+                <label for="enterpriseName">Enterprise Name</label>
+                <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['name'].errors['required']">Enterprise Name is required</div>
+                </div>
             </div>
             <div class="field p-float-label">
-                <input id="mainCustomer" formControlName="logo" type="text" pInputText> 
-                <label for="mainCustomer">Logo</label>
-            </div>           
+                <input id="enterpriseCode"  formControlName="code" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['code'].errors }"> 
+                <label for="enterpriseCode">Code</label>
+                <div *ngIf="submitted && f['code'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['code'].errors['required']">Enterprise Code is required</div>
+                </div>
+            </div>  
             <div class="field p-float-label">
-                <input id="maindescription" formControlName="createdAt" type="text" pInputText> 
-                <label for="maindescription">Created At</label>
+                <input id="email" required formControlName="email" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"> 
+                <label for="email">Email</label>
+                <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['email'].errors['required']">Email is required</div>
+                    <div class="p-error" *ngIf="f['email'].errors['email']">Email is invalid</div>
+                </div>
+            </div>   
+            <div class="field p-float-label">
+                <!-- <input id="isActive" formControlName="is_active" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                <p-dropdown [options]="statusOptions" formControlName="status" optionLabel="name" optionValue="value" placeholder="Select an Option" [ngClass]="{ 'is-invalid': submitted && f['status'].errors }"></p-dropdown>
+                <label for="isActive">Status<small class="star">*</small></label>
+                <div *ngIf="submitted && f['status'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['status'].errors['required']">Status is required</div>
+                </div>
             </div>
+            <div class="field p-float-label position-relative">
+                <p-calendar formControlName="valid_till" dateFormat="yy-mm-dd" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && f['valid_till'].errors }"></p-calendar>
+                <!-- <input id="validTill" formControlName="valid_till" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
+                <label for="validTill">Valid Till</label>
+                <div *ngIf="submitted && f['valid_till'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['valid_till'].errors['required']">Valid till is required</div>
+                </div>
+            </div>   
             <div class="field p-float-label">
-                <input id="mainCreatedBy" formControlName="createdBy" type="text" pInputText> 
-                <label for="mainCreatedBy">Created By</label>
-            </div>
+                <input id="address"  formControlName="address" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['address'].errors }"> 
+                <label for="address">Address</label>
+                <div *ngIf="submitted && f['address'].errors" class="invalid-feedback">
+                    <div class="p-error" *ngIf="f['address'].errors['required']">Address is required</div>
+                </div>
+            </div>         
             <div class="field p-float-label">
-                <input id="mainValidTill" formControlName="validTill" type="text" pInputText> 
-                <label for="mainValidTill">Valid Till</label>
-            </div>
-            <div class="field p-float-label">
-                <input id="mainComments" formControlName="comments" type="text" pInputText> 
-                <label for="mainComments">Comments</label>
+                <input id="comments" formControlName="comments" type="text" pInputText> 
+                <label for="comments">Comments</label>
             </div>
             <div class="end-row"></div>            
         </form>           
     </div>
-
+    
     <div class="pageActions">
-        <button class="btn secondary-btn">Cancel</button>
-        <button class="btn primary-btn">Submit</button>
+        <!-- <button class="btn secondary-btn">Cancel</button> -->
+        <button type="submit" class="btn primary-btn submitBtn" (click)="submitData()" [disabled]="submitted" *ngIf="formState !== 'editEnterprise'">Submit</button>
+        <button type="submit" class="btn primary-btn submitBtn" (click)="updateEnterprise()" [disabled]="!isValueChanged" *ngIf="formState == 'editEnterprise'">Update</button>
     </div>
 </div>
+
+<p-dialog header="Success" [modal]="true" [style]="{width: '30vw'}" [(visible)]="successResponcePopup">
+    <!-- {{successResponce?.message}} -->
+    <p>{{submitSuccessMessage}}</p>
+    <ng-template pTemplate="footer">
+      <p-button icon="pi pi-check" (click)="afterSuccess()" label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>

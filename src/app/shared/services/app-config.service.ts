@@ -18,6 +18,7 @@ export class AppConfigService {
   public readonly urlTestCaseManagement:string = this.urlHome + 'testCaseManagement';
   public readonly urlEnterpriseManagement:string = this.urlHome + 'enterpriseManagement';
   public readonly urlAddNewEnterprise:string = this.urlHome + 'enterpriseManagement/addNewEnterprise';
+  public readonly urlUpdateEnterprise:string = this.urlHome + 'enterpriseManagement/editEnterprise';
 
   constructor() { }
 }

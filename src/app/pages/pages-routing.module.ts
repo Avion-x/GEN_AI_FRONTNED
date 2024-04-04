@@ -80,7 +80,10 @@ const routes: Routes = [
         path:'enterpriseManagement', component: EnterpriseManagementComponent,
       },
       {
-        path:'enterpriseManagement/addNewEnterprise', component: AddNewEnterpriseComponent,
+        path:'enterpriseManagement/:formState', component: AddNewEnterpriseComponent,
+      },
+      {
+        path:'enterpriseManagement/:formState/:id', component: AddNewEnterpriseComponent,
       },
     ]
   },

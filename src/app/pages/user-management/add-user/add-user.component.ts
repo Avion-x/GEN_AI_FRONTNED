@@ -45,6 +45,7 @@ export class AddUserComponent implements OnInit {
   public userData:any;
   public formState!:string;
   public isValueChanged:boolean = false;
+  public submitSuccessMessage:string = '';
 
   selectedFile!: File;
 
@@ -349,7 +350,7 @@ export class AddUserComponent implements OnInit {
 
 
   submitData() {
-    this.successResponcePopup = true;
+    
     this.submitted = true;
     console.log('this.userForm.invalid', this.userForm.invalid);
     if (this.userForm.invalid) {
@@ -372,6 +373,9 @@ export class AddUserComponent implements OnInit {
         this.successResponce = result;
         console.log('successResponce', this.successResponce);
         if(!_.isEmpty(result)) {
+          this.submitSuccessMessage = 'User created successfully';
+          this.successResponcePopup = true;
+          this.submitted = false;         
           this.afterSuccess();          
           //this.messageService.add({severity:'success', summary:'Success', detail:'User added successfully'});
           //this.messageService.add({severity:'success', summary: 'Success', detail: 'User added successfully'});          
@@ -414,6 +418,9 @@ export class AddUserComponent implements OnInit {
         this.successResponce = result;
         console.log('successResponce', this.successResponce);
         if(!_.isEmpty(result)) {
+          this.submitSuccessMessage = 'User updated successfully';
+          this.successResponcePopup = true;
+          this.submitted = false;
           this.afterSuccess();          
           //this.messageService.add({severity:'success', summary:'Success', detail:'User added successfully'});
           //this.messageService.add({severity:'success', summary: 'Success', detail: 'User added successfully'});          

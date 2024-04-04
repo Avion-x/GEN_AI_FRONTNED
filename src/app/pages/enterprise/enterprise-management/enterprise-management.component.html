@@ -30,12 +30,12 @@
 </ul>
 
 <div class="content-wrapper">
-    <!-- <div class="content-loader" *ngIf="productsLoader">
+    <div class="content-loader" *ngIf="enterpriseListLoader">
         <i class="pi pi-spin pi-spinner"></i>
-        <span>Loading Product Categories List...</span>
-    </div> -->
+        <span>Loading Enterprise List...</span>
+    </div>
 
-    <div class="table-container table-selection-list mt-30" >
+    <div class="table-container table-selection-list mt-30" *ngIf="!enterpriseListLoader">
         <p-table #enterpriseTable class="selectableTable" [value]="enterpriseList" [globalFilterFields]="['id','name','created_at','created_by', 'valid_till', 'comments']">
             <ng-template pTemplate="caption">
                 <div class="table-title-with-search">
@@ -55,29 +55,48 @@
             </ng-template>
             <ng-template pTemplate="header">
                 <tr>
-                    <th>Id</th>
-                    <th>Enterprice</th>
-                    <th>Name</th>
-                    <th>Created At</th>
-                    <th>Created By</th>
+                    <!-- <th>Id</th> -->
+                    <th>Enterprice Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th>Address</th>
                     <th>Valid till</th>
                     <th>Comments</th>
+                    <th>Created At</th>
+                    <th>Created By</th>
+                    <th>Last Updated At</th>
+                    <th>Last Updated By</th>
+                    <th style="width: 50px; min-width: 50px; max-width: 50px;"></th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-enterprise>
                 <tr>
-                    <td>{{enterprise.id}}</td>
-                    <td>
+                    <!-- <td>{{enterprise.id}}</td> -->
+                    <!-- <td>
                         <img class="td-clientlogo" [src]='enterprise.logo'>
-                    </td>
+                    </td> -->
                     <td>{{enterprise.name}}</td>
+                    <td>{{enterprise.email}}</td>
+                    <td>{{enterprise.status}}</td>
+                    <td>{{enterprise.valid_till}}</td>
+                    <td>{{enterprise.address}}</td>
+                    <td>{{enterprise.comments}}</td>
                     <td>{{enterprise.created_at}}</td>
                     <td>{{enterprise.created_by}}</td>
-                    <td>{{enterprise.valid_till}}</td>
-                    <td>{{enterprise.comments}}</td>
+                    <td>{{enterprise.last_updated_at}}</td>
+                    <td>{{enterprise.last_updated_by}}</td>
+                    <td style="width: 50px; min-width: 50px; max-width: 50px;">
+                        <button type="button" class="td-menu-btn" (click)="actionMenu.toggle($event); setActionMenu(enterprise)">
+                            <span class="material-symbols-rounded icon">more_vert</span>
+                        </button>                        
+                    </td>
                 </tr>                
             </ng-template>
             
         </p-table>
     </div>
 </div>
+
+<p-menu #actionMenu [popup]="true" [model]="actionMenuItems"></p-menu>
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>
+<p-toast></p-toast>
