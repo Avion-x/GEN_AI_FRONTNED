@@ -964,9 +964,15 @@ input::-ms-input-placeholder {
   font-size: 10px;
   font-weight: 600;
   height: 30px;
+  box-shadow: vars.$secondary-box-shoadow;
   .icon{
     font-size: 21px;
     margin-right: 5px;
+  }
+  &[disabled]{
+    opacity: 0.7;
+    box-shadow: none;
+    cursor:default;
   }
 }
 
@@ -1877,4 +1883,18 @@ input::-ms-input-placeholder {
   color: vars.$primary-color;
   font-weight: 600;
   display: inline-flex;
+}
+
+.ngxChartHolder {
+  .ngx-charts {
+    .grid-panel.odd rect{
+      fill: transparent;
+    }
+    // .bar-chart{
+    //   g[ngx-charts-series-vertical]{
+    //     //transform: translate(10, 0) !important;
+    //   }
+    // }
+  }
+  
 }

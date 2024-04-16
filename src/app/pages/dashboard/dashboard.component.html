@@ -42,9 +42,28 @@
     </div>
 
     <div class="chart-section">
-        <div class="card">
+        <div class="card" *ngIf="categoriesChartData.length !== 0">
             <h5 class="title">Categories & Device count</h5>
-            <p-chart type="bar" [data]="categoryStackedData" [options]="categoryStackedOptions"></p-chart>
+            <!-- <p-chart type="bar" [data]="categoryStackedData" [options]="categoryStackedOptions"></p-chart> -->
+            <div class="ngxChartHolder" style="height: 260px;">
+                <ngx-charts-bar-vertical-2d                              
+                [results]="categoriesChartData"
+                [maxXAxisTickLength]="16" 
+                [scheme]="colorScheme"
+                [gradient]="gradient"
+                [xAxis]="showXAxis"
+                [yAxis]="showYAxis"
+                [legend]="showLegend"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel"
+                [legendTitle]="legendTitle"
+                [barPadding]="2"
+                [groupPadding]="20"
+                (select)="onCategoryChartBarSelect($event)">
+                </ngx-charts-bar-vertical-2d>
+            </div>            
         </div>
         <div class="card">
             <h5 class="title">Todays Test Results</h5>
@@ -86,7 +105,7 @@
                     <div class="right-section">   
                         <div class="search-box">
                             <i class="pi pi-search"></i>
-                        <input pInputText type="text" #filter (input)="detailsTable.filterGlobal(filter.value, 'contains')" placeholder="Sub Category Search" />
+                        <input pInputText type="text" #filter (input)="detailsTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
                         </div>
                     </div>
                 </div>                

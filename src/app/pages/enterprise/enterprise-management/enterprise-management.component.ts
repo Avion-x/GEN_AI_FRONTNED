@@ -85,7 +85,7 @@ export class EnterpriseManagementComponent implements OnInit {
       }
       this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
         this.enterpriseListLoader = false;
-        this.enterpriseList = result;    
+        this.enterpriseList = result.data;    
         console.log('enterpriseList', this.enterpriseList);
 
     })

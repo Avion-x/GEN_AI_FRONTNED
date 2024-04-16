@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/app/shared/services/data.service';
+import { Color, ScaleType } from '@swimlane/ngx-charts';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,6 +26,27 @@ export class DashboardComponent implements OnInit {
   public widgetDetailsLoader:boolean = false;
   public cols: any[] = [];
   public tableSearchKeys:any[] = [];
+
+  categoriesChartData: any[] = [];
+  view: any[] = [700, 400];
+
+  // options
+  showXAxis: boolean = true;
+  showYAxis: boolean = true;
+  gradient: boolean = false;
+  showLegend: boolean = false;
+  showXAxisLabel: boolean = false;
+  xAxisLabel: string = 'Country';
+  showYAxisLabel: boolean = false;
+  yAxisLabel: string = '';
+  legendTitle: string = '';
+
+  colorScheme: Color = { 
+    domain: ['#5b54bb', '#d9d6ff'], 
+    group: ScaleType.Ordinal, 
+    selectable: true, 
+    name: 'Customer Usage', 
+  };
 
   constructor(private dataService:DataService) { }
 
@@ -207,28 +230,96 @@ export class DashboardComponent implements OnInit {
       //this.widgetsLoader = false;
       console.log('getCategoryDetails', result.data);
       const categoriesData:any[] = result.data;
-      const categorieNames:any[] = [];
-      const subCategoriesCount:any[] = [];
-      const devicesCount:any[] = [];
+      // const categorieNames:any[] = [];
+      // const subCategoriesCount:any[] = [];
+      // const devicesCount:any[] = [];
+      
       categoriesData.forEach(item=>{
-        categorieNames.push(item.category_name);
-        subCategoriesCount.push(item.sub_category_count);
-        devicesCount.push(item.device_count);
+        this.categoriesChartData.push({
+          "name": item.category_name,
+          "series": [
+            {
+              "name": "Sub Categories",
+              "value": item.sub_category_count
+            },
+            {
+              "name": "Devices",
+              "value": item.device_count
+            }
+          ]
+        })
+        // categorieNames.push(item.category_name);
+        // subCategoriesCount.push(item.sub_category_count);
+        // devicesCount.push(item.device_count);
       })
-      this.categoryStackedData = {
-        labels: [...categorieNames],
-        datasets: [{
-            type: 'bar',
-            label: 'Sub Categories',
-            backgroundColor: '#d9d6ff',
-            data: [...subCategoriesCount]
-        }, {
-            type: 'bar',
-            label: 'Devices',
-            backgroundColor: '#5b54bb',
-            data: [...devicesCount]
-        }]
-    };
+      
+    //   this.categoryStackedData = {
+    //     labels: [...categorieNames],
+    //     datasets: [{
+    //         type: 'bar',
+    //         label: 'Sub Categories',
+    //         backgroundColor: '#d9d6ff',
+    //         data: [...subCategoriesCount]
+    //     }, {
+    //         type: 'bar',
+    //         label: 'Devices',
+    //         backgroundColor: '#5b54bb',
+    //         data: [...devicesCount]
+    //     }]
+    // };
+    })
+  }
+
+  onCategoryChartBarSelect(data:any): void {
+    const selectedBarData:any = JSON.parse(JSON.stringify(data))
+    console.log('Item clicked', selectedBarData);
+    this.selectedWidget = "Categories & Device Count Chart Details",
+    this.getProducts(selectedBarData.series);
+  }
+
+  getProducts(selecedBar:string) {
+    this.cols = [];
+    this.showSidebar = true;
+    this.widgetDetailsLoader = true;
+    const getProductCategory = {
+      action: 'product/product/',
+      method: 'get',
+      // params: {
+      //   product_category: 3
+      // }
+    }
+    this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
+      //this.productsData = result.data;
+      // this.productsLoader = false;
+     // console.log('Product List', result.data);
+      const responceData:any[] = result.data;
+      const filtered_array = _.filter(responceData, { 'main_category_name': selecedBar });
+      //console.log('filtered_array', filtered_array);
+      const colArr:any[] = [
+        {field:'product_code', header:'Device Name'},
+        {field:'main_category_name', header:'Category Name'},
+        {field:'sub_category_name', header:'Sub Category Name'},
+        {field:'status', header:'Status'},
+        {field:'valid_till', header:'Valid Till'},
+        {field:'created_at', header:'Created At'},
+        {field:'last_updated_at', header:'Last Updated At'},
+        {field:'last_updated_by_name', header:'Last Updated By'},
+      ];
+      const keysArr:any[] = [];
+      colArr.forEach(item=>{
+        keysArr.push(item.field)
+      })
+      // Object.keys(responceData[0]).forEach(key=>{
+      //   if(key !== 'id' && key !== 'product_id'){
+      //       colArr.push({ field: key, header:key.replace('_', ' ')});
+      //       keysArr.push(key);
+      //   }        
+      // })
+      this.tableSearchKeys = keysArr;
+      this.cols = colArr;
+      //console.log('tableSearchKeys', this.tableSearchKeys);
+      this.moreDetailsTableData = filtered_array;
+      this.widgetDetailsLoader = false;
     })
   }
 

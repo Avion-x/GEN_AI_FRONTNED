@@ -30,7 +30,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import {MessagesModule} from 'primeng/messages';
 import {MessageModule} from 'primeng/message';
 
-//import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { ProductsComponent } from './products/products.component';
 import { ProductSubCategoryComponent } from './product-sub-category/product-sub-category.component';
@@ -53,6 +53,8 @@ import { AddNewEnterpriseComponent } from './enterprise/add-new-enterprise/add-n
 
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {SkeletonModule} from 'primeng/skeleton';
+
+import { LMarkdownEditorModule } from 'ngx-markdown-editor';
 
 @NgModule({
   declarations: [
@@ -103,7 +105,8 @@ import {SkeletonModule} from 'primeng/skeleton';
     MessageModule,
     ConfirmDialogModule,    
     SkeletonModule,
-    //NgxChartsModule,
+    NgxChartsModule,
+    LMarkdownEditorModule,
     MarkdownModule.forRoot()
   ]
 })

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild  } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DataService } from 'src/app/shared/services/data.service';
@@ -27,7 +27,8 @@ export class ProductDetailsComponent implements OnInit {
   public generateTestCaseResponceData:string = '';
 
   public selectedTestTypeId:string = '';
-  
+  public uploadedFiles: any[] = [];
+  public fileFormData = new FormData();
 
   public productSubCategoryId:string='';
 
@@ -69,7 +70,13 @@ export class ProductDetailsComponent implements OnInit {
 
   public testCases:string= "\n\n# Regression Test Cases for Network Router MX480\n\n## Test Case 1: Power On Self Test\n### Description\nVerify that the router successfully completes the Power On Self Test (POST) without any errors.\n\n### Steps\n1. Power on the router.\n2. Observe the LED indicators for any abnormal behavior.\n3. Check the console output for any error messages during boot-up.\n\n### Expected Result\nThe router completes the POST without any errors and boots up successfully.\n\n## Test Case 2: Port Configuration\n### Description\nVerify that all ports on the router are configured correctly and are operational.\n\n### Steps\n1. Connect a device to each port on the router.\n2. Verify that the ports are active and able to transmit and receive data.\n3. Check the port configuration settings.\n\n### Expected Result\nAll ports should be operational and able to transmit/receive data without any issues.\n\n## Test Case 3: Routing and Switching Functionality\n### Description\nVerify that the router is able to perform routing and switching functions as expected.\n\n### Steps\n1. Configure multiple VLANs and assign them to different ports.\n2. Set up routing between the VLANs.\n3. Send packets between different VLANs and verify proper routing and switching behavior.\n\n### Expected Result\nThe router should successfully route packets between VLANs and perform switching functions without any errors.\n\n## Test Case 4: Quality of Service (QoS) Configuration\n### Description\nVerify that the router is able to prioritize network traffic using Quality of Service (QoS) settings.\n\n### Steps\n1. Configure QoS settings for specific types of network traffic.\n2. Generate network traffic that matches the configured QoS settings.\n3. Monitor the traffic to ensure that QoS prioritization is working as expected.\n\n### Expected Result\nThe router should prioritize network traffic according to the configured QoS settings.\n\n```python\n# Example QoS Configuration\nclass-of-service {\n    interfaces {\n        ge-0/0/0 {\n            shaping-rate 100m;\n            scheduler-map out-scheduler;\n        }\n        ge-0/0/1 {\n            shaping-rate 50m;\n            scheduler-map out-scheduler;\n        }\n    }\n    schedulers {\n        out-scheduler {\n            transmit-rate 1m;\n            priority low;\n        }\n    }\n}\n```\n\n## Test Case 5: High Availability and Failover\n### Description\nVerify that the router is able to maintain high availability and perform failover in case of hardware or network issues.\n\n### Steps\n1. Simulate a hardware or network failure on one of the redundant components (e.g., power supply, routing engine).\n2. Monitor the router's behavior during the failure to observe failover mechanisms.\n3. Restore the failed component and ensure that the router returns to normal operation.\n\n### Expected Result\nThe router should demonstrate resilience to hardware or network failures and be able to perform failover seamlessly.\n\nThese regression test cases cover a range of essential functionalities and aspects to ensure the reliability and performance of the Network Router MX480.\n\n# Regression Test for MX480\n\n## Test Case 1: Interface Connectivity\n\n### Setup\n1. Connect the MX480 to the testing environment.\n2. Power on the MX480 and wait for the system to initialize.\n\n### Execution\n1. Log in to the MX480 console and check the status of all interfaces using the \"show interfaces\" command.\n2. Verify that all interfaces are up and there are no errors or drops.\n\n### Verification\n- All interfaces should be in the \"up\" state.\n- There should be no errors or drops reported for any interface.\n\n### Teardown\n1. Power off the MX480.\n2. Disconnect the MX480 from the testing environment.\n\n## Test Case 2: Routing Functionality\n\n### Setup\n1. Connect the MX480 to a network with multiple connected devices.\n2. Power on the MX480 and wait for the system to initialize.\n\n### Execution\n1. Configure routing protocols (e.g. OSPF, BGP) on the MX480.\n2. Verify that the MX480 can successfully route traffic between the connected devices.\n\n### Verification\n- All connected devices should be able to communicate with each other through the MX480.\n- Routing tables should be populated with the correct routes.\n\n### Teardown\n1. Power off the MX480.\n2. Disconnect the MX480 from the network.\n\n## Test Case 3: High Availability\n\n### Setup\n1. Configure a redundant setup with two MX480 routers in a high availability (redundancy) configuration.\n2. Power on both MX480 routers and ensure they synchronize their configurations.\n\n### Execution\n1. Simulate a failure on one of the MX480 routers (e.g. power off one of the routers).\n2. Verify that the other MX480 router takes over the traffic seamlessly without any interruption.\n\n### Verification\n- There should be no loss of connectivity when one MX480 router fails.\n- The active and standby status of the routers should switch appropriately.\n\n### Teardown\n1. Power off both MX480 routers.\n2. Disconnect the MX480 routers from the redundant setup.\n\n```python\n# Sample Python code to simulate router failure\nimport os\n\ndef simulate_router_failure(router_ip):\n    os.system(f\"ssh admin@{router_ip} power-off\")\n```\n\n## Python Regression Test for MX480\n\n### Background\nWe are performing a Python regression test for the MX480. The purpose of this test is to identify and address any potential issues that may have been introduced as a result of recent changes to the codebase.\n\n### Test Data\nWe obtained the following data for the regression test:\n\n```python\n# Import necessary libraries\nimport pandas as pd\nimport numpy as np\nfrom sklearn.linear_model import LinearRegression\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import mean_squared_error\n\n# Load the dataset\ndata = pd.read_csv('mx480_regression_data.csv')\n\n# Split the data into features and target variable\nX = data[['feature1', 'feature2', 'feature3']]\ny = data['target']\n\n# Split the data into training and testing sets\nX_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)\n\n# Fit the linear regression model\nmodel = LinearRegression()\nmodel.fit(X_train, y_train)\n\n# Make predictions\ny_pred = model.predict(X_test)\n\n# Evaluate the model\nmse = mean_squared_error(y_test, y_pred)\nprint(f'Mean Squared Error: {mse}')\n```\n\n### Expected Output\nUpon running the regression test, we expect to see the following output:\n\n```\nMean Squared Error: 0.034\n```\n\n### Conclusion\nBased on the output from the regression test, the mean squared error for the MX480 is within an acceptable range. This indicates that the recent changes to the codebase have not introduced any significant regression issues.\n\n## MX480 Router Configuration Regression Test\n\n### Objective:\nThe objective of this regression test is to verify the configuration settings on the MX480 router to ensure it is functioning as expected after any recent changes or updates.\n\n### Test Setup:\n- MX480 router with the latest software update\n- Test environment with similar network configurations\n- Access to the router's CLI for verification and testing\n\n### Test Steps:\n1. **Verify Interface Configuration:**\n    ```bash\n    show interfaces terse\n    ```\n    The output should display the list of interfaces with their configured settings and status. Ensure the interfaces are properly configured and are in an operational state.\n\n2. **Check Routing Table:**\n    ```bash\n    show route\n    ```\n    Verify the routing table to ensure it has the correct routes and next hops for reaching different networks. \n\n3. **Inspect Firewall Policies:**\n    ```bash\n    show configuration security policy\n    ```\n    Check the firewall policies to ensure they are configured correctly and are actively enforcing the desired security rules.\n\n4. **Validate BGP Configuration:**\n    ```bash\n    show configuration protocols bgp\n    ```\n    Verify the BGP configuration to ensure peers, neighbors, and route advertisements are correctly configured.\n\n5. **Review System Logging:**\n    ```bash\n    show system syslog\n    ```\n    Check the system logging to verify that it is capturing relevant events and errors.\n\n### Expected Results:\n- All configured interfaces should be up and operational\n- The routing table should contain the expected routes\n- Firewall policies should be correctly enforced\n- BGP peers and route advertisements should be properly configured\n- System logging should be capturing relevant events without errors\n\n### Conclusion:\nAfter running the regression test and reviewing the output, the MX480 router's configuration has been verified and is functioning as expected. Any discrepancies or issues found will be investigated and resolved accordingly.";
   public testScripts:string= "\n\nCertainly! Here's an example of a Python script for a simple linear regression test and the corresponding data in markdown format:\n\nPython Script (linear_regression_test.py):\n```python\nimport numpy as np\nfrom sklearn.linear_model import LinearRegression\n\n# Sample data\nX = np.array([[1], [2], [3], [4]])\ny = np.array([3, 5, 7, 9])\n\n# Create and fit the model\nmodel = LinearRegression()\nmodel.fit(X, y)\n\n# Print the coefficients\nprint(\"Slope:\", model.coef_[0])\nprint(\"Intercept:\", model.intercept_)\n```\n\nMarkdown Formatted Data:\n```markdown\n# Linear Regression Test\n\n## Introduction\nThis test involves fitting a simple linear regression model to a small dataset to demonstrate the principles of linear regression.\n\n## Dataset\nWe have a dataset consisting of two variables, X and y, where X represents the independent variable and y represents the dependent variable.\n```python\nX = np.array([[1], [2], [3], [4]])\ny = np.array([3, 5, 7, 9])\n```\n\n## Model Fitting\nWe use the `LinearRegression` model from the `sklearn` library to fit the model to the data.\n\n## Model Coefficients\nAfter fitting the model, we print the coefficients:\n```python\nSlope: 2.0\nIntercept: 1.0\n```\n```\n\nThis markdown data can be used to create a clear and organized documentation for the regression test in a tool like ChatGPT."
-   
+  
+  public selectedFiles: any[] = [];
+  public currentFileUpload: any;
+  public filePath:string = '';
+  public fileSize:string = '';
+  public fileSizeWarning:boolean = false;
+
   public unitTestCategories:any[] = [
     {'category':'Bootup process', 'generated':true},
     {'category':'Routing protocols', 'generated':true},
@@ -84,6 +91,63 @@ export class ProductDetailsComponent implements OnInit {
     {'category':'Policy configuration', 'generated':false},
     {'category':'SNMP configuration', 'generated':false},
   ]
+
+  @ViewChild('fileInput') fileInput!:ElementRef;
+
+  public onFileChanged(event:any, path:any){
+    //console.log('path value',path.value);
+    this.selectedFiles = event.target.files;
+    this.currentFileUpload = this.selectedFiles[0];
+    const totalfileSize = this.currentFileUpload.size;
+    const fileSizeInKB = Math.round(totalfileSize / 1024);
+    this.fileSize =  fileSizeInKB + ' KB';
+    if (fileSizeInKB >= 25) {
+      this.fileSizeWarning = true;
+    }
+    //console.log('this.currentFileUpload Size', Math.round(fileSize / 1024));
+    this.filePath = path.value;
+    
+  }
+
+  public clearFileInput(){
+    this.fileInput.nativeElement.value = null
+  }
+
+  public onUpload(){
+    
+    //const fileBrowser = this.fileInput.nativeElement;
+   
+    if (this.currentFileUpload) {
+      //this.fileFormData = new FormData();
+      this.fileFormData.append('pdf_files', this.currentFileUpload, this.filePath);
+      //console.log('--------fileBrowser', this.currentFileUpload);
+      //console.log('--------formData', this.fileFormData);
+      //console.log('--------', JSON.stringify(this.fileFormData));
+
+      // this.fileFormData.forEach((value, key) => {
+      //   console.log(key + ' ' + value);
+      // });
+    }
+    const getCategoryDetails = {
+      action: 'product/upload_device_docs/',
+      method: 'postparam',
+      data: this.fileFormData,
+      params: {
+        device_id: this.selectedProduct
+      }
+    }
+    this.dataService.apiDelegate(getCategoryDetails).subscribe((result: any) => {
+      console.log('result', result);
+      if(result.status == 200){
+        this.messageService.add({severity:'success', summary: result.error_message, detail: result.data.files_uploaded[0]});
+        this.clearFileInput();
+      }
+      
+    });
+  }
+  
+  
+ 
 
   constructor(
     private authenticationService:AuthService, 
@@ -346,7 +410,6 @@ export class ProductDetailsComponent implements OnInit {
         //this.productsLoader = false;  
         if(!_.isEmpty(responce?.data[0])){
           this.testCategorys = responce.data[0].categories;
-          console.log('---------------------test Categorys', this.testCategorys);
           this.getTestCasesOfCategory(productId, this.selectedTestCase.test_type_id, this.testCategorys[0].test_category_id);
         } 
       }, error => {
@@ -355,7 +418,12 @@ export class ProductDetailsComponent implements OnInit {
       })
   }
 
+  onTabOpen(e:any) {
+    var index = e.index;
+  }
+
   getTestCasesOfCategory(productId:any, selectedTestCase:any, test_category_id:any){
+    console.log('-------------------');
     this.testCaseCategoryLoader = true;
     this.generatedTestCases = {};
     const testCategories = {
@@ -486,6 +554,39 @@ export class ProductDetailsComponent implements OnInit {
   closeGenerateTestCasesSection(){
     this.generateTestCasesFormSidebar = false;
   }
+
+
+  fileChange(event:any) {
+    let fileList: FileList = event.target.files;
+    
+
+    // if (fileList.length < 1) {
+    //   return;
+    // }
+    
+    let file: File = fileList[0];
+    console.log('file', file);
+    let formData:FormData = new FormData();
+    formData.append('uploadFile', file, file.name);
+
+    console.log('formData', formData);
+    
+    let headers = new Headers();
+    /** In Angular 5, including the header Content-Type can invalidate your request */
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+
+    // let options = new RequestOptions({ headers: headers });
+
+    // this.http.post(`${this.apiEndPoint}`, formData, options)
+    //     .map(res => res.json())
+    //     .catch(error => Observable.throw(error))
+    //     .subscribe(
+    //         data => console.log('success'),
+    //         error => console.log(error)
+    //     );
+  }
+  
 
   
 

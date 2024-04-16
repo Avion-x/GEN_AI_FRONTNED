@@ -106,6 +106,8 @@ export class DataService {
         return this.httpClient.get(url + req.action, httpOptions).pipe(retry(2), catchError(this.handleError));
       case 'post':
         return this.httpClient.post(url + req.action, req.data);
+      case 'postparam':
+        return this.httpClient.post(url + req.action, req.data, httpOptions);
       case 'put':
         return this.httpClient.put(url + req.action, req.data).pipe(retry(2), catchError(this.handleError));
       case 'putparam':
