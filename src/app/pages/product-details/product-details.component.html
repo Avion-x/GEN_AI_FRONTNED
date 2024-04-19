@@ -214,7 +214,7 @@
             </ng-template>
         </p-fileUpload> -->
         <div class="title-section">
-            <h1 class="main-title">Upload PDF</h1>
+            <h1 class="main-title">Upload Document</h1>
         </div>
         <div class="fileUploadContainer" [ngClass]="selectedFiles.length !== 0? 'fileSelected':''">
             <div class="fileSelection">
@@ -240,7 +240,10 @@
                     <span class="material-symbols-rounded icon">history</span>
                     Previous Test Cases
                 </button> -->
-                
+                <button class="btn primary-btn" (click)="showCreateTestCasesSection()">
+                    <span class="material-symbols-rounded icon">post_add</span>
+                   Create Test Cases
+                </button>
 
                 <button *ngIf="showGenerateTestCase" class="btn primary-btn" (click)="showGenerateTestCasesSection()">
                     <span class="material-symbols-rounded icon">smart_toy</span>
@@ -334,6 +337,161 @@
         
     </div>
 </div>
+
+<p-sidebar [(visible)]="createTestCases"  class="sidebar-section header-tabs-sidebar-section" [style]="{width:'85%'}" position="right">
+    <ng-template pTemplate="header">
+        <div class="page-container-header">
+            <div class="title-section">
+                <!-- <button class="backBtn" [routerLink]="backUrl" [disabled]="backUrl.length == 0">
+                    <span class="material-symbols-rounded">arrow_back</span>
+                </button> -->
+                <div class="title-container">
+                    <h1 class="title">
+                        {{productData?.product_code}}
+                     </h1>
+                     <h2 class="sub-title">
+                        <span *ngIf="productMainCategory">{{productMainCategory.category}}-{{productMainCategory.id}}</span>
+                        <span *ngIf="productSubCategory"><i class="icofont-simple-right"></i></span>
+                        <span *ngIf="productSubCategory">{{productSubCategory.sub_category}}</span>
+                     </h2>
+                </div>        
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="content">        
+        <div class="content-wrapper">
+            
+            <div class="card" >
+                <div class="title-section">
+                    <h1 class="main-title">Create Test Case</h1>
+                </div>
+                <div class="card no-padding" *ngIf="testTypes">
+                    <!-- <h1 class="main-title">Select Test Type</h1> -->
+                    <div class="checkbox-group">
+                        <div class="radioButtonGroup show-in-row" >
+                            <div class="title">
+                                Select Test Type
+                            </div>
+                            <div class="field-radiobutton" *ngFor="let test of testTypes">
+                                <!-- <p-checkbox name="group2" [value]="test.code" (onChange)="showTestCategories(test)" [(ngModel)]="selectedTestTypes" [inputId]="test.id"></p-checkbox>
+                                <label [for]="test.id">{{test.description}}</label> -->
+                                <p-radioButton [inputId]="'type'+test.id" name="category" [value]="test.id" (onClick)="showTestCategories(test)" [(ngModel)]="selectedTestTypes"></p-radioButton>
+                                <label [for]="'type'+test.id" [ngClass]="test.id == selectedTestTypes?'selected':''">{{test.description}}</label>
+                            </div>                    
+                        </div>
+                        <div class="content-loader" *ngIf="testCategoriesListLoader">
+                            <i class="pi pi-spin pi-spinner"></i>
+                            <span>Loading Test Categories of {{selectedTestType.description}}...</span>
+                        </div>
+                        <div class="categoryDropdownContainer form-container" *ngIf="testCategoriesOfSelectedTestType.length !== 0">
+                            <div class="field p-float-label">
+                                <p-dropdown [options]="testCategoriesOfSelectedTestType" [(ngModel)]="selectedTestCategory" (onChange)="onCategoryChange()" optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Category">
+                                    <ng-template pTemplate="selectedItem">
+                                        <div class="country-item country-item-value" *ngIf="selectedTestCategory">
+                                            <div>{{selectedTestCategory.name}}</div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template let-category pTemplate="item">
+                                        <div class="country-item">
+                                            <div>{{category.name}}</div>
+                                        </div>
+                                    </ng-template>
+                                </p-dropdown>
+                                <label for="testName">Select Test Catyegory</label>
+                            </div>
+                        
+                        
+                            <!-- <div class="title">
+                                Categories of <span class="selectedCat">{{selectedTestType.description}}</span>
+                                <div class="field-checkbox">
+                                    <p-checkbox [(ngModel)]="selectAll" [binary]="true" (onChange)="toggleSelectAllCategories()" inputId="binary"></p-checkbox>
+                                    <label for="binary">{{selectAllCBTitle}}</label>
+                                </div>
+                            </div>
+                            
+                            <div class="field-checkbox" *ngFor="let category of testCategoriesOfSelectedTestType">
+                                <p-checkbox name="group2" [value]="category.id" (onChange)="showSelectedCategories()"  [(ngModel)]="selectedTestTypeCategories" [inputId]="category.id"></p-checkbox>
+                                <label [for]="category.id">{{category.name}}</label>
+                            </div> -->
+                        </div>
+                        
+                        <div>
+                            
+                        </div>
+                    </div>            
+                </div>
+
+                <form [formGroup]="createTestForm" class="form-container" *ngIf="selectedTestCategory">            
+                    <div class="field p-float-label">
+                        <input id="testName"  formControlName="testname" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['testname'].errors }"> 
+                        <label for="testName">Test Name</label>
+                        <div *ngIf="submitted && f['testname'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="f['testname'].errors['required']">Test Name is required</div>
+                        </div>
+                    </div>
+                      
+                    <div class="end-row"></div>   
+                    <div class="field p-float-label">
+                        <!-- <input id="description" formControlName="objective" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['objective'].errors }">  -->
+                        <textarea id="float-input" formControlName="objective" type="textarea" rows="5" cols="30" pInputTextarea></textarea>
+                        <label for="description">Discription</label>
+                        <div *ngIf="submitted && f['objective'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="f['objective'].errors['required']">Description is required</div>
+                        </div>
+                    </div>       
+                    <div class="customFileUploadContainer">
+                        <h1 class="title">Upload Test Case File</h1>
+                        <p-fileUpload #testCaseFileUpload class="customFileUpload" name="testcasefile[]" [customUpload]="true" (uploadHandler)="onTestCaseFileUpload($event)"
+                            accept=".txt,.csv">
+                            <ng-template pTemplate="content">
+                                <ul *ngIf="uploadedFiles.length">
+                                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                                </ul>
+                            </ng-template>
+                        </p-fileUpload>
+                    </div>
+                    <div class="customFileUploadContainer">
+                        <h1 class="title">Upload Script File</h1>
+                        <p-fileUpload #testScriptFileUpload class="customFileUpload" name="testscriptfile[]" [customUpload]="true" (uploadHandler)="onTestScriptFileUpload($event)"
+                        accept=".txt,.csv">
+                        <ng-template pTemplate="content">
+                            <ul *ngIf="uploadedFiles.length">
+                                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                            </ul>
+                        </ng-template>
+                        </p-fileUpload>
+                    </div>   
+                </form>    
+                
+                
+            </div>
+        </div>
+        <!-- <div class="codeInputContainer">
+            <div class="ngx-codemirror code">
+                <ngx-codemirror
+                  [options]="options"
+                  [ngModel]="defaults"
+                  [disabled]="readOnly"
+                  [autoFocus]="true"
+                  (ngModelChange)="handleChange($event)"
+                ></ngx-codemirror>
+            </div>
+            <div class="marddownViewer code">
+                <markdown  lineNumbers lineHighlight ngPreserveWhitespaces
+                [start]="5" 
+                [line]="'6, 10-16'"
+                [lineOffset]="5" [data]="previewData"></markdown>
+            </div>
+        </div> -->
+        
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="pageActions">
+            <button class="btn secondary-btn" (click)="closeGenerateTestCasesSection()">Cancel</button>
+            <button class="btn primary-btn" (click)="createTestCasesSubmit()">Submit</button>
+        </div>
+    </ng-template>
+</p-sidebar>
 
 <p-sidebar [(visible)]="generateTestCasesFormSidebar"  class="sidebar-section header-tabs-sidebar-section" [style]="{width:'85%'}" position="right">
     <ng-template pTemplate="header">

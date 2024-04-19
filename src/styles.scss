@@ -1,5 +1,8 @@
 @use '/src/assets/styles/vars';
 
+@import '~codemirror/lib/codemirror';
+@import '~codemirror/theme/material';
+
 body{
     margin: 0px;
     @include vars.fontFamilyPrimary;
@@ -860,6 +863,20 @@ input::-ms-input-placeholder {
   cursor: pointer;
 }
 
+markdown{
+  pre{
+    //padding: .5em;
+    background: #333;
+  }
+  code{
+    display: block;
+    overflow-x: auto;
+    padding: .5em;
+    background: #333;
+    color: white;
+  }
+}
+
 .markdownContainer{
   markdown{
     margin: 0px;
@@ -879,6 +896,7 @@ input::-ms-input-placeholder {
     :not(pre) > code[class*="language-"], pre[class*="language-"]{
       background: vars.$secondary-color;
     }
+    
   }
 }
 
@@ -1050,12 +1068,11 @@ input::-ms-input-placeholder {
         opacity: 0.5;
       }
     }
-    input{
-      width: 100%;
-      border-radius: 30px;
+    input,
+    textarea{
+      width: 100%;      
       padding: 5px 20px;
-      font-size: 13px;
-      height: 40px;
+      font-size: 13px;      
       color: vars.$fontclr;
       &:focus,
       &:not(disabled):hover {
@@ -1063,6 +1080,14 @@ input::-ms-input-placeholder {
         outline: 0px;
         border-color: vars.$primary-color;
       }
+    }
+    input{
+      height: 40px;
+      border-radius: 30px;
+    }
+    textarea {
+      border-radius: 20px;
+      height: auto;
     }
     .p-dropdown{
       width: 100%;
@@ -1898,3 +1923,47 @@ input::-ms-input-placeholder {
   }
   
 }
+
+.customFileUpload{
+  width: 100%;
+  .p-fileupload{
+    .p-fileupload-buttonbar{
+      padding: 10px;
+      border-color: vars.$cardBorderColor;
+      background: transparent;
+      .p-button{        
+        background: vars.$primary-color; 
+        border: 0px;      
+        padding: 0px 15px;
+        border-radius: 30px;
+        color: #fff;
+        font-size: 10px;
+        font-weight: 600;
+        height: 30px;
+        box-shadow: vars.$primary-box-shoadow;
+        .p-button-icon{
+          font-size: 13px;
+          margin-right: 9px;
+        }
+        &[disabled]{
+          opacity: 0.7;
+          box-shadow: none;
+          cursor:default;
+        }
+      }
+    }
+    .p-fileupload-content{
+      padding: 0px;
+      .p-button-icon-only{
+        background: vars.$secondary-color;
+        box-shadow: vars.$secondary-box-shoadow; 
+        width: 25px;
+        height: 20px;
+        .p-button-icon{
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+

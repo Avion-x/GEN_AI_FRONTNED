@@ -7,6 +7,17 @@ import { AppConfigService } from 'src/app/shared/services/app-config.service';
 import * as _ from 'lodash';
 
 import {MessageService} from 'primeng/api';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
+// const defaults = {
+//   markdown:'# Heading\n\nSome **bold** and _italic_ text\nBy [Scott Cooper](https://github.com/scttcper)',
+//   'text/typescript': `const component = {
+//   name: "@ctrl/ngx-codemirror",
+//   author: "Scott Cooper",
+//   repo: "https://github.com/scttcper/ngx-codemirror"
+// };
+// const hello: string = 'world';`,
+// };
 
 @Component({
   selector: 'app-product-details',
@@ -52,6 +63,7 @@ export class ProductDetailsComponent implements OnInit {
   public backUrl:string = '';
 
   public generateTestCasesFormSidebar:boolean = false;
+  public createTestCases:boolean = false;
 
   public testCategorys:any[]=[];
   public generatedTestCases:any;
@@ -77,6 +89,25 @@ export class ProductDetailsComponent implements OnInit {
   public fileSize:string = '';
   public fileSizeWarning:boolean = false;
 
+  public submitted:boolean = false;
+  public createTestForm: FormGroup = new FormGroup({
+    device_id:new FormControl(''),
+    test_category_id: new FormControl(''),
+    testname: new FormControl(''),
+    objective: new FormControl(''),
+    comment: new FormControl(''),    
+    test_case_file:new FormControl(''),
+    script_file:new FormControl(''),    
+  });
+
+  public testCaseFile:any;
+  public testScriptFile:any;
+  public testCaseFormData = new FormData();
+  public testScriptFormData = new FormData();
+  public selectedTestCategory:any;
+  @ViewChild('testCaseFileUpload') testCaseFileUpload: any;
+  @ViewChild('testScriptFileUpload') testScriptFileUpload: any;
+
   public unitTestCategories:any[] = [
     {'category':'Bootup process', 'generated':true},
     {'category':'Routing protocols', 'generated':true},
@@ -92,10 +123,43 @@ export class ProductDetailsComponent implements OnInit {
     {'category':'SNMP configuration', 'generated':false},
   ]
 
+  //################################################ ngx-codemirror \\
+  previewData:any = '';
+  readOnly = false;
+  //mode: keyof typeof defaults = 'markdown';
+  mode = 'markdown';
+  options = {
+    lineNumbers: true,
+    mode: this.mode,
+  };
+  defaults = '# Heading\n\nSome **bold** and _italic_ text\nBy [Scott Cooper](https://github.com/scttcper)';
+
+  public changeMode(): void {
+    this.options = {
+      ...this.options,
+      mode: this.mode,
+    };
+  }
+
+ public handleChange($event: Event): void {
+    console.log('ngModelChange', $event);
+    this.previewData = $event;
+  }
+
+ public clear(): void {
+    this.defaults = '';
+}
+public showMarkdownPreview(){
+  console.log('defaults', this.defaults);
+  this.previewData = this.defaults
+}
+//################################################ ngx-codemirror //
+
+
   @ViewChild('fileInput') fileInput!:ElementRef;
 
   public onFileChanged(event:any, path:any){
-    //console.log('path value',path.value);
+    console.log('path value',path.value);
     this.selectedFiles = event.target.files;
     this.currentFileUpload = this.selectedFiles[0];
     const totalfileSize = this.currentFileUpload.size;
@@ -120,7 +184,7 @@ export class ProductDetailsComponent implements OnInit {
     if (this.currentFileUpload) {
       //this.fileFormData = new FormData();
       this.fileFormData.append('pdf_files', this.currentFileUpload, this.filePath);
-      //console.log('--------fileBrowser', this.currentFileUpload);
+      console.log('--------fileBrowser', this.currentFileUpload);
       //console.log('--------formData', this.fileFormData);
       //console.log('--------', JSON.stringify(this.fileFormData));
 
@@ -156,7 +220,8 @@ export class ProductDetailsComponent implements OnInit {
     private _aRoute: ActivatedRoute,
     private mdService:MarkdownService,
     private appConfig:AppConfigService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    public fb: FormBuilder
     ) { 
       this.currentUser = {};
       this.authenticationService.user.subscribe((user:any) => this.currentUser = user.user_details);
@@ -181,10 +246,29 @@ export class ProductDetailsComponent implements OnInit {
       this.getSubCategoryDetails(this.productSubCategoryId);
     }
     this.getTestTypes();
+    this.setForm();
+    this.getUserCreatedTestCases();
    // this.testCasesData = "\n\n# Regression Test Cases for Network MSeries Router MX480\n\n## Test Case 1: Interface Configuration\n### Description\nVerify that interface configurations are applied correctly on the MX480 router.\n\n### Test Steps\n1. Verify the ability to configure physical and logical interfaces.\n2. Verify the ability to assign IP addresses to interfaces.\n3. Verify the ability to enable and disable interfaces.\n\n### Expected Results\n- All interface configurations should be successfully applied.\n- IP addresses should be successfully assigned to interfaces.\n- Interfaces should be able to be enabled and disabled as expected.\n\n## Test Case 2: Routing Protocols\n### Description\nEnsure that routing protocols function correctly on the MX480 router.\n\n### Test Steps\n1. Verify the ability to configure routing protocols such as OSPF, BGP, and RIP.\n2. Verify the ability to establish neighbor relationships and exchange routing information.\n3. Verify the ability to manipulate routing tables through the chosen routing protocol.\n\n### Expected Results\n- Routing protocols should be successfully configured and functioning.\n- Neighbor relationships should be established, and routing information should be exchanged.\n- Routing tables should be updated and manipulated as expected.\n\n## Test Case 3: High Availability\n### Description\nCheck the high availability features of the MX480 router.\n\n### Test Steps\n1. Verify the ability to configure redundancy features such as graceful Routing Engine switchover (GRES) and non-stop routing (NSR).\n2. Simulate failure scenarios and ensure failover mechanisms are triggered as expected.\n3. Verify the ability to perform software upgrades without disrupting packet forwarding.\n\n### Expected Results\n- Redundancy features should be successfully configured and functioning.\n- Failover mechanisms should be triggered in case of failure scenarios.\n- Software upgrades should be performed without disrupting packet forwarding.\n\n## Test Case 4: Security Features\n### Description\nEnsure that security features are effectively implemented on the MX480 router.\n\n### Test Steps\n1. Verify the ability to configure firewall filters and security policies.\n2. Test traffic filtering and ensure that only allowed traffic is permitted.\n3. Verify the ability to implement and manage VPNs.\n\n### Expected Results\n- Firewall filters and security policies should be successfully configured and applied.\n- Traffic filtering should only permit allowed traffic as per the defined policies.\n- VPN configurations should be effective and manageable.\n\n```markdown\nSample code snippet:\n\n...\nset interfaces ge-0/0/0 unit 0 family inet address 192.168.1.1/24\nset interfaces ge-0/0/1 unit 0 family inet address 192.168.2.1/24\n...\n```\n\n## Test Case 1: Interface Configuration\n### Setup\n1. Connect to MX480 via console or SSH.\n2. Enter configuration mode.\n\n### Execution\n```bash\nset interfaces ge-0/0/0 unit 0 description \"Test Interface\"\nset interfaces ge-0/0/0 unit 0 family inet address 192.168.1.1/24\ncommit\n```\n\n### Verification\n```bash\nshow interfaces ge-0/0/0\n```\nOutput:\n```\nPhysical interface: ge-0/0/0, Enabled, Physical link is Up\n  Description: Test Interface\n  ...\n  ...\n```\n\n### Teardown\n1. Delete the configured interface.\n2. Commit the changes.\n\n## Test Case 2: Routing Configuration\n### Setup\n1. Connect to MX480 via console or SSH.\n2. Enter configuration mode.\n\n### Execution\n```bash\nset routing-options static route 10.0.0.0/24 next-hop 192.168.1.2\ncommit\n```\n\n### Verification\n```bash\nshow route 10.0.0.0/24\n```\nOutput:\n```\ninet.0: 10 destinations, 10 routes (10 active, 0 holddown, 0 hidden)\n+ = Active Route, - = Last Active, * = Both\n\n10.0.0.0/24       *[Static/5] 00:01:23\n                    > to 192.168.1.2 via ge-0/0/0.0\n```\n\n### Teardown\n1. Delete the configured route.\n2. Commit the changes.\n\n# MX480 Regression Test\n\n## Overview\nThe MX480 regression test is a Python script designed to validate the performance and stability of the MX480 router. The test consists of various regression scenarios to ensure that the router is functioning as expected.\n\n## Setup\nBefore running the regression test, make sure that the MX480 router is properly connected and configured. Additionally, ensure that the Python libraries required for the test are installed.\n\n```python\n# Install required Python packages\npip install paramiko\npip install pyserial\n```\n\n## Test Scenarios\nThe regression test covers the following scenarios:\n1. Interface connectivity\n2. Routing table consistency\n3. Service availability\n4. Traffic throughput\n\n## Test Execution\nTo run the regression test, execute the following Python script:\n\n```python\npython mx480_regression_test.py\n```\n\n## Test Results\nUpon completion of the test, the script will provide detailed results for each scenario. Any failures or issues will be reported along with relevant diagnostic information.\n\n## Conclusion\nThe MX480 regression test is essential for ensuring the reliability and performance of the MX480 router. By validating various scenarios, we can confidently deploy the router in production environments.\n\n# MX480 Router Regression Test\n\n## Overview\nThe regression test will be conducted to verify the configuration of the MX480 router. This test will ensure that the router operates according to the specified configurations and does not introduce any unexpected behavior that may affect its functionality.\n\n## Test Environment\n- **Device:** MX480 Router\n- **Software Version:** Junos OS 18.3R1\n- **Test Setup:** The router is connected to a test network with specific traffic patterns\n\n## Test Procedure\n1. **Preparation:** Backup the current configuration of the router and save it for reference.\n2. **Test Configuration:** Apply the test configurations to the router, including routing protocols, interface settings, and security policies.\n3. **Traffic Generation:** Generate synthetic traffic to simulate the expected traffic patterns on the network.\n4. **Observation:** Monitor the router's performance and behavior during the traffic generation to identify any deviations from the expected behavior.\n5. **Verification:** Compare the observed behavior with the expected behavior based on the configured settings.\n\n## Test Scenarios\n### Scenario 1: Routing Protocols\n- **Description:** Test the functionality of OSPF and BGP routing protocols.\n- **Expected Outcome:** The router should successfully establish neighbor relationships and exchange routing information with neighboring routers.\n\n```bash\nshow ospf neighbor\nshow bgp summary\n```\n\n### Scenario 2: Interface Configurations\n- **Description:** Verify the configuration of interfaces, including VLAN assignments and link settings.\n- **Expected Outcome:** All interfaces should be properly configured and operational.\n\n```bash\nshow interfaces\n```\n\n### Scenario 3: Security Policies\n- **Description:** Validate the application of security policies, including firewall rules and traffic filtering.\n- **Expected Outcome:** The router should correctly enforce the defined security policies without impacting legitimate traffic.\n\n```bash\nshow security policies\n```\n\n## Test Results\nThe test results indicate that the MX480 router successfully passed all test scenarios, demonstrating that the configured settings are functioning as expected without any deviations or unexpected behavior observed."
     //this.testCasesData = this.mdService.parse(testCasesDataRaw);
     //this.testCasesData = this.testCases;
     //this.testScriptsData = this.testScripts;
+  }
+
+  get f(): { [key: string]: AbstractControl } {
+    return this.createTestForm.controls;
+  }
+
+  setForm(){
+    this.createTestForm = this.fb.group({
+      device_id: ['', [Validators.required]],
+      test_category_id:['', [Validators.required]],
+      testname: ['', [Validators.required]],
+      objective:['', [Validators.required]],      
+      comment:['', [Validators.required]],      
+      test_case_file:['', [Validators.required]],
+      script_file:['', [Validators.required]],
+    })
+    //this.createTestForm.valueChanges.subscribe(data => this.onValueChanged(data));
   }
 
   getProductDetails(productID:any) {
@@ -551,6 +635,11 @@ export class ProductDetailsComponent implements OnInit {
     this.generateTestCasesFormSidebar = true;
   }
 
+  showCreateTestCasesSection(){
+    //console.log('-----')
+    this.createTestCases = true;
+  }
+
   closeGenerateTestCasesSection(){
     this.generateTestCasesFormSidebar = false;
   }
@@ -586,8 +675,111 @@ export class ProductDetailsComponent implements OnInit {
     //         error => console.log(error)
     //     );
   }
+
+  onCategoryChange(){
+    console.log('selectedTestCategory', this.selectedTestCategory);
+  }
   
+  onTestCaseFileUpload(event:any){
+   
+    this.testCaseFile = event.files[0];
+    console.log('test case file Upload', this.testCaseFile);
+    // event.files.forEach((file:any) => {
+    //   this.createTestForm.patchValue({ test_case_file: file });
+    //   //let path: string = event.originalEvent;
+    //   //console.log('path---',path);
+    //   this.createTestForm.get('test_case_file')?.updateValueAndValidity();
+    // })
+  }
+  
+  onTestScriptFileUpload(event:any){
+    this.testScriptFile = event.files[0];
+    console.log('test Script file Upload', this.testScriptFile);
+    // event.files.forEach((file:any) => {
+    //   this.createTestForm.patchValue({ script_file: file });
+    //   this.createTestForm.get('script_file')?.updateValueAndValidity();
+    // })
+  }
 
   
+  createTestCasesSubmit(){
+
+    // device_id: ['', [Validators.required]],
+    //   test_category_id:['', [Validators.required]],
+    //   testname: ['', [Validators.required]],
+    //   objective:['', [Validators.required]],      
+    //   comment:['', [Validators.required]],      
+    //   test_case_file:['', [Validators.required]],
+    //   script_file:['', [Validators.required]],
+    
+    //const fileBrowser = this.fileInput.nativeElement;
+    this.testCaseFormData.append('device_id', this.selectedProduct);
+    this.testCaseFormData.append('test_category_id', this.selectedTestCategory.id);
+    this.testCaseFormData.append('testname', this.createTestForm.get('testname')?.value);
+    this.testCaseFormData.append('objective', this.createTestForm.get('objective')?.value);
+    this.testCaseFormData.append('comment', 'user created');
+   
+    if (this.testCaseFile) {
+      this.testCaseFormData.append('test_case_file', this.testCaseFile, this.testCaseFile.name);
+    }
+    if (this.testCaseFile) {
+      this.testCaseFormData.append('script_file', this.testScriptFile, this.testScriptFile.name);
+    }
+    const getCategoryDetails = {
+      action: 'product/user_created_test_cases_and_scripts/',
+      method: 'post',
+      data: this.testCaseFormData,
+      // params: {
+      //   device_id: this.selectedProduct
+      // }
+    }
+    this.dataService.apiDelegate(getCategoryDetails).subscribe((result: any) => {
+      console.log('testCaseFormData result', result);
+      if(result.status == 200){
+        this.createTestCases = false;
+        this.messageService.add({severity:'success', summary: result.response.message, detail: result.response.test_id});
+        //this.clearFileInput();
+        this.selectedTestTypes = [];
+        this.selectedTestCategory = {};
+        this.fileInput.nativeElement.value = null;
+        this.createTestForm.reset();
+        this.testCaseFileUpload.clear();
+        this.testScriptFileUpload.clear();
+      }
+      
+    });
+  }
+
+  getUserCreatedTestCases(){
+    //console.log('-------------------');
+    // this.testCaseCategoryLoader = true;
+    // this.generatedTestCases = {};
+    const testCategories = {
+      action: 'product/user_created_test_cases_and_scripts/',
+      method: 'get',
+      // params: {
+      //   product_id: productId,
+      //   test_type_id: selectedTestCase,
+      //   test_category_id:test_category_id
+      // }
+    }
+    this.dataService.apiDelegate(testCategories).subscribe((responce: any) => {
+      console.log('get user_created_test_cases_and_scripts', responce);
+      //this.productCategoryData = result;
+      //this.productsLoader = false;
+      // this.testCategorys = responce.data
+      // if(this.testCategorys){
+      //   //this.getFileChanges(responce[0], sha);
+      // }      
+      // if(!_.isEmpty(responce)){
+      //     this.generatedTestCases = responce.data
+      //     console.log('test Case of category', this.generatedTestCases);
+      // }
+      // this.testCaseCategoryLoader = false;      
+    }, error => {
+      this.testCaseCategoryLoader = false;
+      console.log('error',error);
+    })
+  }
 
 }

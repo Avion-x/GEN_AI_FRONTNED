@@ -1,5 +1,9 @@
 @use '/src/assets/styles/vars';
 
+.ngx-codemirror {
+  border: 1px solid #ccc;
+}
+
 .markdownContainer {
     width: 100%;
     min-height: 100px;
@@ -64,6 +68,7 @@
         font-weight: 600;
         border-radius: 4px;
         color: vars.$titleClr;
+        cursor: pointer;
         &.active{
             background: vars.$primary-color;
             color: #fff;
@@ -147,4 +152,28 @@
             }
         }
     }
+}
+
+.codeInputContainer{
+    display: flex;
+    width: 100%;
+    flex-grow: 1;
+    gap: 15px;
+    padding: 15px;
+    .code{
+        width: calc(50% - 15px);
+    }
+}
+
+.customFileUploadContainer{
+    width: 100%;
+    .title{
+        font-size: 13px;
+        font-weight: 500;
+    }
+}
+
+.categoryDropdownContainer{
+    margin-bottom: 10px;
+    width: 100%;
 }

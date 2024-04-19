@@ -7,6 +7,7 @@ import { DeviceListComponent } from './device-management/device-list/device-list
 import { DevicesComponent } from './devices/devices.component';
 import { AddNewEnterpriseComponent } from './enterprise/add-new-enterprise/add-new-enterprise.component';
 import { EnterpriseManagementComponent } from './enterprise/enterprise-management/enterprise-management.component';
+import { GitConfigComponent } from './git-config/git-config.component';
 import { PagesComponent } from './pages.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductSubCategoryComponent } from './product-sub-category/product-sub-category.component';
@@ -84,6 +85,9 @@ const routes: Routes = [
       },
       {
         path:'enterpriseManagement/:formState/:id', component: AddNewEnterpriseComponent,
+      },
+      {
+        path:'gitConfig', component: GitConfigComponent,
       },
     ]
   },

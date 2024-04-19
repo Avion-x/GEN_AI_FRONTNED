@@ -19,6 +19,7 @@ export class AppConfigService {
   public readonly urlEnterpriseManagement:string = this.urlHome + 'enterpriseManagement';
   public readonly urlAddNewEnterprise:string = this.urlHome + 'enterpriseManagement/addNewEnterprise';
   public readonly urlUpdateEnterprise:string = this.urlHome + 'enterpriseManagement/editEnterprise';
+  public readonly urlGitConfig:string = this.urlHome + 'gitConfig';
 
   constructor() { }
 }

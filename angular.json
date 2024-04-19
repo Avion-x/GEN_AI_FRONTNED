@@ -34,25 +34,22 @@
               "node_modules/primeng/resources/themes/lara-light-blue/theme.css",
               "node_modules/primeng/resources/primeng.min.css",
 
-              "node_modules/prismjs/themes/prism-okaidia.css",
+              "node_modules/prismjs/themes/prism-funky.css",
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.css",
               "node_modules/prismjs/plugins/line-highlight/prism-line-highlight.css",
-              "node_modules/prismjs/plugins/command-line/prism-command-line.css",
-
-              "node_modules/ngx-markdown-editor/assets/highlight.js/agate.min.css"
+              "node_modules/prismjs/plugins/command-line/prism-command-line.css"
             ],
             "scripts": [
               "node_modules/marked/marked.min.js",
+
               "node_modules/prismjs/prism.js",
               "node_modules/prismjs/components/prism-csharp.min.js",
               "node_modules/prismjs/components/prism-css.min.js",
               "node_modules/prismjs/plugins/line-numbers/prism-line-numbers.js",
               "node_modules/prismjs/plugins/line-highlight/prism-line-highlight.js",
               "node_modules/prismjs/plugins/command-line/prism-command-line.js",
-              "node_modules/chart.js/dist/chart.js",
 
-              "node_modules/ngx-markdown-editor/assets/highlight.js/highlight.min.js",
-              "node_modules/ngx-markdown-editor/assets/marked.min.js"
+              "node_modules/chart.js/dist/chart.js"
             ]
           },
           "configurations": {            

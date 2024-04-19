@@ -91,6 +91,11 @@ export class PagesComponent implements OnInit {
             'icon':'manage_accounts',
             'url':this.appConfig.urlUsersList
           },
+          {
+            'name':'GitHub Configuration',
+            'icon':'psychology',
+            'url':this.appConfig.urlGitConfig
+          }
         ]
       } else if (this.currentUser.role_name.toLowerCase() === 'user'){
         this.navList = [

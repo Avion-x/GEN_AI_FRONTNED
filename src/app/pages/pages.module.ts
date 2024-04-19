@@ -24,7 +24,8 @@ import {CalendarModule} from 'primeng/calendar';
 import {PasswordModule} from 'primeng/password';
 import {ChartModule} from 'primeng/chart';
 import {FileUploadModule} from 'primeng/fileupload';
-import {HttpClientModule} from '@angular/common/http'
+import {HttpClient, HttpClientModule} from '@angular/common/http'
+import {InputTextareaModule} from 'primeng/inputtextarea';
 
 import { ImageCropperModule } from 'ngx-image-cropper';
 import {MessagesModule} from 'primeng/messages';
@@ -37,7 +38,9 @@ import { ProductSubCategoryComponent } from './product-sub-category/product-sub-
 
 import { ProductDetailsComponent } from './product-details/product-details.component';
 
-import { MarkdownModule } from 'ngx-markdown';
+
+import { MarkdownModule, MarkedOptions } from 'ngx-markdown';
+
 import { FormsModule, ReactiveFormsModule }    from '@angular/forms';
 import { CategoryListComponent } from './device-management/category-list/category-list.component';
 import { CreateCategoryComponent } from './device-management/create-category/create-category.component';
@@ -54,7 +57,9 @@ import { AddNewEnterpriseComponent } from './enterprise/add-new-enterprise/add-n
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {SkeletonModule} from 'primeng/skeleton';
 
-import { LMarkdownEditorModule } from 'ngx-markdown-editor';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
+import { GitConfigComponent } from './git-config/git-config.component';
+
 
 @NgModule({
   declarations: [
@@ -72,7 +77,8 @@ import { LMarkdownEditorModule } from 'ngx-markdown-editor';
     TestDeviceListComponent,
     DashboardComponent,
     EnterpriseManagementComponent,
-    AddNewEnterpriseComponent
+    AddNewEnterpriseComponent,
+    GitConfigComponent
   ],
   imports: [
     CommonModule,
@@ -88,6 +94,7 @@ import { LMarkdownEditorModule } from 'ngx-markdown-editor';
     SidebarModule,
     SelectButtonModule,
     TabViewModule,
+    InputTextareaModule,
     ButtonModule,
     DialogModule,
     AccordionModule,
@@ -106,7 +113,7 @@ import { LMarkdownEditorModule } from 'ngx-markdown-editor';
     ConfirmDialogModule,    
     SkeletonModule,
     NgxChartsModule,
-    LMarkdownEditorModule,
+    CodemirrorModule,
     MarkdownModule.forRoot()
   ]
 })
