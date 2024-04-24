@@ -33,6 +33,8 @@ export class GitConfigComponent implements OnInit {
   public submitSuccessMessage:string ='';
   public gitHubFormTitle:string = 'Create GitHub Configuration';
   public loggedInUserDetails:any;
+  public gitOperation:any;
+  public gitData:any;
 
   constructor(private authenticationService:AuthService, 
     private dataService:DataService, 
@@ -50,7 +52,16 @@ export class GitConfigComponent implements OnInit {
     this.breadcrumblist.push(
           {'name':'Home','url':this.appConfig.urlHome, 'disabled':false}, 
           {'name':' GitHub Configuration','url':'', 'disabled':true})     
-    this.getGitConfigs();   
+    this.getGitConfigs();
+    if(_.isEmpty(this.gitData)){
+      this.gitOperation = "Add New GitHub Configuration";
+    }
+    else{
+      this.gitOperation = "Edit GitHub Configuration";
+    }
+    if(!_.isEmpty(this.gitData)){
+      this.gitHubFormTitle = "Update GitHub Configuration";
+    }   
   }
 
   getGitConfigs(){    
@@ -64,6 +75,7 @@ export class GitConfigComponent implements OnInit {
       }
       this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
         this.gitHubConfigData = result.data;
+        this.gitData = result.data.data
         this.gitHubConfigLoader = false;
         // this.enterpriseList = result.data;    
         console.log('get GitCongigs', result);
@@ -119,9 +131,9 @@ export class GitConfigComponent implements OnInit {
         //this.generateTestcasesLoader = false;        
         this.successResponce = result;
         console.log('successResponce', this.successResponce);
-        if(!_.isEmpty(result)) {
+        if(result.success) {
           this.gitHubConfigurationFormSidebar = false;
-          this.submitSuccessMessage = 'GitHub Configuration Created Successfully';
+          this.submitSuccessMessage = result.success;
           this.successResponcePopup = true;
           this.submitted = false;
           //this.afterSuccess();          
@@ -129,6 +141,12 @@ export class GitConfigComponent implements OnInit {
           //this.messageService.add({severity:'success', summary: 'Success', detail: 'User added successfully'});          
           //const responceData = result.response.Regression;
           //this.testCasesData = responceData.TestCases;
+        }
+        else{
+          this.gitHubConfigurationFormSidebar = false;
+          this.submitSuccessMessage = result.error;
+          this.successResponcePopup = true;
+          this.submitted = false;
         }      
         //this.testScriptsData = responceData.TestScripts;
       })
