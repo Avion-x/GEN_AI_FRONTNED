@@ -146,7 +146,7 @@
     
 </p-sidebar>
 
-<p-dialog header="Respose" [modal]="true" [style]="{width: '30vw'}" [(visible)]="successResponcePopup">
+<p-dialog [header]="responceDialogTitle" [modal]="true" [style]="{width: '30vw'}" [(visible)]="successResponcePopup">
     <!-- {{successResponce?.message}} -->
     <p>{{submitSuccessMessage}}</p>
     <ng-template pTemplate="footer">

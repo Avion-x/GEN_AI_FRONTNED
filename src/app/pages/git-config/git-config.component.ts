@@ -35,6 +35,7 @@ export class GitConfigComponent implements OnInit {
   public loggedInUserDetails:any;
   public gitOperation:any;
   public gitData:any;
+  public responceDialogTitle:string = '';
 
   constructor(private authenticationService:AuthService, 
     private dataService:DataService, 
@@ -136,14 +137,18 @@ export class GitConfigComponent implements OnInit {
           this.submitSuccessMessage = result.success;
           this.successResponcePopup = true;
           this.submitted = false;
+          this.responceDialogTitle = 'Success'
+          this.githubForm.reset();
           //this.afterSuccess();          
           //this.messageService.add({severity:'success', summary:'Success', detail:'User added successfully'});
           //this.messageService.add({severity:'success', summary: 'Success', detail: 'User added successfully'});          
           //const responceData = result.response.Regression;
           //this.testCasesData = responceData.TestCases;
+          this.getGitConfigs();
         }
         else{
           this.gitHubConfigurationFormSidebar = false;
+          this.responceDialogTitle = 'Error';
           this.submitSuccessMessage = result.error;
           this.successResponcePopup = true;
           this.submitted = false;

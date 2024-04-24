@@ -385,14 +385,14 @@
                         </div>
                         <div class="categoryDropdownContainer form-container" *ngIf="testCategoriesOfSelectedTestType.length !== 0">
                             <div class="field p-float-label">
-                                <p-dropdown [options]="testCategoriesOfSelectedTestType" [(ngModel)]="selectedTestCategory" (onChange)="onCategoryChange()" optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Category">
+                                <p-dropdown class="large-dropdown" [options]="testCategoriesOfSelectedTestType" [(ngModel)]="selectedTestCategory" (onChange)="onCategoryChange()" optionLabel="name" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select a Category" filterPlaceholder="Search a category">
                                     <ng-template pTemplate="selectedItem">
                                         <div class="country-item country-item-value" *ngIf="selectedTestCategory">
                                             <div>{{selectedTestCategory.name}}</div>
                                         </div>
                                     </ng-template>
                                     <ng-template let-category pTemplate="item">
-                                        <div class="country-item">
+                                        <div class="option-item">
                                             <div>{{category.name}}</div>
                                         </div>
                                     </ng-template>
