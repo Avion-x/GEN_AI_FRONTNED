@@ -8,7 +8,7 @@
             </div>
             <div class="topbar-right-section">
                 <div *ngIf="showClientLogo" class="client-logo">
-                    <img src="../../assets/images/clients/juniper_black-rgb-header.webp">
+                    <img *ngIf="currentUser.customer == 3" src="../../assets/images/clients/juniper_black-rgb-header.webp">
                 </div>
                 <div class="user-section" *ngIf="currentUser" (click)="showUserDetails()">
                     <div class="icon">{{userTag}}</div>

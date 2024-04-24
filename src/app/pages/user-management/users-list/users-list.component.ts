@@ -58,23 +58,23 @@ export class UsersListComponent implements OnInit {
     this.selectedUser = selectedUser;
     this.selectedUserId = selectedUser.username;
     console.log('selectedUser', this.selectedUser);
-    const sidepanel = document.getElementById('sidePanelSection')?.classList;
-    if(sidepanel?.contains('showSidePanel')) {
-      sidepanel.remove('showSidePanel');
-    } else {
-      sidepanel?.add('showSidePanel');
-    }
+    // const sidepanel = document.getElementById('sidePanelSection')?.classList;
+    // if(sidepanel?.contains('showSidePanel')) {
+    //   sidepanel.remove('showSidePanel');
+    // } else {
+    //   sidepanel?.add('showSidePanel');
+    // }
   }
 
   closeSidePanel(){
     this.showSidePannel = false;
     this.selectedUserId = '';
-    const sidepanel = document.getElementById('sidePanelSection')?.classList;
-    if(sidepanel?.contains('showSidePanel')){
-      sidepanel.remove('showSidePanel');
-    } else {
-      sidepanel?.add('showSidePanel');
-    }
+    // const sidepanel = document.getElementById('sidePanelSection')?.classList;
+    // if(sidepanel?.contains('showSidePanel')){
+    //   sidepanel.remove('showSidePanel');
+    // } else {
+    //   sidepanel?.add('showSidePanel');
+    // }
   }
 
   // setTagName(userFullName:string){

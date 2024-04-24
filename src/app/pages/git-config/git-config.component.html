@@ -66,15 +66,15 @@
                     <th style="width: 150px; min-width:150px; max-width:150px;">Name</th>
                     <!-- <th style="width: 150px; min-width:150px; max-width:150px;">Email</th> -->
                     <th style="width: 250px; min-width:250px; max-width:250px;">Address</th>
-                    <!-- <th>Customer Name</th> -->
+                    <th style="width: 150px; min-width:250px; max-width:250px;">Branch</th>
+                    <th style="width: 150px; min-width:250px; max-width:250px;">Repository</th>
                     <th style="width: 100px; min-width:100px; max-width:100px;">Status</th>
                     <th style="width: 100px; min-width:100px; max-width:100px;">Valid Till</th>
                     <th style="width: 150px; min-width:150px; max-width:150px;">Created At</th>
                     <th style="width: 150px; min-width:150px; max-width:150px;">Created By</th>
                     <th style="width: 150px; min-width:150px; max-width:150px;">Last Updated At</th>
                     <th style="width: 120px; min-width:120px; max-width:120px;">Last Updated By</th>
-                    <th style="width: 150px; min-width:250px; max-width:250px;">Branch</th>
-                    <th style="width: 150px; min-width:250px; max-width:250px;">Repository</th>
+                    
                     <!-- <th style="width: 200px; min-width:200px; max-width:200px;">Comments</th> -->
                     <!-- <th style="width: 110px; min-width: 110px; max-width: 110px;"></th> -->
                 </tr>
@@ -85,15 +85,14 @@
                     <td style="width: 150px; min-width:150px; max-width:150px;" class="td-clr-primary tb-bold">{{config.name}}</td>
                     <!-- <td style="width: 150px; min-width:150px; max-width:150px;">{{config.email}}</td> -->
                     <td style="width: 150px; min-width:150px; max-width:150px;">{{config.address}}</td>
-                    
+                    <td style="width: 120px; min-width:120px; max-width:120px;">{{config.data.branch}}</td>
+                    <td style="width: 150px; min-width:150px; max-width:150px;">{{config.data.repository}}</td>
                     <td style="width: 100px; min-width:100px; max-width:100px;" class="td-uppercase">{{config.status==true?'Active':'Inactive'}}</td>
                     <td style="width: 100px; min-width:100px; max-width:100px;">{{config.valid_till}}</td>
                     <td style="width: 150px; min-width:150px; max-width:150px;">{{config.created_at}}</td>
                     <td style="width: 150px; min-width:150px; max-width:150px;">{{config.created_by}}</td>
                     <td style="width: 150px; min-width:150px; max-width:150px;">{{config.last_updated_at}}</td>
-                    <td style="width: 120px; min-width:120px; max-width:120px;">{{config.last_updated_by}}</td>
-                    <td style="width: 120px; min-width:120px; max-width:120px;">{{config.data.branch}}</td>
-                    <td style="width: 150px; min-width:150px; max-width:150px;">{{config.data.repository}}</td>
+                    <td style="width: 120px; min-width:120px; max-width:120px;">{{config.last_updated_by}}</td>                    
                     <!-- <td style="width: 200px; min-width:200px; max-width:200px;">{{device.comments}}</td> -->
                     <!-- <td style="width: 110px; min-width: 110px; max-width: 110px;">
                         <button *ngIf="device.test_types.length != 0" type="button" class="testNowBtn" (click)="showTestDialog(device)">
