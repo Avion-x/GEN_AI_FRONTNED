@@ -24,7 +24,8 @@ export class GitConfigComponent implements OnInit {
     access_key:new FormControl(''),
     repository: new FormControl(''),
     branch: new FormControl(''),
-    id: new FormControl(''),
+    // status: new FormControl(''),
+    valid_till:new FormControl(''),
   });
   public submitted:boolean = false;
   public successResponce:any;
@@ -36,36 +37,29 @@ export class GitConfigComponent implements OnInit {
   public gitOperation:any;
   public gitData:any;
   public responceDialogTitle:string = '';
+  public statusOptions:any[] = [{name:'ACTIVE', value:'ACTIVE'}, {name:'INACTIVE', value:"INACTIVE"}];
 
-  constructor(private authenticationService:AuthService, 
-    private dataService:DataService, 
-    private _router: Router, 
+
+  constructor(private authenticationService:AuthService,
+    private dataService:DataService,
+    private _router: Router,
     private _aRoute: ActivatedRoute,
     private appConfig:AppConfigService,
     public fb: FormBuilder) { }
 
   ngOnInit(): void {
-    const userData:any = JSON.parse(localStorage.getItem('currentUser') || '{}');    
+    const userData:any = JSON.parse(localStorage.getItem('currentUser') || '{}');
     this.loggedInUserDetails = userData.user_details;
     console.log('----userData', this.loggedInUserDetails);
 
     this.backUrl = this.appConfig.urlGitConfig;
     this.breadcrumblist.push(
-          {'name':'Home','url':this.appConfig.urlHome, 'disabled':false}, 
-          {'name':' GitHub Configuration','url':'', 'disabled':true})     
+          {'name':'Home','url':this.appConfig.urlHome, 'disabled':false},
+          {'name':' GitHub Configuration','url':'', 'disabled':true})
     this.getGitConfigs();
-    if(_.isEmpty(this.gitData)){
-      this.gitOperation = "Add New GitHub Configuration";
-    }
-    else{
-      this.gitOperation = "Edit GitHub Configuration";
-    }
-    if(!_.isEmpty(this.gitData)){
-      this.gitHubFormTitle = "Update GitHub Configuration";
-    }   
   }
 
-  getGitConfigs(){    
+  getGitConfigs(){
     this.gitHubConfigLoader = true;
     const getProductCategory = {
         action: 'git_details/',
@@ -78,7 +72,7 @@ export class GitConfigComponent implements OnInit {
         this.gitHubConfigData = result.data;
         this.gitData = result.data.data
         this.gitHubConfigLoader = false;
-        // this.enterpriseList = result.data;    
+        // this.enterpriseList = result.data;
         console.log('get GitCongigs', result);
 
     }, error => {
@@ -104,7 +98,8 @@ export class GitConfigComponent implements OnInit {
       access_key: ['', [Validators.required]],
       repository:['', [Validators.required]],
       branch: ['', [Validators.required]],
-      id:['', [Validators.required]]
+      // status: ['', [Validators.required]],
+      valid_till: ['', [Validators.required]]
     })
     //this.githubForm.valueChanges.subscribe(data => this.onValueChanged(data));
   }
@@ -114,7 +109,7 @@ export class GitConfigComponent implements OnInit {
     console.log('this.githubForm.value', this.githubForm.value);
     if (this.githubForm.invalid) {
       return;
-    } 
+    }
     this.submitted = true;
     this.githubForm.patchValue({
       //valid_till: this.enterpriseForm.get('valid_till')?.value ? moment(this.enterpriseForm.get('valid_till')?.value).format('YYYY-MM-DD') : '',
@@ -129,7 +124,7 @@ export class GitConfigComponent implements OnInit {
         data: this.githubForm.value
       }
       this.dataService.apiDelegate(setUser).subscribe((result: any) => {
-        //this.generateTestcasesLoader = false;        
+        //this.generateTestcasesLoader = false;
         this.successResponce = result;
         console.log('successResponce', this.successResponce);
         if(result.success) {
@@ -139,9 +134,9 @@ export class GitConfigComponent implements OnInit {
           this.submitted = false;
           this.responceDialogTitle = 'Success'
           this.githubForm.reset();
-          //this.afterSuccess();          
+          //this.afterSuccess();
           //this.messageService.add({severity:'success', summary:'Success', detail:'User added successfully'});
-          //this.messageService.add({severity:'success', summary: 'Success', detail: 'User added successfully'});          
+          //this.messageService.add({severity:'success', summary: 'Success', detail: 'User added successfully'});
           //const responceData = result.response.Regression;
           //this.testCasesData = responceData.TestCases;
           this.getGitConfigs();
@@ -152,7 +147,7 @@ export class GitConfigComponent implements OnInit {
           this.submitSuccessMessage = result.error;
           this.successResponcePopup = true;
           this.submitted = false;
-        }      
+        }
         //this.testScriptsData = responceData.TestScripts;
       })
   }

@@ -36,7 +36,7 @@
 <div class="content-wrapper">
     <div class="content-loader" *ngIf="gitHubConfigLoader">
         <i class="pi pi-spin pi-spinner"></i>
-        <span>Loading All GitHug Configurations List...</span>
+        <span>Loading All GitHub Configurations List...</span>
     </div>
     <div class="table-container table-selection-list" *ngIf="!gitHubConfigLoader">
         <p-table #allDevicesTable class="selectableTable" [value]="gitHubConfigData" [globalFilterFields]="['name','address','status','created_at','created_by', 'valid_till', 'last_updated_at','last_updated_by']">
@@ -55,7 +55,7 @@
                         </div>  
                         <button class="btn primary-btn" (click)="showAddNewCongigSideBar()">
                             <span class="material-symbols-rounded icon">add</span>
-                            {{gitOperation}}
+                            Add New GitHub Configuration
                         </button>                                 
                     </div>
                 </div>                
@@ -63,17 +63,17 @@
             <ng-template pTemplate="header">
                 <tr>
                     <!-- <th>Id</th> -->
-                    <th style="width: 150px; min-width:150px; max-width:150px;">Name</th>
+                    <!-- <th style="width: 150px; min-width:150px; max-width:150px;">Name</th> -->
                     <!-- <th style="width: 150px; min-width:150px; max-width:150px;">Email</th> -->
-                    <th style="width: 250px; min-width:250px; max-width:250px;">Address</th>
-                    <th style="width: 150px; min-width:250px; max-width:250px;">Branch</th>
-                    <th style="width: 150px; min-width:250px; max-width:250px;">Repository</th>
-                    <th style="width: 100px; min-width:100px; max-width:100px;">Status</th>
-                    <th style="width: 100px; min-width:100px; max-width:100px;">Valid Till</th>
-                    <th style="width: 150px; min-width:150px; max-width:150px;">Created At</th>
-                    <th style="width: 150px; min-width:150px; max-width:150px;">Created By</th>
-                    <th style="width: 150px; min-width:150px; max-width:150px;">Last Updated At</th>
-                    <th style="width: 120px; min-width:120px; max-width:120px;">Last Updated By</th>
+                    <!-- <th style="width: 250px; min-width:250px; max-width:250px;">Address</th> -->
+                    <th style="width: 150px; min-width:100px; max-width:250px;">Repository</th>
+                    <th style="width: 150px; min-width:100px; max-width:250px;">Branch</th>
+                    <th style="width: 150px; min-width:100px; max-width:250px;">Status</th>
+                    <th style="width: 150px; min-width:100px; max-width:250px;">Valid Till</th>
+                    <th style="width: 150px; min-width:100px; max-width:250px;">Created At</th>
+                    <th style="width: 150px; min-width:100px; max-width:250px;">Created By</th>
+                    <!-- <th style="width: 150px; min-width:150px; max-width:150px;">Last Updated At</th> -->
+                    <!-- <th style="width: 120px; min-width:120px; max-width:120px;">Last Updated By</th> -->
                     
                     <!-- <th style="width: 200px; min-width:200px; max-width:200px;">Comments</th> -->
                     <!-- <th style="width: 110px; min-width: 110px; max-width: 110px;"></th> -->
@@ -82,17 +82,17 @@
             <ng-template pTemplate="body" let-config>
                 <tr>
                     <!-- <td>{{device.id}}</td> -->
-                    <td style="width: 150px; min-width:150px; max-width:150px;" class="td-clr-primary tb-bold">{{config.name}}</td>
+                    <!-- <td style="width: 150px; min-width:150px; max-width:150px;" class="td-clr-primary tb-bold">{{config.name}}</td> -->
                     <!-- <td style="width: 150px; min-width:150px; max-width:150px;">{{config.email}}</td> -->
-                    <td style="width: 150px; min-width:150px; max-width:150px;">{{config.address}}</td>
-                    <td style="width: 120px; min-width:120px; max-width:120px;">{{config.data.branch}}</td>
-                    <td style="width: 150px; min-width:150px; max-width:150px;">{{config.data.repository}}</td>
-                    <td style="width: 100px; min-width:100px; max-width:100px;" class="td-uppercase">{{config.status==true?'Active':'Inactive'}}</td>
-                    <td style="width: 100px; min-width:100px; max-width:100px;">{{config.valid_till}}</td>
-                    <td style="width: 150px; min-width:150px; max-width:150px;">{{config.created_at}}</td>
-                    <td style="width: 150px; min-width:150px; max-width:150px;">{{config.created_by}}</td>
-                    <td style="width: 150px; min-width:150px; max-width:150px;">{{config.last_updated_at}}</td>
-                    <td style="width: 120px; min-width:120px; max-width:120px;">{{config.last_updated_by}}</td>                    
+                    <!-- <td style="width: 150px; min-width:150px; max-width:150px;">{{config.address}}</td> -->
+                    <td style="width: 150px; min-width:100px; max-width:250px;">{{config.repository}}</td>
+                    <td style="width: 150px; min-width:100px; max-width:250px;">{{config.branch}}</td>
+                    <td style="width: 150px; min-width:100px; max-width:250px;" class="td-clr-primary tb-bold">{{config.status}}</td>
+                    <td style="width: 150px; min-width:100px; max-width:250px;">{{config.valid_till}}</td>
+                    <td style="width: 150px; min-width:100px; max-width:250px;">{{config.created_at}}</td>
+                    <td style="width: 150px; min-width:100px; max-width:250px;">{{config.created_by}}</td>
+                    <!-- <td style="width: 150px; min-width:150px; max-width:150px;">{{config.last_updated_at}}</td> -->
+                    <!-- <td style="width: 120px; min-width:120px; max-width:120px;">{{config.last_updated_by}}</td>                     -->
                     <!-- <td style="width: 200px; min-width:200px; max-width:200px;">{{device.comments}}</td> -->
                     <!-- <td style="width: 110px; min-width: 110px; max-width: 110px;">
                         <button *ngIf="device.test_types.length != 0" type="button" class="testNowBtn" (click)="showTestDialog(device)">
@@ -114,21 +114,35 @@
                     <input id="float-input" formControlName="access_key" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['access_key'].errors }"> 
                     <label for="float-input">Access Key<small class="star">*</small></label>
                     <div *ngIf="submitted && f['access_key'].errors" class="invalid-feedback">
-                        <div class="p-error" *ngIf="f['access_key'].errors['required']">Test Category Name is required</div>
+                        <div class="p-error" *ngIf="f['access_key'].errors['required']">Access Key is required</div>
                     </div>
                 </div>
                 <div class="field p-float-label">
                     <input id="float-input" formControlName="repository" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['repository'].errors }"> 
                     <label for="float-input">Repository<small class="star">*</small></label>
                     <div *ngIf="submitted && f['repository'].errors" class="invalid-feedback">
-                        <div class="p-error" *ngIf="f['repository'].errors['required']">Test Category Name is required</div>
+                        <div class="p-error" *ngIf="f['repository'].errors['required']">Repository Name is required</div>
                     </div>
                 </div>
                 <div class="field p-float-label">
                     <input id="float-input" formControlName="branch" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['branch'].errors }"> 
-                    <label for="float-input">branch<small class="star">*</small></label>
+                    <label for="float-input">Branch<small class="star">*</small></label>
                     <div *ngIf="submitted && f['branch'].errors" class="invalid-feedback">
-                        <div class="p-error" *ngIf="f['branch'].errors['required']">Test Category Name is required</div>
+                        <div class="p-error" *ngIf="f['branch'].errors['required']">Branch Name is required</div>
+                    </div>
+                </div>
+                <!-- <div class="field p-float-label">
+                    <p-dropdown [options]="statusOptions" formControlName="status" optionLabel="name" optionValue="value" placeholder="Select an Option" [ngClass]="{ 'is-invalid': submitted && f['status'].errors }"></p-dropdown>
+                    <label for="isActive">Status<small class="star">*</small></label>
+                    <div *ngIf="submitted && f['status'].errors" class="invalid-feedback">
+                        <div class="p-error" *ngIf="f['status'].errors['required']">Status is required</div>
+                    </div>
+                </div> -->
+                <div class="field p-float-label position-relative">
+                    <p-calendar formControlName="valid_till" dateFormat="yy-mm-dd" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && f['valid_till'].errors }"></p-calendar>
+                    <label for="validTill">Valid Till<small class="star">*</small></label>
+                    <div *ngIf="submitted && f['valid_till'].errors" class="invalid-feedback">
+                        <div class="p-error" *ngIf="f['valid_till'].errors['required']">Valid Till is required</div>
                     </div>
                 </div>
                
