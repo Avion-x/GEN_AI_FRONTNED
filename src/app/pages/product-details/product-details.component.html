@@ -370,14 +370,18 @@
                     <div class="checkbox-group">
                         <div class="radioButtonGroup show-in-row" >
                             <div class="title">
-                                Select Test Type
+                                Select Test Type<small class="star">*</small>
                             </div>
                             <div class="field-radiobutton" *ngFor="let test of testTypes">
                                 <!-- <p-checkbox name="group2" [value]="test.code" (onChange)="showTestCategories(test)" [(ngModel)]="selectedTestTypes" [inputId]="test.id"></p-checkbox>
                                 <label [for]="test.id">{{test.description}}</label> -->
                                 <p-radioButton [inputId]="'type'+test.id" name="category" [value]="test.id" (onClick)="showTestCategories(test)" [(ngModel)]="selectedTestTypes"></p-radioButton>
                                 <label [for]="'type'+test.id" [ngClass]="test.id == selectedTestTypes?'selected':''">{{test.description}}</label>
-                            </div>                    
+                                
+                            </div>   
+                            <div *ngIf="createTestCaseSubmit && selectedTestTypes?.length == 0" class="invalid-feedback">
+                                <div class="p-error">Test type is required</div>
+                            </div>                 
                         </div>
                         <div class="content-loader" *ngIf="testCategoriesListLoader">
                             <i class="pi pi-spin pi-spinner"></i>
@@ -397,7 +401,10 @@
                                         </div>
                                     </ng-template>
                                 </p-dropdown>
-                                <label for="testName">Select Test Catyegory</label>
+                                <label for="testName">Select Test Category<small class="star">*</small></label>
+                                <div *ngIf="createTestCaseSubmit && !selectedTestCategory" class="invalid-feedback">
+                                    <div class="p-error">Test Categorie is required</div>
+                                </div>
                             </div>
                         
                         
@@ -424,42 +431,52 @@
                 <form [formGroup]="createTestForm" class="form-container" *ngIf="selectedTestCategory">            
                     <div class="field p-float-label">
                         <input id="testName"  formControlName="testname" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['testname'].errors }"> 
-                        <label for="testName">Test Name</label>
-                        <div *ngIf="submitted && f['testname'].errors" class="invalid-feedback">
+                        <label for="testName">Test Name<small class="star">*</small></label>
+                        <div *ngIf="createTestCaseSubmit && f['testname'].errors" class="invalid-feedback">
                             <div class="p-error" *ngIf="f['testname'].errors['required']">Test Name is required</div>
-                        </div>
+                        </div> 
                     </div>
                       
                     <div class="end-row"></div>   
                     <div class="field p-float-label">
                         <!-- <input id="description" formControlName="objective" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['objective'].errors }">  -->
                         <textarea id="float-input" formControlName="objective" type="textarea" rows="5" cols="30" pInputTextarea></textarea>
-                        <label for="description">Discription</label>
-                        <div *ngIf="submitted && f['objective'].errors" class="invalid-feedback">
+                        <label for="description">Discription<small class="star">*</small></label>
+                        <div *ngIf="createTestCaseSubmit && f['objective'].errors" class="invalid-feedback">
                             <div class="p-error" *ngIf="f['objective'].errors['required']">Description is required</div>
                         </div>
                     </div>       
                     <div class="customFileUploadContainer">
-                        <h1 class="title">Upload Test Case File</h1>
-                        <p-fileUpload #testCaseFileUpload class="customFileUpload" name="testcasefile[]" [customUpload]="true" (uploadHandler)="onTestCaseFileUpload($event)"
-                            accept=".txt,.csv">
+                        <h1 class="title">Upload Test Case File<small class="star">*</small></h1>
+                        <p-fileUpload #testCaseFileUpload class="customFileUpload" [showCancelButton]="false" name="testcasefile[]" [customUpload]="true"  (uploadHandler)="onTestCaseFileUpload($event)" [auto]="true" chooseIcon="pi pi-paperclip" chooseLabel="Choose File" accept=".txt,.csv">
+                            <!-- <ng-template let-file pTemplate="file">
+                                <i class="pi pi-file"></i>
+                            </ng-template> -->
                             <ng-template pTemplate="content">
                                 <ul *ngIf="uploadedFiles.length">
-                                    <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                                    <li *ngFor="let file of uploadedFiles"><i class="pi pi-file"></i> {{file.name}} - {{file.size}} bytes</li>
                                 </ul>
                             </ng-template>
                         </p-fileUpload>
+                        <div *ngIf="createTestCaseSubmit && f['test_case_file'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="f['test_case_file'].errors['required']">Test case file is required</div>
+                        </div>
                     </div>
                     <div class="customFileUploadContainer">
-                        <h1 class="title">Upload Script File</h1>
-                        <p-fileUpload #testScriptFileUpload class="customFileUpload" name="testscriptfile[]" [customUpload]="true" (uploadHandler)="onTestScriptFileUpload($event)"
-                        accept=".txt,.csv">
+                        <h1 class="title">Upload Script File<small class="star">*</small></h1>
+                        <p-fileUpload #testScriptFileUpload class="customFileUpload" [showCancelButton]="false" name="testscriptfile[]" [customUpload]="true" (uploadHandler)="onTestScriptFileUpload($event)" [auto]="true" chooseIcon="pi pi-paperclip" chooseLabel="Choose File" accept=".txt,.csv">
+                        <!-- <ng-template let-file pTemplate="file">
+                            <i class="pi pi-file"></i>
+                        </ng-template> -->
                         <ng-template pTemplate="content">
                             <ul *ngIf="uploadedFiles.length">
-                                <li *ngFor="let file of uploadedFiles">{{file.name}} - {{file.size}} bytes</li>
+                                <li *ngFor="let file of uploadedFiles"><i class="pi pi-file"></i> {{file.name}} - {{file.size}} bytes</li>
                             </ul>
                         </ng-template>
                         </p-fileUpload>
+                        <div *ngIf="createTestCaseSubmit && f['script_file'].errors" class="invalid-feedback">
+                            <div class="p-error" *ngIf="f['script_file'].errors['required']">Test script file is required</div>
+                        </div>
                     </div>   
                 </form>    
                 
@@ -487,7 +504,7 @@
     </ng-template>
     <ng-template pTemplate="footer">
         <div class="pageActions">
-            <button class="btn secondary-btn" (click)="closeGenerateTestCasesSection()">Cancel</button>
+            <button class="btn secondary-btn" (click)="closeCreateTestCasesSection()">Cancel</button>
             <button class="btn primary-btn" (click)="createTestCasesSubmit()">Submit</button>
         </div>
     </ng-template>
@@ -593,3 +610,4 @@
       <p-button icon="pi pi-check" (click)="afterSuccess()" label="Ok" styleClass="p-button-text"></p-button>
     </ng-template>
 </p-dialog>
+<p-confirmDialog [style]="{width: '50vw'}" key="showErrorsDialog" acceptLabel="Ok" [rejectVisible]="false" [baseZIndex]="10000"></p-confirmDialog>

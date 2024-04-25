@@ -8,6 +8,8 @@ import * as _ from 'lodash';
 
 import {MessageService} from 'primeng/api';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {ConfirmationService} from 'primeng/api';
+import {Message} from 'primeng/api';
 
 // const defaults = {
 //   markdown:'# Heading\n\nSome **bold** and _italic_ text\nBy [Scott Cooper](https://github.com/scttcper)',
@@ -23,7 +25,7 @@ import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
   styleUrls: ['./product-details.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService, ConfirmationService]
 })
 export class ProductDetailsComponent implements OnInit {
   public selectedProduct:string = '';
@@ -88,6 +90,8 @@ export class ProductDetailsComponent implements OnInit {
   public filePath:string = '';
   public fileSize:string = '';
   public fileSizeWarning:boolean = false;
+
+  public createTestCaseSubmit:boolean = false;
 
   public submitted:boolean = false;
   public createTestForm: FormGroup = new FormGroup({
@@ -174,6 +178,7 @@ public showMarkdownPreview(){
   }
 
   public clearFileInput(){
+    this.fileSize = '';
     this.fileInput.nativeElement.value = null
   }
 
@@ -221,15 +226,19 @@ public showMarkdownPreview(){
     private mdService:MarkdownService,
     private appConfig:AppConfigService,
     private messageService: MessageService,
-    public fb: FormBuilder
+    public fb: FormBuilder,
+    private confirmationService: ConfirmationService,
     ) { 
       this.currentUser = {};
       this.authenticationService.user.subscribe((user:any) => this.currentUser = user.user_details);
-      if (this.currentUser.role_name === 'user'){
-        this.showGenerateTestCase = false;
-      } else {
-        this.showGenerateTestCase = true;
+      if(this.currentUser){
+        if (this.currentUser.role_name === 'user'){
+          this.showGenerateTestCase = false;
+        } else {
+          this.showGenerateTestCase = true;
+        }
       }
+      
     }
 
   ngOnInit(): void {
@@ -684,26 +693,31 @@ public showMarkdownPreview(){
    
     this.testCaseFile = event.files[0];
     console.log('test case file Upload', this.testCaseFile);
-    // event.files.forEach((file:any) => {
-    //   this.createTestForm.patchValue({ test_case_file: file });
-    //   //let path: string = event.originalEvent;
-    //   //console.log('path---',path);
-    //   this.createTestForm.get('test_case_file')?.updateValueAndValidity();
-    // })
+    event.files.forEach((file:any) => {
+      this.createTestForm.patchValue({ test_case_file: file });
+      //let path: string = event.originalEvent;
+      //console.log('path---',path);
+      this.createTestForm.get('test_case_file')?.updateValueAndValidity();
+    })
   }
   
   onTestScriptFileUpload(event:any){
     this.testScriptFile = event.files[0];
     console.log('test Script file Upload', this.testScriptFile);
-    // event.files.forEach((file:any) => {
-    //   this.createTestForm.patchValue({ script_file: file });
-    //   this.createTestForm.get('script_file')?.updateValueAndValidity();
-    // })
+    event.files.forEach((file:any) => {
+      this.createTestForm.patchValue({ script_file: file });
+      this.createTestForm.get('script_file')?.updateValueAndValidity();
+    })
   }
 
   
   createTestCasesSubmit(){
+    this.createTestCaseSubmit = true;
 
+    if(this.selectedProduct || _.isEmpty(this.selectedTestTypes) || this.selectedTestCategory.id || this.createTestForm.get('testname')?.value || this.createTestForm.get('objective')?.value){
+      this.showErrorDialog();
+      return;
+    }
     // device_id: ['', [Validators.required]],
     //   test_category_id:['', [Validators.required]],
     //   testname: ['', [Validators.required]],
@@ -745,8 +759,29 @@ public showMarkdownPreview(){
         this.createTestForm.reset();
         this.testCaseFileUpload.clear();
         this.testScriptFileUpload.clear();
+        this.createTestCaseSubmit = false;
       }
       
+    });
+  }
+
+  closeCreateTestCasesSection(){
+    this.createTestCases = false;
+  }
+
+
+  showErrorDialog() {
+    this.confirmationService.confirm({
+        message: 'One of the required field is empty or contains invalid data, please check your input.',
+        header: 'Missing Fields',
+        icon: 'pi pi-info-circle',
+        accept: () => {
+            //this.msgs = [{severity:'info', summary:'Confirmed', detail:'Record deleted'}];
+        },
+        reject: () => {
+            //this.msgs = [{severity:'info', summary:'Rejected', detail:'You have rejected'}];
+        },
+        key: "showErrorsDialog"
     });
   }
 

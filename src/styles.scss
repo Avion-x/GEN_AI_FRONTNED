@@ -1862,6 +1862,8 @@ markdown{
     }
   }
   .p-datepicker{
+    //top: -100px !important;
+    z-index: 999999;
     .p-datepicker-group-container{
       .p-datepicker-group{
         .p-datepicker-header{
@@ -1876,6 +1878,8 @@ markdown{
           table.p-datepicker-calendar{
             margin: 0px;
             th {
+              padding: 0px;
+              background-color: vars.$body-bg;
               span{
                 width: 25px;
                 height: 25px;
@@ -1884,13 +1888,18 @@ markdown{
               }
             }
             td {
-              padding: 5px;
+              padding: 0px;
               text-transform: capitalize;
               span{
                 width: 25px;
                 height: 25px;
                 font-size: 13px;
                 font-weight: 400;
+                &.p-highlight{
+                  background: vars.$primary-color;
+                  color: #fff;
+                  box-shadow: vars.$primary-box-shoadow;
+                }
               }
             } 
           }
@@ -1927,10 +1936,15 @@ markdown{
 .customFileUpload{
   width: 100%;
   .p-fileupload{
+    display: flex;
+    flex-direction: row-reverse;
+    width: 100%;
+    border: 1px solid vars.$fieldBorderColor;
+    border-radius: 30px;
     .p-fileupload-buttonbar{
       padding: 10px;
-      border-color: vars.$cardBorderColor;
       background: transparent;
+      border: 0px;
       .p-button{        
         background: vars.$primary-color; 
         border: 0px;      
@@ -1954,6 +1968,11 @@ markdown{
     }
     .p-fileupload-content{
       padding: 0px;
+      border: 0px;
+      width: calc(100% - 230px);
+      p-progressbar{
+        display: none;
+      }
       .p-button-icon-only{
         background: vars.$secondary-color;
         box-shadow: vars.$secondary-box-shoadow; 
@@ -1993,4 +2012,8 @@ markdown{
     }
   }
   
+}
+
+.star{
+  color: vars.$error;
 }

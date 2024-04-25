@@ -293,7 +293,7 @@
                         <label for="float-input">Valid Till</label>
                     </div> -->
                     <div class="field p-float-label position-relative">
-                        <p-calendar formControlName="valid_till" dateFormat="yy-mm-dd" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && fTestType['valid_till'].errors }"></p-calendar>
+                        <p-calendar formControlName="valid_till" [autoZIndex]="false" [baseZIndex]="99999" dateFormat="yy-mm-dd" [showTime]="false" inputId="dateformat" [showIcon]="true" selectionMode="single" class="customDatePicker" [ngClass]="{ 'is-invalid': submitted && fTestType['valid_till'].errors }"></p-calendar>
                         <!-- <input id="validTill" formControlName="valid_till" type="text" pInputText [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">  -->
                         <label for="validTill">Valid Till<small class="star">*</small></label>
                         <div *ngIf="submitted && fTestType['valid_till'].errors" class="invalid-feedback">
