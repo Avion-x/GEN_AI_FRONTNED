@@ -297,12 +297,23 @@ export class TestCasesManagementComponent implements OnInit {
         this.createTestCaseTypeLoader = false;        
         //this.successResponce = result;
         //console.log('successResponce', result);
-        if(!_.isEmpty(result)) {
+        if(result.success) {
           //this.afterSuccess();          
           if(this.testCategoryFormState == 'add'){
             this.messageService.add({severity:'success', summary:'Success', detail:'Test category created successfully'});
           } else {
             this.messageService.add({severity:'success', summary:'Success', detail:'Test category updated successfully'});
+          }
+          
+          this.testCategoryFormSidebar = false;
+          //this.getTestTypes();
+          this.getTestTypeCategory(this.selectedTestType);
+        }
+        else{
+          if(this.testCategoryFormState == 'add'){
+            this.messageService.add({severity:'error', summary:'Rejected', detail: result.error});
+          } else {
+            this.messageService.add({severity:'error', summary:'Rejected', detail: result.error});
           }
           
           this.testCategoryFormSidebar = false;
@@ -502,11 +513,20 @@ export class TestCasesManagementComponent implements OnInit {
           // if(!_.isEmpty(result)){        
           //     this.usersList = result;
           // }
-          this.testCategoryDetionMessage = result.message;
-          this.messageService.add({severity:'info', summary:'Confirmed', detail:result.message});
-          this.testCategoryFormSidebar = false;
-          this.getTestTypeCategory(this.selectedTestType);          
-          this.testCategoryDeletionLoader = false;
+          if(result.success) {
+            this.testCategoryDetionMessage = result.message;
+            this.messageService.add({severity:'info', summary:'Deleted', detail:result.success});
+            this.testCategoryFormSidebar = false;
+            this.getTestTypeCategory(this.selectedTestType);          
+            this.testCategoryDeletionLoader = false;
+          }
+          else{
+            this.testCategoryDetionMessage = result.message;
+            this.messageService.add({severity:'error', summary:'Rejected', detail:result.error});
+            this.testCategoryFormSidebar = false;
+            this.getTestTypeCategory(this.selectedTestType);          
+            this.testCategoryDeletionLoader = false;
+          }
         }, error => {
           this.testCategoryDeletionLoader = false;
           //console.log('error',error);
@@ -555,9 +575,16 @@ export class TestCasesManagementComponent implements OnInit {
           //     this.usersList = result;
           // }
           //this.testCategoryDetionMessage = result.message;
-          this.messageService.add({severity:'info', summary:'Approved', detail:result.message});
-          this.approvalPendingDetailsSideBar = false;
-          this.getPendingApprovalTestCategories();         
+          if(result.success) {
+            this.messageService.add({severity:'info', summary:'Approved', detail:result.success});
+            this.approvalPendingDetailsSideBar = false;
+            this.getPendingApprovalTestCategories();
+          }
+          else{
+            this.messageService.add({severity:'error', summary:'Rejected', detail:result.error});
+            this.approvalPendingDetailsSideBar = false;
+            this.getPendingApprovalTestCategories();
+          }         
          // this.testCategoryDeletionLoader = false;
         }, error => {
          // this.testCategoryDeletionLoader = false;
