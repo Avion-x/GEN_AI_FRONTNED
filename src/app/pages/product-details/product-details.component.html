@@ -236,10 +236,11 @@
                 <h1 class="main-title">Generated Test Cases</h1>
             </div>
             <div class="right-section">
-                <!-- <button class="btn secondary-btn">
+                <button class="btn secondary-btn" (click)="generateTestCasesLog()">
                     <span class="material-symbols-rounded icon">history</span>
-                    Previous Test Cases
-                </button> -->
+                    Test Case Generation Logs
+                </button>
+
                 <button class="btn primary-btn" (click)="showCreateTestCasesSection()">
                     <span class="material-symbols-rounded icon">post_add</span>
                    Create Test Cases
@@ -286,7 +287,7 @@
                             </div>
                         </div>
     
-                        <div class="testCaseCard mb-0">
+                        <div class="testCaseCard">
                             <div class="testCaseCard-header">Test Scripts</div>
                             <div class="card-container">
                                 <div class="content-loader" *ngIf="testCaseCategoryLoader">
@@ -305,6 +306,82 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="testCaseCard mb-0 p-0">
+                            <div class="testCaseCard-header"  *ngIf="testSubCategoryLoader">Test Sub Categories</div>
+                            <div class="card-container p-0">
+                                <div class="content-loader" *ngIf="testSubCategoryLoader">
+                                    <i class="pi pi-spin pi-spinner"></i>
+                                    <span>Loading Test Sub Categories...</span>
+                                </div>
+                                <div class="table-container table-selection-list" *ngIf="!testSubCategoryLoader">
+                                    <p-table #testSubCategoriesTable [value]="testSubCategoryData" [globalFilterFields]="['name','description','executable_codes.Tests.code','status','created_at','approved_by_name','valid_till', 'last_updated_at','last_updated_by_name']">
+                                        <ng-template pTemplate="caption">
+                                            <div class="table-title-with-search">
+                                                <div class="title">                                    
+                                                    Test Sub Categories
+                                                        <div class="count">{{testSubCategoryData.length}}</div>
+                                                </div>
+                                                <div class="right-section">   
+                                                    
+                                                    <div class="search-box">
+                                                        <i class="pi pi-search"></i>
+                                                        <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
+                                                        <input pInputText type="text" #filter (input)="testSubCategoriesTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
+                                                    </div>                             
+                                                </div>
+                                            </div>                
+                                        </ng-template>
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <!-- <th>Id</th> -->
+                                                <!-- <th style="width: 150px; min-width:150px; max-width:150px;">Name</th> -->
+                                                <!-- <th style="width: 150px; min-width:150px; max-width:150px;">Email</th> -->
+                                                <!-- <th style="width: 250px; min-width:250px; max-width:250px;">Address</th> -->
+                                                <th style="width: 250px; min-width:250px; max-width:250px;">Name</th>
+                                                <th style="width: 250px; min-width:250px; max-width:250px;">Description</th>
+                                                <th style="width: 250px; min-width:250px; max-width:250px;">Test Code</th>
+                                                <th style="width: 100px; min-width:100px; max-width:100px;">Status</th>
+                                                <th style="width: 150px; min-width:150px; max-width:150px;">Valid Till</th>
+                                                <th style="width: 150px; min-width:150px; max-width:150px;">Created At</th>
+                                                <th style="width: 150px; min-width:150px; max-width:150px;">Approved By</th>
+                                                <!-- <th style="width: 150px; min-width:100px; max-width:250px;">Created By</th> -->
+                                                <th style="width: 150px; min-width:150px; max-width:150px;">Last Updated At</th>
+                                                <th style="width: 120px; min-width:120px; max-width:120px;">Last Updated By</th>
+                                                
+                                                <!-- <th style="width: 200px; min-width:200px; max-width:200px;">Comments</th> -->
+                                                <!-- <th style="width: 110px; min-width: 110px; max-width: 110px;"></th> -->
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-category>
+                                            <tr>
+                                                <!-- <td>{{device.id}}</td> -->
+                                                <!-- <td style="width: 150px; min-width:150px; max-width:150px;" class="td-clr-primary tb-bold">{{config.name}}</td> -->
+                                                <!-- <td style="width: 150px; min-width:150px; max-width:150px;">{{config.email}}</td> -->
+                                                <!-- <td style="width: 150px; min-width:150px; max-width:150px;">{{config.address}}</td> -->
+                                                <td style="width: 250px; min-width:250px; max-width:250px;">{{category.name}}</td>
+                                                <td style="width: 250px; min-width:250px; max-width:250px;">{{category.description}}</td>
+                                                <td style="width: 250px; min-width:250px; max-width:250px;">{{category.executable_codes.Tests.code}}</td>
+                                                <td style="width: 100px; min-width:100px; max-width:100px;" class="td-uppercase">{{category.status==true?'Active':'Inactive'}}</td>
+                                                <td style="width: 150px; min-width:150px; max-width:150px;">{{category.valid_till}}</td>
+                                                <td style="width: 150px; min-width:150px; max-width:150px;">{{category.created_at}}</td>
+                                                <td style="width: 150px; min-width:150px; max-width:150px;">{{category.approved_by_name}}</td>
+                                                <!-- <td style="width: 150px; min-width:100px; max-width:250px;">{{category.created_by}}</td> -->
+                                                <td style="width: 150px; min-width:150px; max-width:150px;">{{category.last_updated_at}}</td>
+                                                <td style="width: 120px; min-width:120px; max-width:120px;">{{category.last_updated_by_name}}</td>
+                                                <!-- <td style="width: 200px; min-width:200px; max-width:200px;">{{device.comments}}</td> -->
+                                                <!-- <td style="width: 110px; min-width: 110px; max-width: 110px;">
+                                                    <button *ngIf="device.test_types.length != 0" type="button" class="testNowBtn" (click)="showTestDialog(device)">
+                                                        Test Now
+                                                    </button>                        
+                                                </td> -->
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+                            </div>
+                        </div>
+
                     </ng-template>                    
                 </p-accordionTab>
             </p-accordion>
@@ -599,6 +676,84 @@
             <button class="btn secondary-btn" (click)="closeGenerateTestCasesSection()">Cancel</button>
             <button class="btn primary-btn" *ngIf="generateTestCaseActiveIndex == 0" (click)="generateAllTestCases()">Generate All Test Cases</button>
             <button class="btn primary-btn" *ngIf="generateTestCaseActiveIndex == 1" (click)="generateTestCases()">Submit</button>
+        </div>
+    </ng-template>
+</p-sidebar>
+
+<p-sidebar [(visible)]="testCaseGenetaionLogSidebar"  class="sidebar-section header-tabs-sidebar-section" [style]="{width:'85%'}" position="right">
+    <ng-template pTemplate="header">
+        <div class="page-container-header">
+            <div class="title-section">
+                <div class="title-container">
+                    <h1 class="title">
+                        {{productData?.product_code}}
+                     </h1>
+                     <h2 class="sub-title">
+                        <span *ngIf="productMainCategory">{{productMainCategory.category}}-{{productMainCategory.id}}</span>
+                        <span *ngIf="productSubCategory"><i class="icofont-simple-right"></i></span>
+                        <span *ngIf="productSubCategory">{{productSubCategory.sub_category}}</span>
+                     </h2>
+                </div>        
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <div class="content-loader" *ngIf="testCaseGenetaionLogLoader">
+            <i class="pi pi-spin pi-spinner"></i>
+            <span>Loading Test Case Generation Logs...</span>
+        </div>
+        <div class="table-bordered-container" *ngIf="!testCaseGenetaionLogLoader">
+            <p-table class="table-bordered" #testCaseGenerationLogTable [value]="testCaseGenetaionLogData" [globalFilterFields]="['name','description','executable_codes.Tests.code','status','created_at','approved_by_name','valid_till', 'last_updated_at','last_updated_by_name']">
+                <ng-template pTemplate="caption">
+                    <div class="table-title-with-search">
+                        <div class="title">                                    
+                            Test Case Generation Logs
+                                <div class="count">{{testCaseGenetaionLogData.length}}</div>
+                        </div>
+                        <!-- <div class="right-section">   
+                            
+                            <div class="search-box">
+                                <i class="pi pi-search"></i>                                
+                                <input pInputText type="text" #filter (input)="testCaseGenerationLogTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
+                            </div>                             
+                        </div> -->
+                    </div>                
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 300px; min-width:300px; max-width:300px;">
+                            <table class="subTable">
+                                <tr>
+                                    <th style="width: 150px; min-width:150px; max-width:150px;">Test Type</th>
+                                    <th style="width: 150px; min-width:150px; max-width:150px;">Test Category</th>
+                                </tr>                               
+                            </table>
+                        </th>
+                        <th style="width: 150px; min-width:150px; max-width:150px;">Status</th>                        
+                        
+                        <th style="width: 150px; min-width:150px; max-width:150px;">Created At</th> 
+                        <th style="width: 150px; min-width:150px; max-width:150px;">Created By</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-request>
+                    <tr>
+                        <td style="width: 300px; min-width:300px; max-width:300px;">
+                            <table class="subTable">
+                                <tr *ngFor="let test of request.data">
+                                    <td style="width: 150px; min-width:150px; max-width:150px;">{{test.test_type_name}}</td>
+                                    <td style="width: 150px; min-width:150px; max-width:150px;">
+                                        <div class="single-item" *ngFor="let item of test.test_category_data[0]">{{item.name}}</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width: 150px; min-width:150px; max-width:150px;" class="td-clr-primary tb-bold">{{request.execution_status}}</td>
+                        <td style="width: 150px; min-width:150px; max-width:150px;">{{request.created_at}}</td>
+                        <td style="width: 150px; min-width:150px; max-width:150px;">{{request.created_by_name}}</td>
+                        
+                    </tr>
+                </ng-template>
+            </p-table>
         </div>
     </ng-template>
 </p-sidebar>

@@ -60,7 +60,6 @@ import {SkeletonModule} from 'primeng/skeleton';
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { GitConfigComponent } from './git-config/git-config.component';
 
-
 @NgModule({
   declarations: [
     PagesComponent,

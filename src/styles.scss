@@ -69,6 +69,9 @@ h1,h2,h3,h4,h5,h6{
 .mr-30{
   margin-right: 30px;
 }
+.p-0{
+  padding: 0px !important;
+}
 .pb-0{
   padding-bottom: 0px !important;
 }
@@ -351,6 +354,104 @@ input::-ms-input-placeholder {
       }
 }
 
+.table-bordered {
+  border: 1px solid #dee2e6;
+
+  // &.th-border-primary {
+  //   th {
+  //     border-color: vars.$cardBorderColor;
+  //     border-top: 1px solid vars.$cardBorderColor;
+  //   }
+  // }
+
+  // th,
+  // td {
+  //   border: 1px solid vars.$cardBorderColor;
+  // }
+
+  // thead {
+
+  //   th,
+  //   td {
+  //     border-bottom-width: 2px;
+  //   }
+  // }
+
+  .p-datatable {
+    .p-datatable-header {
+      background: transparent;
+      padding: 5px;
+      border-top: 0px;
+      border-bottom: 1px solid vars.$cardBorderColor;
+
+    }
+
+    .p-datatable-scrollable-header-box {
+      background: #f6f6f6;
+    }
+
+    .p-datatable-scrollable-body {
+      padding-right: 10px;
+      padding-left: 10px;
+    }
+
+    .p-datatable-thead {
+      padding-right: 10px;
+
+      //padding-left: 10px;
+      tr>th {
+        text-align: left;
+        padding: 10px 15px 10px 15px;
+        border: 0px;
+        font-weight: 500;
+        color: vars.$th-color;
+        font-size: 11px;
+        text-transform: uppercase;
+        background: vars.$body-bg;
+        @include vars.fontFamilySecondary;
+      }
+    }
+    .p-datatable-tbody {
+      padding-right: 10px;
+      //border-bottom: 1px solid vars.$cardBorderColor;
+      //padding-left: 10px;
+      tr {
+          td {
+            text-align: left;
+            border-bottom: 1px solid vars.$cardBorderColor;
+            padding: 10px 15px;
+            font-size: 13px;
+            color: vars.$td-color;
+            text-transform: capitalize;
+      
+            &.td-clr-primary {
+              color: vars.$primary-color;
+            }
+      
+            &.tb-bold {
+              font-weight: 600;
+            }
+            .subTable{
+              tr {
+                &:last-child{
+                  td{
+                    border-bottom: 0px;
+                  }
+                }   
+                td{
+                  .single-item{
+                    display: block;
+                  }
+                }             
+              }
+            }
+            // box-shadow: 2px 2px 5px 2px rgba(0,0,0,1);
+            position: relative;
+          }
+        }
+    }
+  }
+}
 
   .table-container{
     background: transparent;
@@ -593,6 +694,26 @@ input::-ms-input-placeholder {
                 }
                 td{
                     border-bottom: 10px solid vars.$body-bg !important;
+                    .subTable{
+                      tr {
+                        td{
+                          border-bottom: 0px !important;
+                          padding: 0px;
+                          &:first-child{
+                              &::before, 
+                              &::after{
+                                  display: none;
+                              }                            
+                          }
+                          &:last-child{
+                              &::before, 
+                              &::after{
+                                  display: none;
+                              }
+                          }
+                        }
+                      }
+                    }
                 }
                 &.p-highlight{
                     background: rgba(62, 100, 245, 0.1);
@@ -1676,6 +1797,13 @@ markdown{
               padding:0 10px;
               max-height: 300px;
               overflow-x: auto;
+              .p-datatable>.p-datatable-wrapper{
+                padding: 0 10px;
+                background: vars.$body-bg;
+              }
+              .table-container .p-datatable .p-datatable-header{
+                padding: 15px 15px 5px;
+              }
               .title {
                 margin-top: 0px;
                 margin-bottom: 10px;
@@ -2017,3 +2145,8 @@ markdown{
 .star{
   color: vars.$error;
 }
+
+.subTable{
+  width: 100%;
+}
+

@@ -42,7 +42,11 @@ export class TestDeviceListComponent implements OnInit {
   public selectedSubCategoryId:string = '';
   public readytoTestDevicesLoader:boolean=false;
 
-  public readyToTestDevices:any[] = []
+  public readyToTestDevices:any[] = [];
+
+  public testCaseGenetaionLogSidebar:boolean = false;
+  public testCaseGenetaionLogLoader:boolean = false;
+  public testCaseGenetaionLogData:any[] = [];
 
   constructor(private authenticationService:AuthService, 
     private dataService:DataService, 
@@ -197,5 +201,26 @@ export class TestDeviceListComponent implements OnInit {
     console.log('selectedTestTypes', this.selectedTestTypes);
   }
   
+  generateTestCasesLog(){
+    this.testCaseGenetaionLogSidebar = true;
+    this.testCaseGenetaionLogLoader = true;
+  
+    const getTestCasesLog = {
+      action: 'product/generate_test_cases/',
+      method: 'get'
+    }
+    this.dataService.apiDelegate(getTestCasesLog).subscribe((result: any) => {
+      this.testCaseGenetaionLogLoader = false;
+      console.log('generate Test Cases Log', result);
+      if(!_.isEmpty(result)){
+        //this.generateTestCasesFormSidebar = false;
+        //this.successResponcePopup = true;
+        this.testCaseGenetaionLogData = result.response.data;
+        console.log('generate Test Cases Log', this.testCaseGenetaionLogData);
+        // this.testCasesData = responceData.TestCases;        
+      }     
+      //this.testScriptsData = responceData.TestScripts;
+    });
+  }
 
 }

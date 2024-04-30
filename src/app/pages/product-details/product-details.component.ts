@@ -112,20 +112,27 @@ export class ProductDetailsComponent implements OnInit {
   @ViewChild('testCaseFileUpload') testCaseFileUpload: any;
   @ViewChild('testScriptFileUpload') testScriptFileUpload: any;
 
-  public unitTestCategories:any[] = [
-    {'category':'Bootup process', 'generated':true},
-    {'category':'Routing protocols', 'generated':true},
-    {'category':'Firewall filters', 'generated':true},
-    {'category':'NAT configuration', 'generated':false},
-    {'category':'VPN configuration', 'generated':false},
-    {'category':'Access control lists', 'generated':false},
-    {'category':'QoS configuration', 'generated':false},
-    {'category':'Interface configuration', 'generated':false},
-    {'category':'VLAN configuration', 'generated':false},
-    {'category':'Static routes', 'generated':false},
-    {'category':'Policy configuration', 'generated':false},
-    {'category':'SNMP configuration', 'generated':false},
-  ]
+  public testSubCategoryData:any[] = [];
+  public testSubCategoryLoader:boolean = false;
+
+  public testCaseGenetaionLogSidebar:boolean = false;
+  public testCaseGenetaionLogLoader:boolean = false;
+  public testCaseGenetaionLogData:any[] = [];
+
+  // public unitTestCategories:any[] = [
+  //   {'category':'Bootup process', 'generated':true},
+  //   {'category':'Routing protocols', 'generated':true},
+  //   {'category':'Firewall filters', 'generated':true},
+  //   {'category':'NAT configuration', 'generated':false},
+  //   {'category':'VPN configuration', 'generated':false},
+  //   {'category':'Access control lists', 'generated':false},
+  //   {'category':'QoS configuration', 'generated':false},
+  //   {'category':'Interface configuration', 'generated':false},
+  //   {'category':'VLAN configuration', 'generated':false},
+  //   {'category':'Static routes', 'generated':false},
+  //   {'category':'Policy configuration', 'generated':false},
+  //   {'category':'SNMP configuration', 'generated':false},
+  // ]
 
   //################################################ ngx-codemirror \\
   previewData:any = '';
@@ -519,6 +526,7 @@ public showMarkdownPreview(){
     console.log('-------------------');
     this.testCaseCategoryLoader = true;
     this.generatedTestCases = {};
+    this.getTestCaseSUbCategory(productId, selectedTestCase, test_category_id);
     const testCategories = {
       action: 'product/structured_test_cases_and_scripts/',
       method: 'get',
@@ -542,6 +550,31 @@ public showMarkdownPreview(){
       this.testCaseCategoryLoader = false;      
     }, error => {
       this.testCaseCategoryLoader = false;
+      console.log('error',error);
+    })
+  }
+
+  getTestCaseSUbCategory(productId:any, selectedTestCase:any, test_category_id:any){
+    //console.log('-------------------');
+    this.testSubCategoryData = [];
+    this.testSubCategoryLoader = true;
+    const testCategories = {
+      action: 'product/test_sub_categories/',
+      method: 'get',
+      params: {
+        //product_id: productId,
+        test_type_id: selectedTestCase,
+        test_category_id:test_category_id
+      }
+    }
+    this.dataService.apiDelegate(testCategories).subscribe((responce: any) => {     
+      if(!_.isEmpty(responce)){
+          this.testSubCategoryData = responce.data
+          console.log('test Case Sub category', this.testSubCategoryData);
+      }
+      this.testSubCategoryLoader = false;      
+    }, error => {
+      this.testSubCategoryLoader = false;
       console.log('error',error);
     })
   }
@@ -624,6 +657,33 @@ public showMarkdownPreview(){
         this.generateTestCasesFormSidebar = false;
         this.successResponcePopup = true;
         this.generateTestCaseResponceData = result.response.Message;
+        // this.testCasesData = responceData.TestCases;        
+      }     
+      //this.testScriptsData = responceData.TestScripts;
+    });
+  }
+
+  generateTestCasesLog(){
+   this.testCaseGenetaionLogSidebar = true;
+   this.testCaseGenetaionLogLoader = true;
+  
+    const getTestCasesLog = {
+      action: 'product/generate_test_cases/',
+      method: 'get',
+      params: {
+        //product_id: productId,
+        request_id: '',
+        device_id:this.productData.id
+      }
+    }
+    this.dataService.apiDelegate(getTestCasesLog).subscribe((result: any) => {
+      this.testCaseGenetaionLogLoader = false;
+      console.log('generate Test Cases Log', result);
+      if(!_.isEmpty(result)){
+        //this.generateTestCasesFormSidebar = false;
+        //this.successResponcePopup = true;
+        this.testCaseGenetaionLogData = result.response.data;
+        console.log('generate Test Cases Log', this.testCaseGenetaionLogData);
         // this.testCasesData = responceData.TestCases;        
       }     
       //this.testScriptsData = responceData.TestScripts;

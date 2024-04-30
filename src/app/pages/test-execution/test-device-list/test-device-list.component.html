@@ -68,7 +68,11 @@
         <div class="nav-tabs-container">
             <button class="nav-tab btn" (click)="tabActiveIndex = 0" [ngClass]="tabActiveIndex === 0 ? 'active':''">All Devices</button>
             <button class="nav-tab btn" (click)="tabActiveIndex = 1" [ngClass]="tabActiveIndex === 1 ? 'active':''">Ready To Test Devices</button>
-        </div>        
+        </div>  
+        <button class="btn secondary-btn" (click)="generateTestCasesLog()">
+            <span class="material-symbols-rounded icon">history</span>
+            Test Case Generation Logs
+        </button>      
     </div>
     
     <div class="custom-nav-tabs-container">
@@ -265,3 +269,78 @@
         </p-tabView>
     </div>    
 </div>
+
+<p-sidebar [(visible)]="testCaseGenetaionLogSidebar"  class="sidebar-section header-tabs-sidebar-section" [style]="{width:'85%'}" position="right">
+    <ng-template pTemplate="header">
+        <div class="page-container-header">
+            <div class="title-section">
+                <div class="title-container">
+                    <h1 class="title">
+                        Test Case Generation Logs
+                     </h1>
+                </div>        
+            </div>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="content">
+        <div class="content-loader" *ngIf="testCaseGenetaionLogLoader">
+            <i class="pi pi-spin pi-spinner"></i>
+            <span>Loading Test Case Generation Logs...</span>
+        </div>
+        <div class="table-bordered-container" *ngIf="!testCaseGenetaionLogLoader">
+            <p-table class="table-bordered" #testCaseGenerationLogTable [value]="testCaseGenetaionLogData" [globalFilterFields]="['device_name','request.data.test_type_name','execution_status','status','created_at','created_by_name']">
+                <ng-template pTemplate="caption">
+                    <div class="table-title-with-search">
+                        <div class="title">                                    
+                            Test Case Generation Logs
+                                <div class="count">{{testCaseGenetaionLogData.length}}</div>
+                        </div>
+                        <div class="right-section">   
+                            
+                            <div class="search-box">
+                                <i class="pi pi-search"></i>                                
+                                <input pInputText type="text" #filter (input)="testCaseGenerationLogTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
+                            </div>                             
+                        </div>
+                    </div>                
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 100px; min-width:100px; max-width:100px;">Device</th>
+                        <th style="width: 300px; min-width:300px; max-width:300px;">
+                            <table class="subTable">
+                                <tr>
+                                    <th style="width: 150px; min-width:150px; max-width:150px;">Test Type</th>
+                                    <th style="width: 150px; min-width:150px; max-width:150px;">Test Category</th>
+                                </tr>                               
+                            </table>
+                        </th>
+                        <th style="width: 150px; min-width:150px; max-width:150px;">Status</th>                        
+                        
+                        <th style="width: 150px; min-width:150px; max-width:150px;">Created At</th> 
+                        <th style="width: 150px; min-width:150px; max-width:150px;">Created By</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-request>
+                    <tr>
+                        <td style="width: 100px; min-width:100px; max-width:100px;" class="td-clr-primary tb-bold">{{request.device_name}}</td>
+                        <td style="width: 300px; min-width:300px; max-width:300px;">
+                            <table class="subTable">
+                                <tr *ngFor="let test of request.data">
+                                    <td style="width: 150px; min-width:150px; max-width:150px;">{{test.test_type_name}}</td>
+                                    <td style="width: 150px; min-width:150px; max-width:150px;">
+                                        <div class="single-item" *ngFor="let item of test.test_category_data[0]">{{item.name}}</div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td style="width: 150px; min-width:150px; max-width:150px;" class="td-clr-primary tb-bold">{{request.execution_status}}</td>
+                        <td style="width: 150px; min-width:150px; max-width:150px;">{{request.created_at}}</td>
+                        <td style="width: 150px; min-width:150px; max-width:150px;">{{request.created_by_name}}</td>
+                        
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </ng-template>
+</p-sidebar>
