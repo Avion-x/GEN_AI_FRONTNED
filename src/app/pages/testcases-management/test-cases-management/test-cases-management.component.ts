@@ -242,8 +242,12 @@ export class TestCasesManagementComponent implements OnInit {
         //this.successResponce = result;
         //console.log('successResponce', result);
         if(!_.isEmpty(result)) {
-          //this.afterSuccess();          
-          this.messageService.add({severity:'success', summary:'Success', detail:'Test Type created successfully'});
+          //this.afterSuccess();     
+          if(this.testTypeFormState == 'add'){
+            this.messageService.add({severity:'success', summary:'Success', detail:'Test Type created successfully'});
+          } else {
+            this.messageService.add({severity:'success', summary:'Success', detail:'Test Type updated successfully'});
+          }  
           this.testTypeFormSidebar = false;
           this.getTestTypes();          
         }      

@@ -43,7 +43,16 @@
 
     <div class="chart-section">
         <div class="card" *ngIf="categoriesChartData.length !== 0">
-            <h5 class="title">Categories & Device count</h5>
+            <div class="card-header">
+                <h5 class="title">Categories & Device count</h5>
+                <div class="legends">
+                    <div class="item" *ngFor="let item of customLegends">
+                        <div class="legentColor" [ngStyle]="{'background-color': item.color}"></div>
+                        <span>{{item.title}}</span>
+                    </div>
+                </div>
+            </div>
+            
             <!-- <p-chart type="bar" [data]="categoryStackedData" [options]="categoryStackedOptions"></p-chart> -->
             <div class="ngxChartHolder" style="height: 260px;">
                 <ngx-charts-bar-vertical-2d                              

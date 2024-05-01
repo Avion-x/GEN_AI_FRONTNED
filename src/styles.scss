@@ -1155,6 +1155,9 @@ markdown{
   background: #fff;
   border-radius: 5px;
   padding: 20px 15px 20px 15px;
+  .card-header{
+    display: flex;
+  }
   .card-actions{
     padding-top: 10px;
     display: flex;

@@ -71,7 +71,7 @@
         </div>  
         <button class="btn secondary-btn" (click)="generateTestCasesLog()">
             <span class="material-symbols-rounded icon">history</span>
-            Test Case Generation Logs
+            Test Case Generation Jobs
         </button>      
     </div>
     
@@ -276,7 +276,7 @@
             <div class="title-section">
                 <div class="title-container">
                     <h1 class="title">
-                        Test Case Generation Logs
+                        Test Case Generation Jobs
                      </h1>
                 </div>        
             </div>
@@ -285,14 +285,14 @@
     <ng-template pTemplate="content">
         <div class="content-loader" *ngIf="testCaseGenetaionLogLoader">
             <i class="pi pi-spin pi-spinner"></i>
-            <span>Loading Test Case Generation Logs...</span>
+            <span>Loading Test Case Generation Jobs...</span>
         </div>
         <div class="table-bordered-container" *ngIf="!testCaseGenetaionLogLoader">
             <p-table class="table-bordered" #testCaseGenerationLogTable [value]="testCaseGenetaionLogData" [globalFilterFields]="['device_name','request.data.test_type_name','execution_status','status','created_at','created_by_name']">
                 <ng-template pTemplate="caption">
                     <div class="table-title-with-search">
                         <div class="title">                                    
-                            Test Case Generation Logs
+                            Test Case Generation Jobs
                                 <div class="count">{{testCaseGenetaionLogData.length}}</div>
                         </div>
                         <div class="right-section">   

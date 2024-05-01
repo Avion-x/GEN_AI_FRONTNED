@@ -48,6 +48,8 @@ export class DashboardComponent implements OnInit {
     name: 'Customer Usage', 
   };
 
+  customLegends:any[]=[];
+
   constructor(private dataService:DataService) { }
 
   ngOnInit(): void {
@@ -252,6 +254,18 @@ export class DashboardComponent implements OnInit {
         // subCategoriesCount.push(item.sub_category_count);
         // devicesCount.push(item.device_count);
       })
+      this.categoriesChartData[0].series.forEach((item:any, i:number)=>{
+        this.customLegends.push(
+          {
+            'title':item.name,
+            'color':this.colorScheme.domain[i]
+          }
+        )
+        // this.colorScheme.domain.forEach((color:any)=>{
+            
+        // })
+      })
+      
       
     //   this.categoryStackedData = {
     //     labels: [...categorieNames],

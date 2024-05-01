@@ -11,7 +11,7 @@ import {ConfirmationService, ConfirmEventType, Message, MessageService} from 'pr
   selector: 'app-git-config',
   templateUrl: './git-config.component.html',
   styleUrls: ['./git-config.component.scss'],
-  providers: [MessageService]
+  providers: [ConfirmationService,MessageService]
 })
 export class GitConfigComponent implements OnInit {
 
@@ -45,7 +45,9 @@ export class GitConfigComponent implements OnInit {
     private _router: Router,
     private _aRoute: ActivatedRoute,
     private appConfig:AppConfigService,
-    public fb: FormBuilder) { }
+    public fb: FormBuilder,
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService) { }
 
   ngOnInit(): void {
     const userData:any = JSON.parse(localStorage.getItem('currentUser') || '{}');
@@ -156,6 +158,57 @@ export class GitConfigComponent implements OnInit {
     this.successResponcePopup=false;
     //this.onReset();
     //this.navigateToEnterpriseList();
+  }
+
+  setActive(selectedRepo:any){
+    console.log('selectedRepo', selectedRepo);
+    
+    this.confirmationService.confirm({
+      message: 'Are you sure that you want to change the repository?',
+      header: 'Confirmation',
+      icon: 'pi pi-info-circle',      
+      accept: () => {
+          //this.messageService.add({severity:'info', summary:'Confirmed', detail:'You have accepted'});
+          const changeRepo = {
+            "id": selectedRepo.id,
+            "status": "ACTIVE"
+          }
+          const setActive = {
+            action: 'git_config_status/',
+            method: 'put',
+            data: changeRepo
+          }
+          this.dataService.apiDelegate(setActive).subscribe((result: any) => {
+            console.log('result',result);
+            if(result.status == 200){
+              this.confirmationService.confirm({
+                header: 'Success',
+                icon:'pi pi-check-circle',
+                message: result.success,
+                rejectVisible:false,
+                acceptLabel:'Ok',
+                accept: () => {
+                    //Actual logic to perform a confirmation
+                    this.getGitConfigs();
+                }
+              });
+              
+            }
+          }, error=>{
+            console.log('error',error);
+          });
+      },
+      reject: (type:any) => {
+          switch(type) {
+              case ConfirmEventType.REJECT:
+                  this.messageService.add({severity:'error', summary:'Rejected', detail:'You have rejected'});
+              break;
+              case ConfirmEventType.CANCEL:
+                  this.messageService.add({severity:'warn', summary:'Cancelled', detail:'You have cancelled'});
+              break;
+          }
+      }
+    });
   }
 
 }

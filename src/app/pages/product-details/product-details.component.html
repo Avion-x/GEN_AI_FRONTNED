@@ -238,7 +238,7 @@
             <div class="right-section">
                 <button class="btn secondary-btn" (click)="generateTestCasesLog()">
                     <span class="material-symbols-rounded icon">history</span>
-                    Test Case Generation Logs
+                    Test Case Generation Jobs
                 </button>
 
                 <button class="btn primary-btn" (click)="showCreateTestCasesSection()">
@@ -315,7 +315,7 @@
                                     <span>Loading Test Sub Categories...</span>
                                 </div>
                                 <div class="table-container table-selection-list" *ngIf="!testSubCategoryLoader">
-                                    <p-table #testSubCategoriesTable [value]="testSubCategoryData" [globalFilterFields]="['name','description','executable_codes.Tests.code','status','created_at','approved_by_name','valid_till', 'last_updated_at','last_updated_by_name']">
+                                    <p-table #testSubCategoriesTable [value]="testSubCategoryData" [globalFilterFields]="['name','description']">
                                         <ng-template pTemplate="caption">
                                             <div class="table-title-with-search">
                                                 <div class="title">                                    
@@ -334,47 +334,28 @@
                                         </ng-template>
                                         <ng-template pTemplate="header">
                                             <tr>
-                                                <!-- <th>Id</th> -->
-                                                <!-- <th style="width: 150px; min-width:150px; max-width:150px;">Name</th> -->
-                                                <!-- <th style="width: 150px; min-width:150px; max-width:150px;">Email</th> -->
-                                                <!-- <th style="width: 250px; min-width:250px; max-width:250px;">Address</th> -->
-                                                <th style="width: 250px; min-width:250px; max-width:250px;">Name</th>
-                                                <th style="width: 250px; min-width:250px; max-width:250px;">Description</th>
-                                                <th style="width: 250px; min-width:250px; max-width:250px;">Test Code</th>
+                                                <th>Name</th>
+                                                <th>Description</th>
+                                                <!-- <th style="width: 250px; min-width:250px; max-width:250px;">Test Code</th>
                                                 <th style="width: 100px; min-width:100px; max-width:100px;">Status</th>
                                                 <th style="width: 150px; min-width:150px; max-width:150px;">Valid Till</th>
                                                 <th style="width: 150px; min-width:150px; max-width:150px;">Created At</th>
                                                 <th style="width: 150px; min-width:150px; max-width:150px;">Approved By</th>
-                                                <!-- <th style="width: 150px; min-width:100px; max-width:250px;">Created By</th> -->
                                                 <th style="width: 150px; min-width:150px; max-width:150px;">Last Updated At</th>
-                                                <th style="width: 120px; min-width:120px; max-width:120px;">Last Updated By</th>
-                                                
-                                                <!-- <th style="width: 200px; min-width:200px; max-width:200px;">Comments</th> -->
-                                                <!-- <th style="width: 110px; min-width: 110px; max-width: 110px;"></th> -->
+                                                <th style="width: 120px; min-width:120px; max-width:120px;">Last Updated By</th> -->
                                             </tr>
                                         </ng-template>
                                         <ng-template pTemplate="body" let-category>
                                             <tr>
-                                                <!-- <td>{{device.id}}</td> -->
-                                                <!-- <td style="width: 150px; min-width:150px; max-width:150px;" class="td-clr-primary tb-bold">{{config.name}}</td> -->
-                                                <!-- <td style="width: 150px; min-width:150px; max-width:150px;">{{config.email}}</td> -->
-                                                <!-- <td style="width: 150px; min-width:150px; max-width:150px;">{{config.address}}</td> -->
-                                                <td style="width: 250px; min-width:250px; max-width:250px;">{{category.name}}</td>
-                                                <td style="width: 250px; min-width:250px; max-width:250px;">{{category.description}}</td>
-                                                <td style="width: 250px; min-width:250px; max-width:250px;">{{category.executable_codes.Tests.code}}</td>
+                                                <td>{{category.name}}</td>
+                                                <td>{{category.description}}</td>
+                                                <!-- <td style="width: 250px; min-width:250px; max-width:250px;">{{category.executable_codes.Tests.code}}</td>
                                                 <td style="width: 100px; min-width:100px; max-width:100px;" class="td-uppercase">{{category.status==true?'Active':'Inactive'}}</td>
                                                 <td style="width: 150px; min-width:150px; max-width:150px;">{{category.valid_till}}</td>
                                                 <td style="width: 150px; min-width:150px; max-width:150px;">{{category.created_at}}</td>
                                                 <td style="width: 150px; min-width:150px; max-width:150px;">{{category.approved_by_name}}</td>
-                                                <!-- <td style="width: 150px; min-width:100px; max-width:250px;">{{category.created_by}}</td> -->
                                                 <td style="width: 150px; min-width:150px; max-width:150px;">{{category.last_updated_at}}</td>
-                                                <td style="width: 120px; min-width:120px; max-width:120px;">{{category.last_updated_by_name}}</td>
-                                                <!-- <td style="width: 200px; min-width:200px; max-width:200px;">{{device.comments}}</td> -->
-                                                <!-- <td style="width: 110px; min-width: 110px; max-width: 110px;">
-                                                    <button *ngIf="device.test_types.length != 0" type="button" class="testNowBtn" (click)="showTestDialog(device)">
-                                                        Test Now
-                                                    </button>                        
-                                                </td> -->
+                                                <td style="width: 120px; min-width:120px; max-width:120px;">{{category.last_updated_by_name}}</td> -->
                                             </tr>
                                         </ng-template>
                                     </p-table>
@@ -700,14 +681,14 @@
     <ng-template pTemplate="content">
         <div class="content-loader" *ngIf="testCaseGenetaionLogLoader">
             <i class="pi pi-spin pi-spinner"></i>
-            <span>Loading Test Case Generation Logs...</span>
+            <span>Loading Test Case Generation Jobs...</span>
         </div>
         <div class="table-bordered-container" *ngIf="!testCaseGenetaionLogLoader">
             <p-table class="table-bordered" #testCaseGenerationLogTable [value]="testCaseGenetaionLogData" [globalFilterFields]="['name','description','executable_codes.Tests.code','status','created_at','approved_by_name','valid_till', 'last_updated_at','last_updated_by_name']">
                 <ng-template pTemplate="caption">
                     <div class="table-title-with-search">
                         <div class="title">                                    
-                            Test Case Generation Logs
+                            Test Case Generation Jobs
                                 <div class="count">{{testCaseGenetaionLogData.length}}</div>
                         </div>
                         <!-- <div class="right-section">   
@@ -761,6 +742,7 @@
 <p-toast></p-toast>
 <p-dialog header="Success" [modal]="true" [style]="{width: '30vw'}" [(visible)]="successResponcePopup">
     <p>{{generateTestCaseResponceData}}</p>
+    <p>{{repositoryInfo}}</p>
     <ng-template pTemplate="footer">
       <p-button icon="pi pi-check" (click)="afterSuccess()" label="Ok" styleClass="p-button-text"></p-button>
     </ng-template>

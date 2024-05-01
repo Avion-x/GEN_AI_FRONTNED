@@ -92,6 +92,7 @@ export class ProductDetailsComponent implements OnInit {
   public fileSizeWarning:boolean = false;
 
   public createTestCaseSubmit:boolean = false;
+  public repositoryInfo:string = '';
 
   public submitted:boolean = false;
   public createTestForm: FormGroup = new FormGroup({
@@ -634,7 +635,11 @@ public showMarkdownPreview(){
     const testTypesData:any[] = [
       {
        "test_type_id":this.selectedTestTypes,
-       "test_category_ids":this.selectedTestTypeCategories
+       //"test_category_ids":this.selectedTestTypeCategories
+       "test_category_ids": {
+            "test_category_id": this.selectedTestTypeCategories,
+            "test_sub_category_id": []
+        }
       }
     ];
     // this.selectedTestTypes.forEach((item:any) => {
@@ -657,6 +662,7 @@ public showMarkdownPreview(){
         this.generateTestCasesFormSidebar = false;
         this.successResponcePopup = true;
         this.generateTestCaseResponceData = result.response.Message;
+        this.repositoryInfo = result.response.git_details;
         // this.testCasesData = responceData.TestCases;        
       }     
       //this.testScriptsData = responceData.TestScripts;
