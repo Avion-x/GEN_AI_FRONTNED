@@ -119,6 +119,7 @@ export class ProductDetailsComponent implements OnInit {
   public testCaseGenetaionLogSidebar:boolean = false;
   public testCaseGenetaionLogLoader:boolean = false;
   public testCaseGenetaionLogData:any[] = [];
+  public routeMainPath:string = '';
 
   // public unitTestCategories:any[] = [
   //   {'category':'Bootup process', 'generated':true},
@@ -251,6 +252,7 @@ public showMarkdownPreview(){
 
   ngOnInit(): void {
     //this.selectedCategories = this.categories.slice(1,3);
+    this.routeMainPath = this._aRoute.snapshot.url[0].path;
     this.selectedProduct = this._aRoute.snapshot.params?.['productID'];
     const productMainCategoryId = this._aRoute.snapshot.params?.['mainID'];
     this.productSubCategoryId = this._aRoute.snapshot.params?.['subID'];
@@ -310,6 +312,17 @@ public showMarkdownPreview(){
           console.log('this.productTestTypes[0]', this.productTestTypes[0]?.test_type_id);
           this.getGeneratedTestCategories(this.productTestTypes[0], productID);
         }
+
+        if(this.routeMainPath == 'deviceManagement') {
+          this.backUrl = this.appConfig.urlDeviceManagement + '/' + this.productData.main_category_id +'/' + this.productData.product_sub_category + '/deviceList';;
+          this.breadcrumblist.push(
+            {'name':'Home','url':this.appConfig.urlHome, 'disabled':false}, 
+            {'name':'Device Management','url':this.appConfig.urlDeviceManagement, 'disabled':false}, 
+            {'name':this.productData.main_category_name, 'url':this.appConfig.urlDeviceManagement, 'disabled':false}, 
+            {'name':this.productData.sub_category_name, 'url':this.appConfig.urlDeviceManagement, 'disabled':false}, 
+            {'name':'Device List', 'disabled':true},
+            {'name':this.productName, 'disabled':true});
+        }
         
         console.log('Product Data', this.productData);
       } 
@@ -335,12 +348,14 @@ public showMarkdownPreview(){
         this.productMainCategory = result[0];      
         //const mainCategoryName = this.productMainCategory.category + '-' + this.productMainCategory.id;
         //const productsListUrl = this.appConfig.urlProductCategory + '/' + this.productMainCategory.id + '/' + this.productSubCategoryId +'/products'
-        this.backUrl = this.appConfig.urlTestCaseManagement;
-        this.breadcrumblist.push(
-          {'name':'Home','url':this.appConfig.urlHome, 'disabled':false}, 
-          {'name':'Test Management','url':'', 'disabled':true},
-          {'name':'Devices','url':this.appConfig.urlTestCaseManagement, 'disabled':false}, 
-          {'name':this.productName, 'disabled':true});
+        if(this.routeMainPath == 'testCaseManagement'){
+          this.backUrl = this.appConfig.urlTestCaseManagement;
+          this.breadcrumblist.push(
+            {'name':'Home','url':this.appConfig.urlHome, 'disabled':false}, 
+            {'name': 'Test Management','url':'', 'disabled':true},
+            {'name':'Devices','url':this.appConfig.urlTestCaseManagement, 'disabled':false}, 
+            {'name':this.productName, 'disabled':true});
+        } 
         console.log('productMainCategory', this.productMainCategory);
       }      
       this.mainCategoryLoader = false;

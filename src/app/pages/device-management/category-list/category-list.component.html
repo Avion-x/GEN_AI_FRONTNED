@@ -305,14 +305,14 @@
                                         <tr>
                                             <!-- <td (click)="navigateToProducts(subProduct.id)">{{subProduct.id}}</td> -->
                                             <!-- <td (click)="navigateToProducts(subProduct.id)">{{subProduct.main_category_name}}</td> -->
-                                            <td (click)="navigateToProducts(subProduct.id)">{{subProduct.sub_category}}</td>
-                                            <td (click)="navigateToProducts(subProduct.id)" style="width: 250px; min-width:250px; max-width:250px;">{{subProduct.description}}</td>
-                                            <td class="td-uppercase" (click)="navigateToProducts(subProduct.id)">{{subProduct.status==true?'Active':'Inactive'}}</td>
-                                            <td (click)="navigateToProducts(subProduct.id)">{{subProduct.valid_till}}</td>
+                                            <td (click)="navigateToProducts(subProduct.id, subProduct.main_category_id)">{{subProduct.sub_category}}</td>
+                                            <td (click)="navigateToProducts(subProduct.id, subProduct.main_category_id)" style="width: 250px; min-width:250px; max-width:250px;">{{subProduct.description}}</td>
+                                            <td class="td-uppercase" (click)="navigateToProducts(subProduct.id, subProduct.main_category_id)">{{subProduct.status==true?'Active':'Inactive'}}</td>
+                                            <td (click)="navigateToProducts(subProduct.id, subProduct.main_category_id)">{{subProduct.valid_till}}</td>
                                             <!-- <td (click)="navigateToProducts(subProduct.id)">{{subProduct.comments}}</td> -->
-                                            <td (click)="navigateToProducts(subProduct.id)">{{subProduct.created_at}}</td>
-                                            <td (click)="navigateToProducts(subProduct.id)">{{subProduct.last_updated_at}}</td>
-                                            <td (click)="navigateToProducts(subProduct.id)">{{subProduct.last_updated_by_name}}</td>
+                                            <td (click)="navigateToProducts(subProduct.id, subProduct.main_category_id)">{{subProduct.created_at}}</td>
+                                            <td (click)="navigateToProducts(subProduct.id, subProduct.main_category_id)">{{subProduct.last_updated_at}}</td>
+                                            <td (click)="navigateToProducts(subProduct.id, subProduct.main_category_id)">{{subProduct.last_updated_by_name}}</td>
                                             <td style="width: 50px; min-width: 50px; max-width: 50px;">
                                                 <button type="button" class="td-menu-btn" (click)="subActionMenu.toggle($event); setSubCatActionMenu(subProduct)">
                                                     <span class="material-symbols-rounded icon">more_vert</span>

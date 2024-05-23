@@ -135,7 +135,7 @@
     <div class="products-container" *ngIf="!productsLoader">
         <p-menu #deviceActionMenu [popup]="true" [model]="deviceActionMenuItems"></p-menu>
         <div class="products-wrapper">
-            <div class="product-item" *ngFor="let item of productsData">
+            <div class="product-item item-selection" *ngFor="let item of productsData" (click)="naviProductDetails(item.main_category_id, item.product_sub_category, item.id)">
                 <div class="header">
                     <div class="title">
                         <div class="icon">{{item.product_code.slice(0, 1)}}</div>

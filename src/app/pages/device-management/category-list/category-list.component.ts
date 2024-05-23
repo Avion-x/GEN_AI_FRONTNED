@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppConfigService } from 'src/app/shared/services/app-config.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DataService } from 'src/app/shared/services/data.service';
@@ -80,6 +80,7 @@ export class CategoryListComponent implements OnInit {
     private appConfig:AppConfigService,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
+    private _aRoute: ActivatedRoute,
     public fb: FormBuilder) {
       this.authenticationService.user.subscribe(user => this.currentUser = user);
       //console.log('currentUser', this.currentUser)
@@ -498,9 +499,9 @@ export class CategoryListComponent implements OnInit {
     })
   }
 
-  navigateToProducts(selectedSubCat:any){
+  navigateToProducts(selectedSubCat:string, mainCategory:string){
     this.selectedSubCategory = selectedSubCat;
-    const url = this.appConfig.urlDeviceManagement + '/' + selectedSubCat + '/deviceList';
+    const url = this.appConfig.urlDeviceManagement + '/' + mainCategory +'/' + selectedSubCat + '/deviceList';
     // console.log('url', url)
     this._router.navigateByUrl(url);
   }

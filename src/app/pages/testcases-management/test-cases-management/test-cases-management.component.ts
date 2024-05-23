@@ -354,6 +354,7 @@ export class TestCasesManagementComponent implements OnInit {
       // testCases.forEach((item:any) => {
       //   this.testTypes.push(item.code)
       // });
+      this.getPendingApprovalTestCategories();
       this.testCategoriesLoader = false;
       console.log('testTypeCategories', this.testTypeCategories);
     })
@@ -583,6 +584,8 @@ export class TestCasesManagementComponent implements OnInit {
             this.messageService.add({severity:'info', summary:'Approved', detail:result.success});
             this.approvalPendingDetailsSideBar = false;
             this.getPendingApprovalTestCategories();
+            this.getTestTypes();
+            this.getTestTypeCategory(this.selectedTestType);
           }
           else{
             this.messageService.add({severity:'error', summary:'Rejected', detail:result.error});

@@ -114,7 +114,12 @@ export class DeviceListComponent implements OnInit {
     }
     this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
       this.productSubCategory = result.data[0]; 
-      this.breadcrumblist.push({'name':'Home','url':this.appConfig.urlHome, 'disabled':false}, {'name':'Device Management','url':this.appConfig.urlDeviceManagement, 'disabled':false}, {'name':this.productSubCategory.main_category_name, 'url':this.appConfig.urlDeviceManagement, 'disabled':false}, {'name':this.productSubCategory.sub_category, 'disabled':false}, {'name':'Device List', 'disabled':true});
+      this.breadcrumblist.push(
+        {'name':'Home','url':this.appConfig.urlHome, 'disabled':false}, 
+        {'name':'Device Management','url':this.appConfig.urlDeviceManagement, 'disabled':false}, 
+        {'name':this.productSubCategory.main_category_name, 'url':this.appConfig.urlDeviceManagement, 'disabled':false}, 
+        {'name':this.productSubCategory.sub_category, 'url':this.appConfig.urlDeviceManagement, 'disabled':false}, 
+        {'name':'Device List', 'disabled':true});
       
       //this.productForm.get('last_updated_by_id')?.setValue(this.loggedInUserName)
       // if(this.productMainCategory && this.productSubCategory){
@@ -262,6 +267,12 @@ export class DeviceListComponent implements OnInit {
 
   update(){
     console.log('update')
+  }
+
+  naviProductDetails(mainCategory:string, subCategory:string, deviceID:string){
+    const url = this.appConfig.urlDeviceManagement + '/' + mainCategory +'/' + subCategory + '/deviceList/'+ deviceID;
+    // console.log('url', url)
+    this._router.navigateByUrl(url);
   }
 
 }

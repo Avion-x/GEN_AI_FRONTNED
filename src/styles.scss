@@ -1620,6 +1620,11 @@ markdown{
               .title{
                   color: #fff;
               }
+              .deviceActionsBtn{
+                i{
+                  color: #fff;
+                }
+              }
           }
           .content{
               span{
@@ -2153,3 +2158,12 @@ markdown{
   width: 100%;
 }
 
+.topology{
+  text{
+    font-size: 21px;
+    color: #f00;
+    tspan{
+      color: #f00;
+    }
+  }
+}
