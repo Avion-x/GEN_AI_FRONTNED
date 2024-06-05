@@ -158,6 +158,7 @@
                                 <th style="width: 150px; min-width:150px; max-width:150px;">Category Name</th>
                                 <th style="width: 150px; min-width:150px; max-width:150px;">Sub Category Name</th>
                                 <th style="width: 250px; min-width:250px; max-width:250px;">Available Test Type</th>
+                                <th style="width: 250px; min-width:250px; max-width:250px;">Usecases</th>
                                 <!-- <th>Customer Name</th> -->
                                 <th style="width: 100px; min-width:100px; max-width:100px;">Status</th>
                                 <th style="width: 100px; min-width:100px; max-width:100px;">Valid Till</th>
@@ -175,10 +176,15 @@
                                 <td style="width: 150px; min-width:150px; max-width:150px;">{{device.main_category_name}}</td>
                                 <td style="width: 150px; min-width:150px; max-width:150px;">{{device.sub_category_name}}</td>
                                 <td style="width: 250px; min-width:250px; max-width:250px;" class="testTypesList">
-                                    <div class="chip" *ngFor="let test of device.test_types">{{test.name}}</div>
+                                    <div class="chip" *ngFor="let test of device.test_types.slice(0,3)">{{test.name}}</div>
+                                    <div class="chip" *ngIf="device.test_types.length > 3">+{{device.test_types.length - 3}}</div>
                                     <!-- <button *ngIf="device.test_types.length == 0" type="button" class="testNowBtn" (click)="showGenerateTestcasesDialog(device)">
                                         Generate Test Cases
                                     </button>  -->
+                                </td>
+                                <td style="width: 250px; min-width:250px; max-width:250px;">
+                                    <div class="tdChip" *ngFor="let test of device.usecases.slice(0,3)">{{test.name}}</div>
+                                    <div class="tdChip" *ngIf="device.usecases.length > 3">+{{device.usecases.length - 3}}</div>
                                 </td>
                                 <td style="width: 100px; min-width:100px; max-width:100px;" class="td-uppercase">{{device.status==true?'Active':'Inactive'}}</td>
                                 <td style="width: 100px; min-width:100px; max-width:100px;">{{device.valid_till}}</td>

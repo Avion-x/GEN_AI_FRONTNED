@@ -231,143 +231,262 @@
             </div>            
         </div>
 
-        <div class="header-with-btns">
-            <div class="title-section">
-                <h1 class="main-title">Generated Test Cases</h1>
-            </div>
-            <div class="right-section">
-                <button class="btn secondary-btn" (click)="generateTestCasesLog()">
-                    <span class="material-symbols-rounded icon">history</span>
-                    Test Case Generation Jobs
-                </button>
 
-                <button class="btn primary-btn" (click)="showCreateTestCasesSection()">
-                    <span class="material-symbols-rounded icon">post_add</span>
-                   Create Test Cases
-                </button>
+        <div class="testTypesParentTabs">
 
-                <button *ngIf="showGenerateTestCase" class="btn primary-btn" (click)="showGenerateTestCasesSection()">
-                    <span class="material-symbols-rounded icon">smart_toy</span>
-                    Generate New Test Cases
-                </button>
-            </div>
         </div>
-
-        <div class="testCasesTabs">            
-            <button class="testCaseTab" *ngFor="let testcase of productTestTypes"  [ngClass]="testcase.test_type_id == selectedTestCase.test_type_id?'active':''" (click)="getGeneratedTestCategories(testcase, productData.id)">
-              {{testcase.name}}
-            </button>
-        </div>
-
-        <div class="testCasesAccordian">
-            <p-accordion *ngIf="testCategorys" (onOpen)="onTabOpen($event)">
-                <p-accordionTab *ngFor="let category of testCategorys; index as i" [selected]="i == 0">
-                    <ng-template pTemplate="header">
-                        <div class="accordianHeader" (click)="getTestCasesOfCategory(productData.id, selectedTestTypeId, category.test_category_id)">{{category.category_name}}</div>
-                    </ng-template>
-                    <ng-template pTemplate="content">
-                        <div class="testCaseCard">
-                            <div class="testCaseCard-header">Test Cases</div>
-                            <div class="card-container">
-                                <div class="content-loader" *ngIf="testCaseCategoryLoader">
-                                    <i class="pi pi-spin pi-spinner"></i>
-                                    <span>Loading Test Cases...</span>
-                                </div>
-                                <div *ngFor="let testcase of generatedTestCases?.test_cases">
-                                    <h1 class="title">
-                                       {{testcase.testname}}
-                                    </h1>
-                                    <h3 class="subTitle">{{testcase.objective}}</h3>
-                                    <div class="steps">
-                                        <ul class="list">
-                                            <li *ngFor="let step of testcase.steps">{{step}}</li>
-                                        </ul>
+        <p-tabView class="productDetailTabs largeTabs">
+            <p-tabPanel header="Test Types" class="testTypesParentTabsContainer">
+                <div class="header-with-btns">
+                    <div class="title-section">
+                        <h1 class="main-title">Generated Test Cases</h1>
+                    </div>
+                    <div class="right-section">
+                        <button class="btn secondary-btn" (click)="generateTestCasesLog()">
+                            <span class="material-symbols-rounded icon">history</span>
+                            Test Case Generation Jobs
+                        </button>
+        
+                        <button class="btn primary-btn" (click)="showCreateTestCasesSection()">
+                            <span class="material-symbols-rounded icon">post_add</span>
+                           Create Test Cases
+                        </button>
+        
+                        <button *ngIf="showGenerateTestCase" class="btn primary-btn" (click)="showGenerateTestCasesSection()">
+                            <span class="material-symbols-rounded icon">smart_toy</span>
+                            Generate New Test Cases
+                        </button>
+                    </div>
+                </div>
+        
+                <div class="testCasesTabs">            
+                    <button class="testCaseTab" *ngFor="let testcase of productTestTypes; index as i"  [ngClass]="testcase.test_type_id == selectedTestCase.test_type_id?'active':''" (click)="getGeneratedTestCategories(testcase, productData.id, i)">
+                      <div class="tab">{{testcase.name}}</div>
+                    </button>
+                </div>
+        
+                <div class="testCasesAccordian tabContainer" [ngClass]="{'firstTabSelected':selectedTestTypeTabIndex == 0}">
+                    <div class="content-loader" *ngIf="testCategoriesLoader">
+                        <i class="pi pi-spin pi-spinner"></i>
+                        <span>Loading Test Categories...</span>
+                    </div>
+                    <p-accordion *ngIf="testCategorys" (onOpen)="onTabOpen($event)">
+                        <!-- <p-accordionTab *ngFor="let category of testCategorys; index as i" [selected]="i == 0"> -->
+                        <p-accordionTab *ngFor="let category of testCategorys; index as i">
+                            <ng-template pTemplate="header">
+                                <div class="accordianHeader" (click)="getTestCasesOfCategory(productData.id, selectedTestTypeId, category.test_category_id)">{{category.category_name}}</div>
+                            </ng-template>
+                            <ng-template pTemplate="content">
+                                <div class="testCaseCard">
+                                    <div class="testCaseCard-header">Test Cases</div>
+                                    <div class="card-container">
+                                        <div class="content-loader" *ngIf="testCaseCategoryLoader">
+                                            <i class="pi pi-spin pi-spinner"></i>
+                                            <span>Loading Test Cases...</span>
+                                        </div>
+                                        <div *ngFor="let testcase of generatedTestCases?.test_cases">
+                                            <h1 class="title">
+                                               {{testcase.testname}}
+                                            </h1>
+                                            <h3 class="subTitle">{{testcase.objective}}</h3>
+                                            <div class="steps">
+                                                <ul class="list">
+                                                    <li *ngFor="let step of testcase.steps">{{step}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-    
-                        <div class="testCaseCard">
-                            <div class="testCaseCard-header">Test Scripts</div>
-                            <div class="card-container">
-                                <div class="content-loader" *ngIf="testCaseCategoryLoader">
-                                    <i class="pi pi-spin pi-spinner"></i>
-                                    <span>Loading Test Scripts...</span>
-                                </div>
-                                <div *ngFor="let testscripts of generatedTestCases?.test_scripts">
-                                    <h1 class="title">
-                                       {{testscripts.testname}}
-                                    </h1>
-                                    <h3 class="subTitle">{{testscripts.objective}}</h3>
-                                    <div class="markdownContainer"> 
-                                        <markdown [data]="testscripts.script"></markdown>
-
+            
+                                <div class="testCaseCard">
+                                    <div class="testCaseCard-header">Test Scripts</div>
+                                    <div class="card-container">
+                                        <div class="content-loader" *ngIf="testCaseCategoryLoader">
+                                            <i class="pi pi-spin pi-spinner"></i>
+                                            <span>Loading Test Scripts...</span>
+                                        </div>
+                                        <div *ngFor="let testscripts of generatedTestCases?.test_scripts">
+                                            <h1 class="title">
+                                               {{testscripts.testname}}
+                                            </h1>
+                                            <h3 class="subTitle">{{testscripts.objective}}</h3>
+                                            <div class="markdownContainer"> 
+                                                <markdown [data]="testscripts.script"></markdown>
+        
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-
-                        <div class="testCaseCard mb-0 p-0">
-                            <div class="testCaseCard-header"  *ngIf="testSubCategoryLoader">Test Sub Categories</div>
-                            <div class="card-container p-0">
-                                <div class="content-loader" *ngIf="testSubCategoryLoader">
-                                    <i class="pi pi-spin pi-spinner"></i>
-                                    <span>Loading Test Sub Categories...</span>
+        
+                                <div class="testCaseCard mb-0 p-0">
+                                    <div class="testCaseCard-header"  *ngIf="testSubCategoryLoader">Test Sub Categories</div>
+                                    <div class="card-container p-0">
+                                        <div class="content-loader" *ngIf="testSubCategoryLoader">
+                                            <i class="pi pi-spin pi-spinner"></i>
+                                            <span>Loading Test Sub Categories...</span>
+                                        </div>
+                                        <div class="table-container table-selection-list" *ngIf="!testSubCategoryLoader">
+                                            <p-table #testSubCategoriesTable [value]="testSubCategoryData" [globalFilterFields]="['name','description']">
+                                                <ng-template pTemplate="caption">
+                                                    <div class="table-title-with-search">
+                                                        <div class="title">                                    
+                                                            Test Sub Categories
+                                                                <div class="count">{{testSubCategoryData.length}}</div>
+                                                        </div>
+                                                        <div class="right-section">   
+                                                            
+                                                            <div class="search-box">
+                                                                <i class="pi pi-search"></i>
+                                                                <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
+                                                                <input pInputText type="text" #filter (input)="testSubCategoriesTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
+                                                            </div>                             
+                                                        </div>
+                                                    </div>                
+                                                </ng-template>
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Description</th>
+                                                        <!-- <th style="width: 250px; min-width:250px; max-width:250px;">Test Code</th>
+                                                        <th style="width: 100px; min-width:100px; max-width:100px;">Status</th>
+                                                        <th style="width: 150px; min-width:150px; max-width:150px;">Valid Till</th>
+                                                        <th style="width: 150px; min-width:150px; max-width:150px;">Created At</th>
+                                                        <th style="width: 150px; min-width:150px; max-width:150px;">Approved By</th>
+                                                        <th style="width: 150px; min-width:150px; max-width:150px;">Last Updated At</th>
+                                                        <th style="width: 120px; min-width:120px; max-width:120px;">Last Updated By</th> -->
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="body" let-category>
+                                                    <tr>
+                                                        <td>{{category.name}}</td>
+                                                        <td>{{category.description}}</td>
+                                                        <!-- <td style="width: 250px; min-width:250px; max-width:250px;">{{category.executable_codes.Tests.code}}</td>
+                                                        <td style="width: 100px; min-width:100px; max-width:100px;" class="td-uppercase">{{category.status==true?'Active':'Inactive'}}</td>
+                                                        <td style="width: 150px; min-width:150px; max-width:150px;">{{category.valid_till}}</td>
+                                                        <td style="width: 150px; min-width:150px; max-width:150px;">{{category.created_at}}</td>
+                                                        <td style="width: 150px; min-width:150px; max-width:150px;">{{category.approved_by_name}}</td>
+                                                        <td style="width: 150px; min-width:150px; max-width:150px;">{{category.last_updated_at}}</td>
+                                                        <td style="width: 120px; min-width:120px; max-width:120px;">{{category.last_updated_by_name}}</td> -->
+                                                    </tr>
+                                                </ng-template>
+                                            </p-table>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="table-container table-selection-list" *ngIf="!testSubCategoryLoader">
-                                    <p-table #testSubCategoriesTable [value]="testSubCategoryData" [globalFilterFields]="['name','description']">
-                                        <ng-template pTemplate="caption">
-                                            <div class="table-title-with-search">
-                                                <div class="title">                                    
-                                                    Test Sub Categories
-                                                        <div class="count">{{testSubCategoryData.length}}</div>
-                                                </div>
-                                                <div class="right-section">   
-                                                    
-                                                    <div class="search-box">
-                                                        <i class="pi pi-search"></i>
-                                                        <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
-                                                        <input pInputText type="text" #filter (input)="testSubCategoriesTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
-                                                    </div>                             
-                                                </div>
-                                            </div>                
-                                        </ng-template>
-                                        <ng-template pTemplate="header">
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Description</th>
-                                                <!-- <th style="width: 250px; min-width:250px; max-width:250px;">Test Code</th>
-                                                <th style="width: 100px; min-width:100px; max-width:100px;">Status</th>
-                                                <th style="width: 150px; min-width:150px; max-width:150px;">Valid Till</th>
-                                                <th style="width: 150px; min-width:150px; max-width:150px;">Created At</th>
-                                                <th style="width: 150px; min-width:150px; max-width:150px;">Approved By</th>
-                                                <th style="width: 150px; min-width:150px; max-width:150px;">Last Updated At</th>
-                                                <th style="width: 120px; min-width:120px; max-width:120px;">Last Updated By</th> -->
-                                            </tr>
-                                        </ng-template>
-                                        <ng-template pTemplate="body" let-category>
-                                            <tr>
-                                                <td>{{category.name}}</td>
-                                                <td>{{category.description}}</td>
-                                                <!-- <td style="width: 250px; min-width:250px; max-width:250px;">{{category.executable_codes.Tests.code}}</td>
-                                                <td style="width: 100px; min-width:100px; max-width:100px;" class="td-uppercase">{{category.status==true?'Active':'Inactive'}}</td>
-                                                <td style="width: 150px; min-width:150px; max-width:150px;">{{category.valid_till}}</td>
-                                                <td style="width: 150px; min-width:150px; max-width:150px;">{{category.created_at}}</td>
-                                                <td style="width: 150px; min-width:150px; max-width:150px;">{{category.approved_by_name}}</td>
-                                                <td style="width: 150px; min-width:150px; max-width:150px;">{{category.last_updated_at}}</td>
-                                                <td style="width: 120px; min-width:120px; max-width:120px;">{{category.last_updated_by_name}}</td> -->
-                                            </tr>
-                                        </ng-template>
-                                    </p-table>
+        
+                            </ng-template>                    
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+            </p-tabPanel>
+
+            <p-tabPanel header="Use Cases">
+                <div class="header-with-btns">
+                    <div class="title-section">
+                        <h1 class="main-title">Use Cases</h1>
+                    </div>
+                    <div class="right-section">
+                        <!-- <button class="btn secondary-btn" (click)="generateTestCasesLog()">
+                            <span class="material-symbols-rounded icon">history</span>
+                            Test Case Generation Jobs
+                        </button> -->
+        
+                        <!-- <button class="btn primary-btn">
+                            <span class="material-symbols-rounded icon">post_add</span>
+                           Create New Use Case
+                        </button> -->
+        
+                        <!-- <button *ngIf="showGenerateTestCase" class="btn primary-btn" (click)="showGenerateTestCasesSection()">
+                            <span class="material-symbols-rounded icon">smart_toy</span>
+                            Generate New Test Cases
+                        </button> -->
+                    </div>
+                </div>
+                <div class="content-loader" *ngIf="productsLoader">
+                    <i class="pi pi-spin pi-spinner"></i>
+                    <span>Loading Use Cases...</span>
+                </div>
+                <div class="testCasesAccordian">
+                    <p-accordion *ngIf="testCategorys" (onOpen)="onTabOpen($event)">
+                        <!-- <p-accordionTab *ngFor="let category of testCategorys; index as i" [selected]="i == 0"> -->
+                        <p-accordionTab *ngFor="let usecase of usecasesList; index as i" (click)="getUseCaseTestCategoriesList(usecase.id)">
+                            <ng-template pTemplate="header">
+                                <div class="accordianHeader">{{usecase.name}}</div>
+                            </ng-template>
+                            <ng-template pTemplate="content">
+                                       
+                                <div class="testCaseCard mb-0 p-0">
+                                    <div class="testCaseCard-header" *ngIf="useCasTestCategoriesListLoader">Test Categories</div>
+                                    <div class="card-container p-0">
+                                        <div class="content-loader" *ngIf="useCasTestCategoriesListLoader">
+                                            <i class="pi pi-spin pi-spinner"></i>
+                                            <span>Loading Test Categories...</span>
+                                        </div>
+                                        <div class="table-container table-selection-list" *ngIf="!useCasTestCategoriesListLoader">
+                                            <p-table #usecaseCategoriesTable [value]="categoriesOfSelectedUsecase" [globalFilterFields]="['name','description','valid_till','created_at','approved_by_name', 'last_updated_at', 'last_updated_by_name']">
+                                                <ng-template pTemplate="caption">
+                                                    <div class="table-title-with-search">
+                                                        <div class="title">                                    
+                                                            Test Categories
+                                                                <div class="count">{{categoriesOfSelectedUsecase.length}}</div>
+                                                        </div>
+                                                        <div class="right-section">   
+                                                            
+                                                            <div class="search-box">
+                                                                <i class="pi pi-search"></i>
+                                                                <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
+                                                                <input pInputText type="text" #filter (input)="usecaseCategoriesTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
+                                                            </div>                             
+                                                        </div>
+                                                    </div>                
+                                                </ng-template>
+                                                <ng-template pTemplate="header">
+                                                    <tr>
+                                                        <th style="width: 200px; min-width:200px; max-width:200px">Name</th>
+                                                        <th style="width: 200px; min-width:200px; max-width:200px">Description</th>
+                                                        <th style="width: 100px; min-width:100px; max-width:100px">Status</th>
+                                                        <th style="width: 120px; min-width:120px; max-width:120px">Is Approved</th>
+                                                        <th>Valid till</th>  
+                                                        <!-- <th style="width: 250px; min-width:250px; max-width:250px">Comments</th> -->
+                                                        <th>Created At</th>
+                                                        <th>Approved By</th>
+                                                        <th>Last Updated At</th>
+                                                        <th>Last Updated By</th>  
+                                                        <!-- <th style="width: 50px; min-width: 50px; max-width: 50px;"></th> -->
+                                                    </tr>
+                                                </ng-template>
+                                                <ng-template pTemplate="body" let-testCategory>
+                                                    <tr>
+                                                        <td style="width: 200px; min-width:200px; max-width:200px">{{testCategory.name}}</td>
+                                                        <td style="width: 200px; min-width:200px; max-width:200px">{{testCategory.description}}</td>
+                                                        <td style="width: 100px; min-width:100px; max-width:100px"class="td-uppercase">{{testCategory.status==true?'Active':'Inactive'}}</td>
+                                                        <td style="width: 120px; min-width:120px; max-width:120px">
+                                                            <div class="tdChip" [ngClass]="testCategory.is_approved==true?'approved':'pending'">{{testCategory.is_approved==true?'Approved':'Pending'}}</div>                                
+                                                        </td>
+                                                        <td>{{testCategory.valid_till}}</td>
+                                                        <!-- <td style="width: 250px; min-width:250px; max-width:250px">{{testCategory.comments}}</td> -->
+                                                        <td>{{testCategory.created_at}}</td>
+                                                        <td>{{testCategory.approved_by_name}}</td>
+                                                        <td>{{testCategory.last_updated_at}}</td>
+                                                        <td>{{testCategory.last_updated_by_name}}</td>
+                                                        <!-- <td style="width: 50px; min-width: 50px; max-width: 50px;">
+                                                            <button type="button" class="td-menu-btn" [disabled]="!testCategory.is_approved" (click)="subActionMenu.toggle($event); setTestCatActionMenu(testCategory)">
+                                                                <span class="material-symbols-rounded icon">more_vert</span>
+                                                            </button>                        
+                                                        </td> -->
+                                                    </tr>
+                                                </ng-template>
+                                            </p-table>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-
-                    </ng-template>                    
-                </p-accordionTab>
-            </p-accordion>
-        </div>        
-
+        
+                            </ng-template>                    
+                        </p-accordionTab>
+                    </p-accordion>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
         <!-- <div class="testCasesDataContainer">         
             <div class="markdownContainer"> 
                 <div class="content-loader" *ngIf="loadingTestCases">

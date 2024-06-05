@@ -57,21 +57,46 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    margin-bottom: 10px;
+    //margin-bottom: 10px;
     .testCaseTab{
         display: flex;
         align-items: center;
         border: 0px;
-        padding: 10px 15px;
-        font-size: 12px;
-        background: #fff;
-        font-weight: 600;
-        border-radius: 4px;
-        color: vars.$titleClr;
+        padding: 8px 10px;        
+        background: transparent;
+        margin: 0px;
         cursor: pointer;
+        position: relative;
+        .tab{
+            padding: 10px 15px;
+            font-size: 12px;
+            background: #fff;
+            font-weight: 600;
+            border-radius: 4px;
+            color: vars.$titleClr;
+        }
         &.active{
-            background: vars.$primary-color;
-            color: #fff;
+            border: 1px solid vars.$cardBorderColor;
+            border-radius: 4px 4px 0 0;    
+            .tab{
+                background: vars.$primary-color;
+                color: #fff;
+            }    
+            ::after{
+                content: '';
+                position: absolute;
+                bottom: -2px;
+                left: 0px;
+                height: 2px;
+                width: 100%;
+                background: #fff;
+            }
+        }
+        &:hover{
+            .tab{
+                background: vars.$primary-color;
+                color: #fff;
+            }  
         }
     }
 }
@@ -85,6 +110,8 @@
     font-size: 14px;
     position: absolute;
     left: 0px;
+    //box-shadow: vars.$secondary-box-shoadow;
+    border: 1px solid vars.$cardBorderColor;
     //background: #f00;
 }
 
@@ -176,4 +203,19 @@
 .categoryDropdownContainer{
     margin-bottom: 10px;
     width: 100%;
+}
+
+.header-with-btns{
+    margin-bottom: 15px;
+}
+
+.testCasesAccordian{    
+    &.tabContainer{
+        border: 1px solid vars.$cardBorderColor;
+        padding: 15px 10px;
+        border-radius: 4px;
+        &.firstTabSelected{
+            border-radius: 0px 4px 4px 4px;
+        }
+    }    
 }

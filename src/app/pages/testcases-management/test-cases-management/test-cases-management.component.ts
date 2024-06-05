@@ -23,9 +23,11 @@ export class TestCasesManagementComponent implements OnInit {
   public backUrl:string = '';
   public tabActiveIndex: number = 0;
   public testTypesData:any[] = [];
+  public usecaseData:any[] = [];
   public selectedTestType:any;
   public selectedTestId!:any;
   public testTypeFormSidebar:boolean = false;
+  public usecaseFormSidebar:boolean = false;
   public submitted:boolean = false;
   public statusOptions:any[] = [{name:'Active', value:true}, {name:'Inactive', value:false}];
   public mainActionMenuItems!: MenuItem[];
@@ -47,10 +49,15 @@ export class TestCasesManagementComponent implements OnInit {
 
   public testTypeFormState!:string;
   public testTypeFormTitle!:string;
+  public usecaseFormState!:string;
+  public usecaseFormTitle!:string;
   public testCategoryFormState!:string;
   public testCategoryFormTitle!:string;
   public approvalPendingDetailsSideBar:boolean = false;
   public selectedPendingApprovalTestCategory:any;
+
+  public productsData:any[] = [];
+  public productsLoader:boolean = false;
 
   testCategoryForm:FormGroup = new FormGroup({
     id: new FormControl(''),
@@ -71,6 +78,22 @@ export class TestCasesManagementComponent implements OnInit {
     description:new FormControl(''),
     executable_codes:new FormControl(''),
     last_updated_by:new FormControl(''),
+    type:new FormControl('')
+  });
+
+
+  usecaseForm:FormGroup = new FormGroup({
+    id: new FormControl(''),
+    name: new FormControl(''),
+    code: new FormControl(''),
+    product_id: new FormControl(''),
+    status: new FormControl(''),
+    comments: new FormControl(''),
+    valid_till:new FormControl(''),
+    description:new FormControl(''),
+    executable_codes:new FormControl(''),
+    last_updated_by:new FormControl(''),
+    type:new FormControl('')
   });
 
 
@@ -117,6 +140,17 @@ export class TestCasesManagementComponent implements OnInit {
     this.getPendingApprovalTestCategories();
     this.setTestTypeForm();
     this.setTestCategoryForm();
+    this.getProducts();
+    this.usecaseForm.get('product_id')?.setValue([
+      {
+          "id": 39,
+          "product_code": "EX4300-48P"
+      },
+      {
+          "id": 6,
+          "product_code": "MX240"
+      }
+  ])
     
   }
 
@@ -130,7 +164,24 @@ export class TestCasesManagementComponent implements OnInit {
       comments:[''],
       description:[''],
       executable_codes:[''],
-      last_updated_by:['']
+      last_updated_by:[''],
+      type:['']
+    })
+  }
+
+  setUsecaseForm(){
+    this.usecaseForm = this.fb.group({
+      id:[''],
+      name: ['', [Validators.required]],
+      code: ['', [Validators.required]],
+      product_id: [''],
+      status:['', [Validators.required]],
+      valid_till:['', [Validators.required]],
+      comments:[''],
+      description:[''],
+      executable_codes:[''],
+      last_updated_by:[''],
+      type:['']
     })
   }
 
@@ -166,7 +217,10 @@ export class TestCasesManagementComponent implements OnInit {
     }
     this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
       //const testCases = result.data;   
-      this.testTypesData = [...result.data]; 
+      const filteredTestTypes = _.filter(result.data, { 'type': 'TESTTYPE' });
+      const filteredUsecases = _.filter(result.data, { 'type': 'USECASE' });
+      this.testTypesData = filteredTestTypes; 
+      this.usecaseData = filteredUsecases;
       // testCases.forEach((item:any) => {
       //   this.testTypes.push(item.code)
       // });
@@ -197,10 +251,61 @@ export class TestCasesManagementComponent implements OnInit {
     })
   }
 
+  getProducts() {
+    this.productsData = [];
+    this.productsLoader = true;
+    const getProductCategory = {
+      action: 'product/product/',
+      method: 'get',
+      // params: {
+      //   product_category: 3
+      // }
+    }
+    this.dataService.apiDelegate(getProductCategory).subscribe((result: any) => {
+      result.data.forEach((item:any)=>{
+        this.productsData.push({
+          "id": item.id,
+          "product_code": item.product_code
+        })
+      })
+      //this.productsData = result.data;
+      this.productsLoader = false;
+      console.log('Product List', this.productsData);
+    })
+  }
+
   showTestTypeForm(){
     this.testTypeFormState = 'add';
     this.testTypeFormTitle = "Create New Test Type"
     this.testTypeFormSidebar = true;
+  }
+
+  showUsecaseForm(){
+    this.usecaseFormState = 'add';
+    this.usecaseFormTitle="Create New Usecase";
+    this.usecaseFormSidebar = true;
+  }
+
+  testTypeCancelBtn(){
+    this.testTypeFormSidebar = false;
+    this.resetTestTypeForm();
+  }
+
+  usecaseCancelBtn(){
+    this.usecaseFormSidebar = false;
+    this.resetUsecaseForm();
+  }
+
+  resetUsecaseForm(){
+    this.usecaseForm.reset();
+  }
+
+  resetTestTypeForm(){
+    this.testTypeForm.reset();
+  }
+
+  devicesSelected(){
+    console.log('-------devices-----',this.usecaseForm.get('product_id')?.value);
   }
   
   createTestType(){
@@ -217,6 +322,7 @@ export class TestCasesManagementComponent implements OnInit {
         //last_updated_by:
         executable_codes: executable_codes,
         last_updated_by: this.loggedInUserName ? this.loggedInUserName : '',
+        type:'TESTTYPE'
         //confirmPassword:this.userForm.get('confirmPassword')?.disable()
       })
     } else {
@@ -226,6 +332,7 @@ export class TestCasesManagementComponent implements OnInit {
         //last_updated_by:
         //executable_codes: executable_codes,
         last_updated_by: this.loggedInUserName ? this.loggedInUserName : '',
+        type:'TESTTYPE'
         //confirmPassword:this.userForm.get('confirmPassword')?.disable()
       })
     }
@@ -260,9 +367,72 @@ export class TestCasesManagementComponent implements OnInit {
     this.submitted = false;
   }
 
-  testTypeCancelBtn(){
-    this.testTypeFormSidebar = false;
+  createUsecase(){
+    this.submitted = true;
+    if (this.usecaseForm.invalid) {
+      return;
+    }
+    const scriptData = "python script in seperate file for each " + this.usecaseForm.get('name')?.value;
+    const executable_codes:any = {TestCases: {code: this.usecaseForm.get('code')?.value}, TestScripts: {code: scriptData}}
+    const products:any = [];
+    this.usecaseForm.get('product_id')?.value.forEach((item:any)=>{
+      products.push(item.id);
+    })
+    if(this.usecaseFormState == 'add'){
+      this.usecaseForm.patchValue({
+        //product_category:this.subCategoryForm.get('valid_till')?.value,
+        valid_till: this.usecaseForm.get('valid_till')?.value ? moment(this.usecaseForm.get('valid_till')?.value).format('YYYY-MM-DD') : '',
+        //last_updated_by:
+        executable_codes: executable_codes,
+        last_updated_by: this.loggedInUserName ? this.loggedInUserName : '',
+        product_id:products,
+        type:'USECASE'
+        //confirmPassword:this.userForm.get('confirmPassword')?.disable()
+      })
+    } else {
+      this.usecaseForm.patchValue({
+        //product_category:this.subCategoryForm.get('valid_till')?.value,
+        valid_till: this.usecaseForm.get('valid_till')?.value ? moment(this.usecaseForm.get('valid_till')?.value).format('YYYY-MM-DD') : '',
+        //last_updated_by:
+        //executable_codes: executable_codes,
+        product_id:products,
+        last_updated_by: this.loggedInUserName ? this.loggedInUserName : '',
+        type:'USECASE'
+        //confirmPassword:this.userForm.get('confirmPassword')?.disable()
+      })
+    }
+    
+    
+    //console.log(JSON.stringify(this.userForm.value));
+    const setUser = {
+        action: 'product/testtypes/',
+        method: this.usecaseFormState=='add'?'post':'put',
+        data: this.usecaseForm.value
+      }
+      this.dataService.apiDelegate(setUser).subscribe((result: any) => {
+        this.createTestCaseTypeLoader = false;        
+        //this.successResponce = result;
+        //console.log('successResponce', result);
+        if(!_.isEmpty(result)) {
+          //this.afterSuccess();     
+          if(this.usecaseFormState == 'add'){
+            this.messageService.add({severity:'success', summary:'Success', detail:'Usecase created successfully'});
+          } else {
+            this.messageService.add({severity:'success', summary:'Success', detail:'Usecase updated successfully'});
+          }  
+          this.usecaseFormSidebar = false;
+          this.getTestTypes();          
+        }      
+        //this.testScriptsData = responceData.TestScripts;
+      }, error => {
+        console.log('error',error);
+        //this.productSubCategoryLoader = false;
+      })
+    this.usecaseForm.reset();
+    this.submitted = false;
   }
+
+  
 
   testCategoryCancelBtn(){
     this.testCategoryFormSidebar = false;
@@ -360,7 +530,7 @@ export class TestCasesManagementComponent implements OnInit {
     })
   }
 
-  public setTestTypeActionMenu(selectedTestType:any){
+  public setTestTypeActionMenu(selectedTestType:any, type:string){
     console.log('selectedTestType', selectedTestType);
     this.mainActionMenuItems = [{
       label: 'Actions',
@@ -369,7 +539,11 @@ export class TestCasesManagementComponent implements OnInit {
           icon: 'pi pi-pencil',
           //disabled:true,
           command: () => {
+            if(type=='testtype'){
               this.showUpdateTestType(selectedTestType);
+            } else if(type=='usecase'){
+              this.showUpdateUsecase(selectedTestType);
+            }              
           }
       },
       {
@@ -397,6 +571,30 @@ export class TestCasesManagementComponent implements OnInit {
       comments:selectedTestType.comments,
       description:selectedTestType.description,
       executable_codes:selectedTestType.executable_codes,
+      //last_updated_by:selectedTestType.last_updated_by
+    })
+  }
+
+  showUpdateUsecase(selectedUsecase:any){
+    this.usecaseFormState = 'edit';
+    this.usecaseFormTitle = "Update Test Type"
+    this.usecaseFormSidebar = true;
+    // let filteredProducts:any[] = [];
+    // selectedUsecase.products.forEach((product:any)=>{
+    //   filteredProducts.push(_.filter(this.productsData, { 'id': product.id }))
+    // })
+    // console.log('filteredProducts', filteredProducts);
+    console.log('selectedUsecase products', selectedUsecase.products);
+    this.usecaseForm.patchValue({
+      id:selectedUsecase.id,
+      name: selectedUsecase.name,
+      code: selectedUsecase.code,
+      product_id:selectedUsecase.products,
+      status:selectedUsecase.status,
+      valid_till:moment(selectedUsecase.valid_till).format('YYYY-MM-DD'),
+      comments:selectedUsecase.comments,
+      description:selectedUsecase.description,
+      executable_codes:selectedUsecase.executable_codes,
       //last_updated_by:selectedTestType.last_updated_by
     })
   }

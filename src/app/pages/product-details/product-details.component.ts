@@ -68,6 +68,7 @@ export class ProductDetailsComponent implements OnInit {
   public createTestCases:boolean = false;
 
   public testCategorys:any[]=[];
+  public testCategoriesLoader:boolean = false;
   public generatedTestCases:any;
   public selectAll:boolean = false;
   public selectAllCBTitle = 'Select All';
@@ -93,6 +94,9 @@ export class ProductDetailsComponent implements OnInit {
 
   public createTestCaseSubmit:boolean = false;
   public repositoryInfo:string = '';
+  public selectedTestTypeTabIndex:number = 0;
+  public usecasesList:any[]=[];
+  public categoriesOfSelectedUsecase:any[] =[];
 
   public submitted:boolean = false;
   public createTestForm: FormGroup = new FormGroup({
@@ -120,6 +124,7 @@ export class ProductDetailsComponent implements OnInit {
   public testCaseGenetaionLogLoader:boolean = false;
   public testCaseGenetaionLogData:any[] = [];
   public routeMainPath:string = '';
+  public useCasTestCategoriesListLoader:boolean = false;
 
   // public unitTestCategories:any[] = [
   //   {'category':'Bootup process', 'generated':true},
@@ -304,13 +309,14 @@ public showMarkdownPreview(){
       if(!_.isEmpty(result.data)){
         this.productData = result.data[0];
         this.productTestTypes = result.data[0]?.test_types;
+        this.usecasesList = result.data[0]?.usecases;
        // this.breadcrumblist = [];
         //this.breadcrumblist.push({'name':'home', 'disabled':false}, {'name':'Product Categories', 'disabled':true}, {'name':'Product Sub Categories', 'disabled':true}, {'name':'Products List', 'disabled':true}, {'name':this.productData.product_code, 'disabled':true});
         this.productName = this.productData.product_code;
         
         if(!_.isEmpty(this.productTestTypes)){
           console.log('this.productTestTypes[0]', this.productTestTypes[0]?.test_type_id);
-          this.getGeneratedTestCategories(this.productTestTypes[0], productID);
+          this.getGeneratedTestCategories(this.productTestTypes[0], productID, 0);
         }
 
         if(this.routeMainPath == 'deviceManagement') {
@@ -457,6 +463,26 @@ public showMarkdownPreview(){
     })
   }
 
+  getUseCaseTestCategoriesList(testTypeId:string){
+    this.useCasTestCategoriesListLoader = true;
+    const getTestCategories = {
+      action: 'product/test_categories/',
+      method: 'get',
+      params: {
+        test_type_id : testTypeId
+      }
+    }
+    this.dataService.apiDelegate(getTestCategories).subscribe((result: any) => {
+      if(!_.isEmpty(result)) {
+        this.categoriesOfSelectedUsecase = result.data; 
+      }      
+      this.useCasTestCategoriesListLoader = false;
+    }, error => {  
+      this.useCasTestCategoriesListLoader = false;    
+      console.log('error',error);
+    })
+  }
+
   getAllGeneratedTestCases(productId:any) {
     this.loadingTestCases = true;
     const getAllTestCases = {
@@ -506,7 +532,9 @@ public showMarkdownPreview(){
   }
 
 
-  getGeneratedTestCategories(selectedTestCase:any, productId:any) {
+  getGeneratedTestCategories(selectedTestCase:any, productId:any, index:number) {
+    this.testCategoriesLoader = true;
+    this.selectedTestTypeTabIndex = index;
     this.selectedTestCase = {}
     this.selectedTestCase = selectedTestCase
     console.log('this.selectedTestCase', this.selectedTestCase);
@@ -528,8 +556,9 @@ public showMarkdownPreview(){
           this.testCategorys = responce.data[0].categories;
           this.getTestCasesOfCategory(productId, this.selectedTestCase.test_type_id, this.testCategorys[0].test_category_id);
         } 
+        this.testCategoriesLoader = false;
       }, error => {
-        this.loadingTestCases = false;
+        this.testCategoriesLoader = false;
         console.log('error',error);
       })
   }

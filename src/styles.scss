@@ -430,7 +430,7 @@ input::-ms-input-placeholder {
       
             &.tb-bold {
               font-weight: 600;
-            }
+            }            
             .subTable{
               tr {
                 &:last-child{
@@ -462,14 +462,42 @@ input::-ms-input-placeholder {
         width: 100%;
     }
     .selectableTable{
-        .p-datatable{
+        &:not(.noHover){
+          .p-datatable{ 
+            .p-datatable-tbody{
+              tr{
+                  &.active{
+                    td {
+                      .tdChip{
+                        background: rgba(255, 255, 255, 0.2);
+                        color: #fff;
+                      }
+                      .clr-primary{
+                        color: #fff;
+                      }
+                    }
+                  }
+                  &:hover{
+                    .clr-primary{
+                      color: #fff;
+                    }
+                    .tdChip{
+                      background: rgba(255, 255, 255, 0.2);
+                      color: #fff;
+                    }
+                  }
+              }
+            }
+          }
+        }
+        .p-datatable{            
             .p-datatable-tbody{
                 tr{
                     cursor: pointer;
                     &.active{
                         background: vars.$primary-color;
-                        td{
-                            color: #fff;
+                        td {
+                            color: #fff;  
                             .td-menu-btn{
                               &[disabled]{
                                 opacity: 0.5;
@@ -497,7 +525,7 @@ input::-ms-input-placeholder {
                         //background: rgba(62, 100, 245, 0.05);
                         background: vars.$primary-color !important;
                         td{
-                            color: #fff;
+                            color: #fff;                            
                             .td-menu-btn{
                               &:not(disabled):hover{
                                 background: vars.$primary-dark;
@@ -672,6 +700,9 @@ input::-ms-input-placeholder {
                     cursor: default;
                     td{
                       color: vars.$td-color;
+                      .clr-primary{
+                        color: #fff;
+                      }
                       .td-menu-btn{
                         .icon{
                           color: vars.$secondary-color;
@@ -681,6 +712,9 @@ input::-ms-input-placeholder {
                         tr:hover{
                           td{
                             color: #fff;
+                            .clr-primary{
+                              color: #fff;
+                            }
                             .td-menu-btn{
                               .icon{
                                 color: #fff;
@@ -1250,6 +1284,30 @@ markdown{
         color: vars.$primary-color;
       }  
     }
+    .p-multiselect{
+      width: 100%;
+      border-radius: 30px;
+      padding: 5px 20px;
+      font-size: 13px;
+      height: 40px;
+      color: vars.$fontclr;
+      .p-multiselect-trigger{
+        width: 10px;
+        .pi{
+          font-size: 11px;
+          color: vars.$fontclr;
+        }
+      }
+      &.p-multiselect-chip {
+        .p-multiselect-label {
+          padding: 5px 0px;
+          .p-multiselect-token{
+            padding: 2px 8px;
+            border-radius: 30px;
+          }
+        }
+      } 
+    }
     label{
       font-size: 13px;
       top: 22px;
@@ -1452,6 +1510,14 @@ markdown{
 
 .clr-primary{
   color: vars.$primary-color;
+}
+
+.bold{
+  font-weight: 600;
+}
+
+.bolder{
+  font-weight: 900;
 }
 
 .noData{
@@ -1744,7 +1810,7 @@ markdown{
 .testCasesAccordian{
   .p-accordion{
     .p-accordion-tab {
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       .p-accordion-header:not(.p-disabled){
         .p-accordion-header-link{
           width: 30%;
@@ -1754,7 +1820,7 @@ markdown{
           padding: 12px 15px;
           border-radius: 30px;
           font-weight: 600;
-          font-size: 14px;
+          font-size: 14px;          
           @include vars.fontFamilySecondary;
           .pi{
             font-size: 14px;
@@ -1766,10 +1832,12 @@ markdown{
         }
         &:hover,
         &.p-highlight{
-          .p-accordion-header-link{
-            background: vars.$primary-color;
-            color: #fff;
-            box-shadow: vars.$primary-box-shoadow;
+          .p-accordion-header-link{            
+            .accordianHeader{
+              background: vars.$primary-color;
+              color: #fff;
+              box-shadow: vars.$primary-box-shoadow;
+            }
           }
         }
       }
@@ -1920,6 +1988,12 @@ markdown{
   margin-top: 20px;
   margin-bottom: 20px;
   display: block;
+  &.largeTabs{
+    .p-tabview .p-tabview-nav-container .p-tabview-nav-content .p-tabview-nav li .p-tabview-nav-link{
+      font-size: 14px;
+      padding: 18px 20px;
+    }
+  }
   .p-tabview{
     .p-tabview-nav-container{
       .p-tabview-nav-content{
@@ -2053,6 +2127,8 @@ markdown{
   color: vars.$primary-color;
   font-weight: 600;
   display: inline-flex;
+  margin-right: 3px;
+  margin-bottom: 3px;
 }
 
 .ngxChartHolder {
