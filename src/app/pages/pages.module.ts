@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { PagesRoutingModule } from './pages-routing.module';
@@ -56,9 +56,15 @@ import { AddNewEnterpriseComponent } from './enterprise/add-new-enterprise/add-n
 
 import {ConfirmDialogModule} from 'primeng/confirmdialog';
 import {SkeletonModule} from 'primeng/skeleton';
+import {ChipsModule} from 'primeng/chips';
 
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { GitConfigComponent } from './git-config/git-config.component';
+import { ConfigFilesComponent } from './config-files/config-files.component';
+
+import { HighchartsChartModule } from 'highcharts-angular';
+import { ConfigFilesDetailsComponent } from './config-files-details/config-files-details.component';
+import { TestCaseParametersComponent } from './test-case-parameters/test-case-parameters.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +83,10 @@ import { GitConfigComponent } from './git-config/git-config.component';
     DashboardComponent,
     EnterpriseManagementComponent,
     AddNewEnterpriseComponent,
-    GitConfigComponent
+    GitConfigComponent,
+    ConfigFilesComponent,
+    ConfigFilesDetailsComponent,
+    TestCaseParametersComponent
   ],
   imports: [
     CommonModule,
@@ -99,6 +108,7 @@ import { GitConfigComponent } from './git-config/git-config.component';
     AccordionModule,
     DropdownModule,
     ToastModule,
+    ChipsModule,
     RadioButtonModule,
     ScrollPanelModule,
     CalendarModule,
@@ -113,7 +123,9 @@ import { GitConfigComponent } from './git-config/git-config.component';
     SkeletonModule,
     NgxChartsModule,
     CodemirrorModule,
+    HighchartsChartModule,
     MarkdownModule.forRoot()
-  ]
+  ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
 })
 export class PagesModule { }

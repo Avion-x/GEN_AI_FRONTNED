@@ -7,7 +7,7 @@ import { DeviceListComponent } from './device-management/device-list/device-list
 import { DevicesComponent } from './devices/devices.component';
 import { AddNewEnterpriseComponent } from './enterprise/add-new-enterprise/add-new-enterprise.component';
 import { EnterpriseManagementComponent } from './enterprise/enterprise-management/enterprise-management.component';
-//import { GitConfigComponent } from './git-config/git-config.component';
+import { GitConfigComponent } from './git-config/git-config.component';
 import { PagesComponent } from './pages.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { ProductSubCategoryComponent } from './product-sub-category/product-sub-category.component';
@@ -16,7 +16,9 @@ import { TestDeviceListComponent } from './test-execution/test-device-list/test-
 import { TestCasesManagementComponent } from './testcases-management/test-cases-management/test-cases-management.component';
 import { AddUserComponent } from './user-management/add-user/add-user.component';
 import { UsersListComponent } from './user-management/users-list/users-list.component';
-//import { ConfigFilesComponent } from './config-files/config-files.component';
+import { ConfigFilesComponent } from './config-files/config-files.component';
+import { ConfigFilesDetailsComponent } from './config-files-details/config-files-details.component';
+import { TestCaseParametersComponent } from './test-case-parameters/test-case-parameters.component';
 
 const routes: Routes = [
   { path: '', component: PagesComponent,
@@ -91,12 +93,18 @@ const routes: Routes = [
       {
         path:'enterpriseManagement/:formState/:id', component: AddNewEnterpriseComponent,
       },
-      // {
-      //   path:'gitConfig', component: GitConfigComponent,
-      // },
-      // {
-      //   path:'configFiles', component: ConfigFilesComponent,
-      // },
+      {
+        path:'gitConfig', component: GitConfigComponent,
+      },
+      {
+        path:'configFiles', component: ConfigFilesComponent,
+      },
+      {
+        path:'configFiles/configRequistDetails/:reqId', component: ConfigFilesDetailsComponent,
+      },
+      {
+        path:'testCaseParameters', component: TestCaseParametersComponent,
+      },
     ]
   },
 ];

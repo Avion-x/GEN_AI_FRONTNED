@@ -1,0 +1,157 @@
+@use '/src/assets/styles/vars';
+.form-container-row{
+    width: 100%;
+}
+
+.conditionSection{
+    display: block;
+    width: 100%;
+    .field{
+        width: 100px;
+    }
+}
+
+.form-container-row{
+    flex-wrap: wrap;
+}
+
+.form-container{
+    .removeBtn{
+        border-radius: 4px;
+        padding: 5px;
+        margin-top: 5px;
+        .icon{
+            margin-right: 0px;
+        }
+    }
+    .filed-group,
+    .nested-section{
+        .conditionSection{
+            margin-top: 10px;
+            position: relative;
+            z-index: 1;
+            ::before{
+                content: '';
+                width: 1.5px;
+                height: 21px;
+                background: vars.$cardBorderColor;
+                position: absolute;
+                top: -21px;
+                left: 30px;
+                z-index: 0;
+            }
+            ::after{
+                content: '';
+                width: 1.5px;
+                height: 21px;
+                background: vars.$cardBorderColor;
+                position: absolute;
+                bottom: -21px;
+                left: 30px;
+                z-index: 0;
+            }
+        }
+       
+    }
+}
+
+.nested-section{
+    .conditionSection{
+        margin-bottom: 20px;
+    }
+    .filed-group{
+        .conditionSection{
+            margin-bottom: 0px;
+        }
+    }
+}
+
+.form-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.forms-section{
+    .form-container{
+        //border: 1px solid vars.$cardBorderColor;
+        background: #fff;
+        border-radius: 10px;
+        .form-header{
+            padding: 10px 15px;
+            border-bottom: 1px solid vars.$cardBorderColor;
+        }
+        .form-container-body{
+            padding: 10px 15px;
+        }
+        .nested-condition-container{
+            background: vars.$body-bg;
+            border: 1px solid vars.$cardBorderColor;
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 21px;
+            position: relative;
+            padding-top: 30px;
+            .removeSectionBtn{
+                background: vars.$cardBorderColor;
+                cursor: pointer;
+                border: 0px;
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                border-radius: 0px 10px 0px 2px;
+                min-width: auto;
+                padding: 3px 3px 0px 3px;
+                min-height: auto;
+                .icon{
+                    color: vars.$secondary-color;
+                    font-size: 19px;
+                }
+                &:hover{
+                    background: vars.$secondary-color;
+                    .icon{
+                        color: #fff;
+                    }
+                }
+            }
+            .fields-row{
+                background: #fff;
+            }
+        }
+        .fields-row{
+            border: 1px solid vars.$cardBorderColor;
+            padding: 10px;
+            width: 100%;
+            border-radius: 10px;
+        }
+    }
+}
+
+.buttons-container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+   // margin-top: 20px;
+}
+.testTypeFormContainer{
+    background: #fff;
+    border-radius: 8px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding: 15px 15px;
+}
+
+.selectedItem{
+    border-radius: 30px;
+    padding: 3px 10px;
+    background: vars.$primary-color;
+    color: #fff;
+    font-size: 12px;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.title-with-selectedItem{
+    display: flex;
+    align-items: center;
+}

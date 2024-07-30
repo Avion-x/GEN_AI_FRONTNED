@@ -40,15 +40,15 @@ export class PagesComponent implements OnInit {
   ngOnInit(): void {
     this.navList = [];
     const userData:any = JSON.parse(localStorage.getItem('currentUser') || '{}');
-    console.log('----userData', userData);
+    //console.log('----userData', userData);
     if(!_.isEmpty(userData)){
       this.currentUser = userData.user_details;
-      console.log('----userData--', userData.token);
+      //console.log('----userData--', userData.token);
       if(this.currentUser){
           this.userTag = this.currentUser.first_name.charAt(0)+this.currentUser.last_name.charAt(0);
       }      
-      console.log(' this.userTag',  this.currentUser);
-      console.log('currentUser', this.currentUser);
+      //console.log(' this.userTag',  this.currentUser);
+      //console.log('currentUser', this.currentUser);
 
       if(this.currentUser.role_name.toLowerCase() === 'superadmin'){
         this.showClientLogo = false;
@@ -95,6 +95,16 @@ export class PagesComponent implements OnInit {
             'name':'GitHub Configuration',
             'icon':'psychology',
             'url':this.appConfig.urlGitConfig
+          },
+          // {
+          //   'name':'Config Files',
+          //   'icon':'psychology',
+          //   'url':this.appConfig.urlConfigFiles
+          // },
+          {
+            'name':'Test Case Parameters',
+            'icon':'psychology',
+            'url':this.appConfig.urlTestCaseParameters
           }
         ]
       } else if (this.currentUser.role_name.toLowerCase() === 'user'){

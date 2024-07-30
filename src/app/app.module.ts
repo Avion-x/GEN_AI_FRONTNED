@@ -1,5 +1,5 @@
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
@@ -14,6 +14,7 @@ import { TokenInterceptorService } from './shared/services/token-interceptor.ser
 import { LoginComponent } from './login/login.component';
 import { MarkdownModule } from 'ngx-markdown';
 import { GlobalService } from './shared/services/global.service';
+
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { GlobalService } from './shared/services/global.service';
     InputTextModule,
     ButtonModule,
     PasswordModule,
+   
     MarkdownModule.forRoot()
   ],
   providers: [
@@ -39,6 +41,8 @@ import { GlobalService } from './shared/services/global.service';
       multi: true,
     }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ]
+
 })
 export class AppModule { }

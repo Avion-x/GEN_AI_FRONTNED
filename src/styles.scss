@@ -1,7 +1,8 @@
 @use '/src/assets/styles/vars';
 
-@import '~codemirror/lib/codemirror';
-@import '~codemirror/theme/material';
+
+@import 'node_modules/codemirror/lib/codemirror';
+@import 'node_modules/codemirror/theme/material';
 
 body{
     margin: 0px;
@@ -90,7 +91,10 @@ h1,h2,h3,h4,h5,h6{
 .pt-15{
   padding-top: 15px !important;
 }
-
+.align-items-center{
+  display: flex;
+  align-items: center;
+}
 .position-relative{
   position: relative;
 }
@@ -109,6 +113,13 @@ input::-ms-input-placeholder {
   opacity: 0.8;
 }
 
+.wordBreak{
+  word-break: break-all;
+}
+
+.bg-gray{
+  background: vars.$body-bg !important;
+}
 
 .p-float-label input:focus~label,
 .p-float-label input.p-filled~label,
@@ -275,7 +286,7 @@ input::-ms-input-placeholder {
         flex-direction: row;
         align-items: center;
         justify-content: flex-end;
-        width: 70%;
+        width: 50%;
         .btn{
           margin-left: 10px;
         }
@@ -1212,11 +1223,35 @@ markdown{
       max-width: calc(25% - 10px);
     }
   }
+  .title {
+    font-size: 13px;
+    font-weight: 600;
+    color: vars.$titleClr;
+    margin-bottom: 0px;
+  }
+  .filed-group{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    margin-bottom: 20px;
+    &.flex-dirction-column{
+      flex-direction: column;
+    }
+    .fields-row{
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+    }
+    .field{
+      min-width: auto;
+    }
+  }
   .field{
     flex-grow: 1;
     min-width: 20%;
     .p-calendar,
-    .p-password{
+    .p-password,
+    .p-chips{
       width: 100%;
     }
     .p-disabled, 
@@ -1247,6 +1282,28 @@ markdown{
       border-radius: 20px;
       height: auto;
     }
+    .p-chips{
+      .p-chips-multiple-container{
+        width: 100%;
+        border-radius: 30px;
+        height: auto;
+        .p-chips-input-token{
+          padding: 2px 5px;
+          input{
+            height: auto;
+          }
+        }
+        .p-chips-token{
+          padding: 2px 10px;
+          border-radius: 30px;
+        }
+        &:not(.p-disabled).p-focus {
+          box-shadow: none !important;
+          outline: 0px;
+          border-color: vars.$primary-color;
+        }
+      }
+    } 
     .p-dropdown{
       width: 100%;
       border-radius: 30px;
@@ -2129,6 +2186,18 @@ markdown{
   display: inline-flex;
   margin-right: 3px;
   margin-bottom: 3px;
+  &.success{
+    background: #7bba40;
+    color: #fff;
+  }
+  &.inprogress{
+    background: #f8b024;
+    color: #fff;
+  }
+  &.failed{
+    background: #d64c22;
+    color: #fff;
+  }
 }
 
 .ngxChartHolder {
@@ -2144,15 +2213,28 @@ markdown{
   }
   
 }
-
+.customFileUploadContainer{
+  width: 100%;
+  .title{
+      font-size: 13px;
+      font-weight: 500;
+  }
+}
 .customFileUpload{
   width: 100%;
+  &.parameterFileUpload{
+    .p-fileupload{
+      border-radius: 10px;
+      border: 0px;
+    }
+  }
   .p-fileupload{
     display: flex;
     flex-direction: row-reverse;
     width: 100%;
     border: 1px solid vars.$fieldBorderColor;
     border-radius: 30px;
+    background: #fff;
     .p-fileupload-buttonbar{
       padding: 10px;
       background: transparent;
@@ -2182,6 +2264,15 @@ markdown{
       padding: 0px;
       border: 0px;
       width: calc(100% - 230px);
+      border-radius: 30px;
+      .p-fileupload-files{
+        .p-fileupload-row{
+          div:first-child{
+            display: none;
+          }
+        }
+      }
+      
       p-progressbar{
         display: none;
       }
@@ -2240,6 +2331,46 @@ markdown{
     color: #f00;
     tspan{
       color: #f00;
+    }
+  }
+}
+
+.conditionSection{
+    .field{
+      .p-dropdown{
+        background: rgba($color: vars.$primary-color, $alpha: 0.1);
+        border: 1px solid vars.$cardBorderColor;
+        border-radius: 10px;
+        padding: 5px 10px 5px 5px;
+        min-width: auto;
+        width: 65px;
+        .p-dropdown-label{
+          color: vars.$primary-color;
+          font-weight: 600;
+        }
+        .p-dropdown-trigger{
+          padding-top: 3px;
+          .pi{
+            color: vars.$primary-color;
+          }
+        } 
+      }
+    }
+}
+.nested-condition-container{
+  .conditionSection{
+    .field{
+      .p-dropdown{
+        background: rgba($color: vars.$secondary-color, $alpha: 0.1);
+        .p-dropdown-label{
+          color: vars.$secondary-color;
+        }
+        .p-dropdown-trigger{
+          .pi{
+            color: vars.$secondary-color;
+          }
+        } 
+      }
     }
   }
 }
