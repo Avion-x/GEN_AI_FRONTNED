@@ -7,7 +7,7 @@ import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Valida
 import * as _ from 'lodash';
 import {ConfirmationService, ConfirmEventType, Message, MessageService} from 'primeng/api';
 import { sequence } from '@angular/animations';
-import { error } from 'highcharts';
+//import { error } from 'highcharts';
 
 @Component({
   selector: 'app-test-case-parameters',
