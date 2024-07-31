@@ -16,8 +16,8 @@ import { TestDeviceListComponent } from './test-execution/test-device-list/test-
 import { TestCasesManagementComponent } from './testcases-management/test-cases-management/test-cases-management.component';
 import { AddUserComponent } from './user-management/add-user/add-user.component';
 import { UsersListComponent } from './user-management/users-list/users-list.component';
-import { ConfigFilesComponent } from './config-files/config-files.component';
-import { ConfigFilesDetailsComponent } from './config-files-details/config-files-details.component';
+//import { ConfigFilesComponent } from './config-files/config-files.component';
+//import { ConfigFilesDetailsComponent } from './config-files-details/config-files-details.component';
 import { TestCaseParametersComponent } from './test-case-parameters/test-case-parameters.component';
 
 const routes: Routes = [
@@ -96,12 +96,12 @@ const routes: Routes = [
       {
         path:'gitConfig', component: GitConfigComponent,
       },
-      {
-        path:'configFiles', component: ConfigFilesComponent,
-      },
-      {
-        path:'configFiles/configRequistDetails/:reqId', component: ConfigFilesDetailsComponent,
-      },
+      // {
+      //   path:'configFiles', component: ConfigFilesComponent,
+      // },
+      // {
+      //   path:'configFiles/configRequistDetails/:reqId', component: ConfigFilesDetailsComponent,
+      // },
       {
         path:'testCaseParameters', component: TestCaseParametersComponent,
       },

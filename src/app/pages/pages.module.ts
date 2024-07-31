@@ -60,10 +60,10 @@ import {ChipsModule} from 'primeng/chips';
 
 import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 import { GitConfigComponent } from './git-config/git-config.component';
-import { ConfigFilesComponent } from './config-files/config-files.component';
+//import { ConfigFilesComponent } from './config-files/config-files.component';
 
-import { HighchartsChartModule } from 'highcharts-angular';
-import { ConfigFilesDetailsComponent } from './config-files-details/config-files-details.component';
+// import { HighchartsChartModule } from 'highcharts-angular';
+// import { ConfigFilesDetailsComponent } from './config-files-details/config-files-details.component';
 import { TestCaseParametersComponent } from './test-case-parameters/test-case-parameters.component';
 
 @NgModule({
@@ -84,8 +84,8 @@ import { TestCaseParametersComponent } from './test-case-parameters/test-case-pa
     EnterpriseManagementComponent,
     AddNewEnterpriseComponent,
     GitConfigComponent,
-    ConfigFilesComponent,
-    ConfigFilesDetailsComponent,
+    // ConfigFilesComponent,
+    // ConfigFilesDetailsComponent,
     TestCaseParametersComponent
   ],
   imports: [
@@ -123,7 +123,7 @@ import { TestCaseParametersComponent } from './test-case-parameters/test-case-pa
     SkeletonModule,
     NgxChartsModule,
     CodemirrorModule,
-    HighchartsChartModule,
+    //HighchartsChartModule,
     MarkdownModule.forRoot()
   ],
   schemas: [ CUSTOM_ELEMENTS_SCHEMA ]

@@ -5,9 +5,9 @@ import { AppConfigService } from 'src/app/shared/services/app-config.service';
 import { AuthService } from 'src/app/shared/services/auth.service';
 import { DataService } from 'src/app/shared/services/data.service';
 
-import * as Highcharts from 'highcharts';
-import HC_networkgraph from 'highcharts/modules/networkgraph';
-HC_networkgraph(Highcharts);
+// import * as Highcharts from 'highcharts';
+// import HC_networkgraph from 'highcharts/modules/networkgraph';
+// HC_networkgraph(Highcharts);
 
 @Component({
   selector: 'app-config-files-details',
@@ -77,7 +77,7 @@ export class ConfigFilesDetailsComponent implements OnInit {
   dirDist50:any = "#E8544E";
   dirDist10:any = "#FFD265";
   dirDistLess10:any = "#2AA775";
-  Highcharts: typeof Highcharts = Highcharts;
+  //Highcharts: typeof Highcharts = Highcharts;
   updateFlag: boolean = false; // optional boolean
   oneToOneFlag: boolean = true; // optional boolean, defaults to false
   runOutsideAngular: boolean = false; // optional boolean, defaults to false
