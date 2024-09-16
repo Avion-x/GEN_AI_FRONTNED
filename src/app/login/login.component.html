@@ -1,0 +1,46 @@
+<div class="login-wrapper">
+    <div class="login-card" *ngIf="!loading">
+        <!-- <h4 class="logo">GEN AI</h4> -->
+        <div class="logo"><img src="../../assets/images/logo-large.png"></div>
+        <div class="login-body">
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">            
+                <div class="p-float-label">                
+                    <input id="username-input" type="text" pInputText formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['username'].errors }" />
+                    <label for="username-input">Username</label>
+                    <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+                        <div *ngIf="f['username'].errors['required']">Username is required</div>
+                    </div>
+                </div>
+                <div class="p-float-label">                
+                    <!-- <input id="password-input" type="password" pInputText formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }" /> -->
+                    <p-password id="password-input" [toggleMask]="true" [feedback]="false" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"></p-password>
+                    <label for="password-input">Password</label>
+                    <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+                        <div *ngIf="f['password'].errors['required']">Password is required</div>
+                    </div>
+                </div>
+                <div class="login-btn">
+                    <!-- <button pButton pRipple type="button" label="Login" class="btn p-button-raised p-button-rounded" [disabled]="loading"></button> -->
+                    <button [disabled]="loading" class="btn btn-primary">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+                        Login
+                    </button>
+                    <!-- <a routerLink="../register" class="btn btn-link">Register</a> -->
+                </div>
+            </form>
+            <span class="errorMessage" *ngIf="errorMessage !== ''"><i class="material-symbols-rounded">error</i>{{errorMessage}}</span>
+        </div>
+    </div>
+    <div class="loader-container" *ngIf="loading">
+        <div class="mesh-loader">
+            <div class="set-one">
+              <div class="circle"></div>
+              <div class="circle"></div>
+            </div>
+            <div class="set-two">
+              <div class="circle"></div>
+              <div class="circle"></div>
+            </div>
+        </div>
+    </div>    
+</div>

@@ -1,0 +1,592 @@
+<div class="page-container-header">
+    <div class="title-section">
+        <button class="backBtn" [routerLink]="backUrl" [disabled]="backUrl.length == 0">
+            <span class="material-symbols-rounded">psychology</span>
+        </button>
+        <div class="title-container">
+            <h1 class="title">
+                Test Case Parameters
+             </h1>
+             <h2 class="sub-title">
+                <span></span>
+                <!-- <span *ngIf="productSubCategory"><i class="icofont-simple-right"></i></span>
+                <span *ngIf="productSubCategory">{{productSubCategory.sub_category}}</span> -->
+             </h2>
+        </div>        
+    </div>
+    
+    <div class="header-right-section">
+        <!-- <button class="btn primary-btn" [disabled]="true">
+            <span class="material-symbols-rounded icon">speed</span>
+            Run Test
+        </button> -->
+    </div>
+</div>
+
+<ul class="breadcrumb" *ngIf="breadcrumblist">
+    <li *ngFor="let item of breadcrumblist">
+        <button class="btn home" *ngIf="item.name == 'Home'" [routerLink]="item.url" [disabled]="item.disabled"> 
+            <i class="material-symbols-rounded">home</i> 
+        </button>
+        <button class="btn" *ngIf="item.name !== 'Home'"  [routerLink]="item.url" [disabled]="item.disabled"> {{item.name}} </button></li>    
+    <!-- <li><button class="btn" disabled> Devices </button></li> -->
+</ul>
+
+
+<div class="content-wrapper">
+    <div class="testTypeFormContainer">
+    <form [formGroup]="testTypesForm" class="form-container">
+        <div class="field p-float-label">
+            <p-dropdown formControlName="testType" [options]="testTypes" (onChange)="getTestTypeCategory(testTypesForm.get('testType')?.value)" optionLabel="id" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select an Option" [ngClass]="{ 'is-invalid': testTypesForm.get('testType')?.invalid && (testTypesForm.get('testType')?.dirty || testTypesForm.get('testType')?.touched) }">
+                <ng-template pTemplate="selectedItem">
+                    <div class="country-item country-item-value" *ngIf="testTypesForm.get('testType')?.value">
+                       <div>{{testTypesForm.get('testType')?.value.name}}</div>
+                    </div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                    <div class="country-item">
+                         <div>{{item.name}}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+            <label for="isActive">Select Test Type</label>
+            <div *ngIf="testTypesForm.get('testType')?.invalid && (testTypesForm.get('testType')?.dirty || testTypesForm.get('testType')?.touched)" class="invalid-feedback">
+                <div class="p-error" *ngIf="testTypesForm.get('testType')?.errors?.['required']">This field is required.</div>
+            </div>            
+        </div>
+        <div class="field p-float-label">
+            <p-dropdown formControlName="testCategory" [options]="testTypeCategories" (onChange)="getTestCaseSUbCategory(testTypesForm.get('testType')?.value.id, testTypesForm.get('testCategory')?.value.id)" optionLabel="id" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select an Option" [ngClass]="{ 'is-invalid': testTypesForm.get('testCategory')?.invalid && (testTypesForm.get('testCategory')?.dirty || testTypesForm.get('testCategory')?.touched) }">
+                <ng-template pTemplate="selectedItem">
+                    <div class="country-item country-item-value" *ngIf="testTypesForm.get('testCategory')?.value">
+                       <div>{{testTypesForm.get('testCategory')?.value.name}}</div>
+                    </div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                    <div class="country-item">
+                         <div>{{item.name}}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+            <label for="isActive">Select Test Category</label>
+            <div *ngIf="testTypesForm.get('testCategory')?.invalid && (testTypesForm.get('testCategory')?.dirty || testTypesForm.get('testCategory')?.touched)" class="invalid-feedback">
+                <div class="p-error" *ngIf="testTypesForm.get('testCategory')?.errors?.['required']">This field is required.</div>
+            </div>            
+        </div>
+        <div class="field p-float-label">
+            <p-dropdown formControlName="testSubCategory" [options]="testSubCategoryData" (onChange)="getFilesAndColumns(testTypesForm.get('testSubCategory')?.value.id)" optionLabel="id" [filter]="true" filterBy="name" [showClear]="true" placeholder="Select an Option" [ngClass]="{ 'is-invalid': testTypesForm.get('testSubCategory')?.invalid && (testTypesForm.get('testSubCategory')?.dirty || testTypesForm.get('testSubCategory')?.touched) }">
+                <ng-template pTemplate="selectedItem">
+                    <div class="country-item country-item-value" *ngIf="testTypesForm.get('testSubCategory')?.value">
+                       <div>{{testTypesForm.get('testSubCategory')?.value.name}}</div>
+                    </div>
+                </ng-template>
+                <ng-template let-item pTemplate="item">
+                    <div class="country-item">
+                         <div>{{item.name}}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+            <label for="isActive">Select Test Sub Category</label>
+            <div *ngIf="testTypesForm.get('testSubCategory')?.invalid && (testTypesForm.get('testSubCategory')?.dirty || testTypesForm.get('testSubCategory')?.touched)" class="invalid-feedback">
+                <div class="p-error" *ngIf="testTypesForm.get('testSubCategory')?.errors?.['required']">This field is required.</div>
+            </div>            
+        </div>
+      
+        <!-- <button type="submit" [disabled]="testTypesForm.invalid" (click)="onSubmit()">Submit</button> -->
+      </form>
+      </div>
+
+
+    <div class="content-loader" *ngIf="configFilesLoader">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Loading All Test Case Parameters List...</span>
+    </div>
+    <div class="table-container table-selection-list" *ngIf="!configFilesLoader">
+        <p-table #configFilesTable [value]="parametersData" class="selectableTable" [globalFilterFields]="['requistId','status','created_at','created_by', 'totalFiles', 'valid_till', 'last_updated_at','last_updated_by']">
+            <ng-template pTemplate="caption">
+                <div class="table-title-with-search">
+                    <div class="title title-with-selectedItem">                                    
+                            Test Case Parameters <span *ngIf="testTypesForm.get('testSubCategory')?.value.name" class="align-items-center">of <div class="selectedItem">{{testTypesForm.get('testSubCategory')?.value.name}}</div></span>
+                            <div class="count">{{parametersData.length}}</div>
+                    </div>
+                    <div class="right-section">   
+                         
+                        <div class="search-box">
+                            <i class="pi pi-search"></i>
+                            <!-- <input pInputText type="text" #filter (input)="filterData(filter.value, 'contains')" placeholder="Search keyword" /> -->
+                            <input pInputText type="text" #filter (input)="configFilesTable.filterGlobal(filter.value, 'contains')" placeholder="Search" />
+                        </div>  
+                        <button class="btn primary-btn" [disabled]="testTypesForm.invalid" (click)="showUploadConfigFilesSideBar()">
+                            <span class="material-symbols-rounded icon">add</span>
+                            Create New Parameter
+                        </button>                                 
+                    </div>
+                </div>                
+            </ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <!-- <th>Id</th> -->
+                    <!-- <th style="width: 150px; min-width:150px; max-width:150px;">Name</th> -->
+                    <!-- <th style="width: 150px; min-width:150px; max-width:150px;">Email</th> -->
+                    <!-- <th style="width: 250px; min-width:250px; max-width:250px;">Address</th> -->
+                    <th style="width: 200px; min-width:200px; max-width:200px;">Parameter Name</th>
+                    <th style="width: 200px; min-width:200px; max-width:200px;">test_sub_category_name</th>
+                    <th style="width: 250px; min-width:250px; max-width:250px;">Files</th>
+                    <th style="width: 100px; min-width:100px; max-width:100px;">Status</th>   
+                    <th style="width: 150px; min-width:150px; max-width:150px;">Created At</th>
+                    <th style="width: 150px; min-width:150px; max-width:150px;">Created By</th>
+                    <th style="width: 150px; min-width:150px; max-width:150px;">Last Updated At</th>
+                    <th style="width: 150px; min-width:150px; max-width:150px;">Last Updated By</th>
+                    
+                    <!-- <th style="width: 200px; min-width:200px; max-width:200px;">Comments</th> -->
+                    <!-- <th style="width: 110px; min-width: 110px; max-width: 110px;"></th> -->
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-param>
+                <tr (click)="navigateToDetails(param.requistId)">
+                    <!-- <td>{{device.id}}</td> -->
+                    <!-- <td style="width: 150px; min-width:150px; max-width:150px;" class="td-clr-primary tb-bold">{{config.name}}</td> -->
+                    <!-- <td style="width: 150px; min-width:150px; max-width:150px;">{{config.email}}</td> -->
+                    <!-- <td style="width: 150px; min-width:150px; max-width:150px;">{{config.address}}</td> -->
+                    <td style="width: 200px; min-width:200px; max-width:200px;" class="wordBreak">{{param.name}}</td>
+                    <td style="width: 200px; min-width:200px; max-width:200px;" class="wordBreak">{{param.test_sub_category_name}}</td>
+                    <td style="width: 250px; min-width:250px; max-width:250px;">
+                        <div class="tdChip wordBreak" *ngFor="let file of param.files_info">{{file.s3_key}}</div>
+                    </td>
+                    <td style="width: 100px; min-width:100px; max-width:100px;" class="td-uppercase">{{param.status==true?'Active':'Inactive'}}</td>
+                    <td style="width: 150px; min-width:150px; max-width:150px;">{{param.created_at}}</td>
+                    <td style="width: 150px; min-width:150px; max-width:150px;">{{param.created_by_name}}</td>
+                    <td style="width: 150px; min-width:150px; max-width:150px;">{{param.last_updated_at}}</td>
+                    <td style="width: 150px; min-width:150px; max-width:150px;">{{param.last_updated_by_name}}</td>                  
+                    <!-- <td style="width: 200px; min-width:200px; max-width:200px;">{{device.comments}}</td> -->
+                    <!-- <td style="width: 110px; min-width: 110px; max-width: 110px;">
+                        <button *ngIf="config.status.toUpperCase() == 'INACTIVE'" type="button" class="btn primary-btn" (click)="setActive(config)">
+                            Set Active
+                        </button>                        
+                    </td> -->
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+
+<p-sidebar [(visible)]="uploadConfigFilesSidebar"  class="sidebar-section" [style]="{width:'85vw'}" position="right">
+    <ng-template pTemplate="header">Create New Parameter</ng-template>
+    
+    <!-- <input class="form-control" accept=".csv" id="csv" type="file" 
+  (change)="onFileSelect($event.target)" name="myfile"> -->
+
+    <ng-template pTemplate="content">
+        
+        <div class="card bg-gray">
+            <!-- <div class="customFileUploadContainer">
+                <h1 class="title">Upload CSV Files<small class="star">*</small></h1>
+                <p-fileUpload #testCaseFileUpload class="customFileUpload parameterFileUpload" 
+                [showCancelButton]="false" name="testcasefile[]" [customUpload]="true" [auto]="false" [multiple]="true" 
+                (uploadHandler)="onUpload($event)" 
+                chooseIcon="pi pi-paperclip" chooseLabel="Choose File" accept=".csv">
+                    
+                </p-fileUpload>
+                
+            </div> -->
+
+            <!-- <button (click)="convertToJSON()">Get Data from files</button> -->
+            <div class="forms-section">
+                <div class="form-container display-column pt-5 mb-20">
+                    <!-- <div class="form-header">
+                        <h1 class="title">Merge Columns</h1>
+                    </div> -->
+                    
+                    <div class="form-container-row form-container-body">
+                    <div class="field p-float-label">
+                            <input id="float-input" id="name" name="name" #nameModel="ngModel"  [(ngModel)]="parameterName" type="text" pInputText [ngClass]="{ 'is-invalid': nameModel.invalid && (nameModel.dirty || nameModel.touched) }" required> 
+                            <label for="float-input">Parameter Name<small class="star">*</small></label>                        
+                            <div *ngIf="nameModel.invalid && (nameModel.dirty || nameModel.touched)"  class="invalid-feedback">
+                                <div class="p-error" *ngIf="nameModel.errors?.['required']">Parameter Name is required.</div>
+                            </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="forms-section" *ngIf="fileNamesAndColumnsData?.length !== 0">
+                <div [formGroup]="joinFilesForm" class="form-container display-column">
+                    <div class="form-header">
+                        <h1 class="title">Join Files</h1>
+                    </div>
+                                        
+                    <div formArrayName="joinFilesItems" class="form-container-row form-container-body">
+                      <div *ngFor="let item of joinFilesItems?.controls; let i = index" [formGroupName]="i" class="filed-group">
+                        <div class="field p-float-label">
+                            <p-dropdown formControlName="fileOne" [options]="filesList"  optionLabel="file_name" [filter]="true" filterBy="file_name" [showClear]="true" placeholder="Select an Option" [ngClass]="{ 'is-invalid': item.get('fileOne')?.touched && item.get('fileOne')?.invalid }">
+                                <!-- <ng-template pTemplate="selectedItem">
+                                    <div *ngIf="joinFilesForm.get('fileOne')?.value.file_name">
+                                       <div>{{joinFilesForm.get('fileOne')?.value.file_name}}</div>
+                                    </div>
+                                </ng-template>
+                                <ng-template let-item pTemplate="item">
+                                    <div class="country-item">
+                                         <div>{{item.file_name}}</div>
+                                    </div>
+                                </ng-template> -->
+                            </p-dropdown>
+                            <label for="isActive">Select File Name</label>
+                            <div *ngIf="item.get('fileOne')?.touched && item.get('fileOne')?.invalid" class="invalid-feedback">
+                                <div class="p-error">Field is required</div>
+                            </div>
+                        </div>                    
+                        
+                        <div class="field p-float-label" *ngIf="item.get('fileOne')?.value">
+                            <p-dropdown formControlName="fieldOne" [options]="getFields(item.get('fileOne')?.value)" placeholder="Select an Option" [ngClass]="{ 'is-invalid': item.get('fieldOne')?.touched && item.get('fieldOne')?.invalid }"></p-dropdown>
+                            <label for="isActive">Select Column</label>
+                            <div *ngIf="item.get('fieldOne')?.touched && item.get('fieldOne')?.invalid" class="invalid-feedback">
+                                <div class="p-error">Field is required</div>
+                            </div>
+                        </div>
+    
+                        <div class="field p-float-label">
+                            <p-dropdown formControlName="condition" [options]="joinFileCompareOptions" placeholder="Select a conditions" [ngClass]="{ 'is-invalid': item.get('condition')?.touched && item.get('condition')?.invalid }"></p-dropdown>
+                            <label for="isActive">Conditions</label>
+                            <div *ngIf="item.get('condition')?.touched && item.get('condition')?.invalid" class="invalid-feedback">
+                                <div class="p-error">Field is required</div>
+                            </div>
+                        </div>
+                  
+                        <div class="field p-float-label">
+                            <p-dropdown formControlName="fileTwo" [options]="filesList" optionLabel="file_name" [filter]="true" filterBy="file_name" [showClear]="true" placeholder="Select a file" [ngClass]="{ 'is-invalid': item.get('fileTwo')?.touched && item.get('fileTwo')?.invalid }"></p-dropdown>
+                            <label for="isActive">Select File Name</label>
+                            <div *ngIf="item.get('fileTwo')?.touched && item.get('fileTwo')?.invalid" class="invalid-feedback">
+                                <div class="p-error">Field is required</div>
+                            </div>
+                        </div>
+    
+                        <div class="field p-float-label" *ngIf="item.get('fileTwo')?.value">
+                            <p-dropdown formControlName="fieldTwo" [options]="getFields(item.get('fileTwo')?.value)" placeholder="Select an Option" [ngClass]="{ 'is-invalid': item.get('fieldTwo')?.touched && item.get('fieldTwo')?.invalid }"></p-dropdown>
+                            <label for="isActive">Select Field</label>
+                            <div *ngIf="item.get('fieldTwo')?.touched && item.get('fieldTwo')?.invalid" class="invalid-feedback">
+                                <div class="p-error">Field is required</div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn secondary-btn removeBtn" (click)="removeJoinFilesItem(i)">
+                            <span class="material-symbols-rounded icon">close</span>
+                        </button>
+                       
+                      </div>
+                      <button class="btn primary-btn" (click)="addJoinFilesItem()">
+                        <span class="material-symbols-rounded icon">add</span>
+                        Add
+                      </button>   
+                    </div>
+                  
+                    
+                    <!-- <button type="button" (click)="submitJoinFiles()">Submit</button> -->
+                  </div>
+    
+                  <div [formGroup]="mergeColumnsForm" class="form-container display-column mt-20">
+                    <div class="form-header">
+                        <h1 class="title">Merge Columns</h1>
+                    </div>
+                    
+                    <div formArrayName="mergeColumnsItems" class="form-container-row form-container-body">
+                      <div *ngFor="let item of mergeColumnsItems?.controls; let i = index" [formGroupName]="i" class="filed-group">
+                        <div class="field p-float-label">
+                            <p-dropdown formControlName="fileName" [options]="filesList" optionLabel="file_name" [filter]="true" filterBy="file_name" placeholder="Select an Option" [ngClass]="{ 'is-invalid': item.get('fileName')?.touched && item.get('fileName')?.invalid }"></p-dropdown>
+                            <label for="isActive">Select File Name</label>
+                            <div *ngIf="item.get('fileName')?.touched && item.get('fileName')?.invalid" class="invalid-feedback">
+                                <div class="p-error">Field is required</div>
+                            </div>
+                        </div> 
+                        
+                        <div class="field p-float-label">
+                            <input id="float-input" formControlName="newColumnHeader" type="text" pInputText [ngClass]="{ 'is-invalid': item.get('newColumnHeader')?.touched && item.get('newColumnHeader')?.invalid }"> 
+                            <label for="float-input">New Column Header<small class="star">*</small></label>
+                            <div *ngIf="item.get('newColumnHeader')?.touched && item.get('newColumnHeader')?.invalid" class="invalid-feedback">
+                                <div class="p-error">Field is required</div>
+                            </div>
+                        </div>
+                        
+                        <div class="field p-float-label" *ngIf="item.get('fileName')?.value">
+                            <p-multiSelect formControlName="mergeColumns" [options]="getFields(item.get('fileName')?.value)" display="chip" placeholder="Select an Option" [ngClass]="{ 'is-invalid': item.get('mergeColumns')?.touched && item.get('mergeColumns')?.invalid }"></p-multiSelect>
+                            <label for="isActive">Select Columns to merge</label>
+                            <div *ngIf="item.get('mergeColumns')?.touched && item.get('mergeColumns')?.invalid" class="invalid-feedback">
+                                <div class="p-error">Field is required</div>
+                            </div>
+                        </div>
+    
+                        <div class="field p-float-label">
+                            <p-dropdown formControlName="separator" [options]="mergeColumnsSaperatorOptions" placeholder="Select a separator" [ngClass]="{ 'is-invalid': item.get('separator')?.touched && item.get('separator')?.invalid }"></p-dropdown>
+                            <label for="isActive">Separator</label>
+                            <div *ngIf="item.get('separator')?.touched && item.get('separator')?.invalid" class="invalid-feedback">
+                                <div class="p-error">Field is required</div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn secondary-btn removeBtn" (click)="removeMergeItem(i)">
+                            <span class="material-symbols-rounded icon">close</span>
+                        </button>  
+
+                      </div>
+
+                      <button class="btn primary-btn" (click)="addMergeItem()">
+                        <span class="material-symbols-rounded icon">add</span>
+                        Add
+                      </button>  
+                    </div>
+                  
+                    
+                    <!-- <button type="button" (click)="submitMergeColumns()">Submit</button> -->
+                  </div>
+
+                  <div [formGroup]="filtersForm" class="form-container display-column mt-20">
+                    <div class="form-header">
+                        <h1 class="title">Filters </h1>
+
+                        <div class="buttons-container">
+                            <button class="btn primary-btn" (click)="addFilterItem()">
+                                <span class="material-symbols-rounded icon">add</span>
+                                Add Main Condition
+                              </button>       
+                              <button class="btn secondary-btn" (click)="addNestedFilterItemsSection()">
+                                  <span class="material-symbols-rounded icon">add</span>
+                                  Add Nested Condition
+                              </button>  
+                          </div>
+                    </div>      
+
+                    <div class="form-container-body">
+                        <div formArrayName="filterMainConditionItems" class="form-container-row">
+                            <div *ngFor="let item of filterMainConditionItems?.controls; let i = index" [formGroupName]="i" class="filed-group flex-dirction-column">
+                              <div class="fields-row">
+                                  <div class="field p-float-label">
+                                      <p-dropdown formControlName="fileName" [options]="filesList" optionLabel="file_name" [filter]="true" filterBy="file_name" placeholder="Select an Option" [ngClass]="{ 'is-invalid': item.get('fileName')?.touched && item.get('fileName')?.invalid }"></p-dropdown>
+                                      <label for="isActive">Select File Name</label>
+                                      <div *ngIf="item.get('fileName')?.touched && item.get('fileName')?.invalid" class="invalid-feedback">
+                                          <div class="p-error">Field is required</div>
+                                      </div>
+                                  </div>  
+                                  <div class="field p-float-label" *ngIf="item.get('fileName')?.value !== ''">
+                                      <p-dropdown formControlName="columnTitle" [options]="getFields(item.get('fileName')?.value)" placeholder="Select an Option" [ngClass]="{ 'is-invalid': item.get('columnTitle')?.touched && item.get('columnTitle')?.invalid }"></p-dropdown>
+                                      <label for="isActive">Select Column</label>
+                                      <div *ngIf="item.get('columnTitle')?.touched && item.get('columnTitle')?.invalid" class="invalid-feedback">
+                                          <div class="p-error">Field is required</div>
+                                      </div>
+                                  </div> 
+      
+                                  <div class="field p-float-label">
+                                      <p-dropdown formControlName="condition" [options]="filterConditions" placeholder="Select a conditions" [ngClass]="{ 'is-invalid': item.get('condition')?.touched && item.get('condition')?.invalid }"></p-dropdown>
+                                      <label for="isActive">Condition</label>
+                                      <div *ngIf="item.get('condition')?.touched && item.get('condition')?.invalid" class="invalid-feedback">
+                                          <div class="p-error">Field is required</div>
+                                      </div>
+                                  </div>
+      
+                                  <div class="field p-float-label">
+                                      <p-chips formControlName="columnValue" separator="," placeholder="Hint: a, b, c" [addOnBlur]="true" [addOnTab]="true" [ngClass]="{ 'is-invalid': item.get('columnValue')?.touched && item.get('columnValue')?.invalid }"></p-chips>
+                                      <label for="float-input">Column Values<small class="star">*</small></label>
+                                      <div *ngIf="item.get('columnValue')?.touched && item.get('columnValue')?.invalid" class="invalid-feedback">
+                                          <div class="p-error">Field is required</div>
+                                      </div>
+                                  </div>
+                                  <button class="btn secondary-btn removeBtn" (click)="removeMainFilterItem(i)">
+                                      <span class="material-symbols-rounded icon">close</span>
+                                  </button>  
+                              </div>
+                              
+                              <div class="conditionSection" *ngIf="filterMainConditionItems?.controls?.length !== i+1 || nestedConditionSections?.controls?.length !== 0">
+                                  <div class="field p-float-label">
+                                      <p-dropdown formControlName="mainCondition" [options]="filterMainConditions" placeholder="Select a conditions" [ngClass]="{ 'is-invalid': item.get('mainCondition')?.touched && item.get('mainCondition')?.invalid }"></p-dropdown>
+                                      <!-- <label for="isActive">Condition</label> -->
+                                      <div *ngIf="item.get('mainCondition')?.touched && item.get('mainCondition')?.invalid" class="invalid-feedback">
+                                          <div class="p-error">Field is required</div>
+                                      </div>
+                                  </div>
+                              </div>
+                              
+                            </div> 
+                                     
+                          </div>  
+
+                          
+                          <div *ngIf="nestedConditionSections?.controls?.length !== 0">
+                              <div formArrayName="nestedConditionSections" class="form-container-row">
+                                <div *ngFor="let section of nestedConditionSections.controls; let sIndex = index" [formGroupName]="sIndex" class="nested-section">
+                                    <div formArrayName="nestedConditionItems" class="nested-condition-container">
+                                        <button type="button" class="removeSectionBtn" (click)="removeNestedFilterItemsSection(sIndex)">
+                                            <span class="material-symbols-rounded icon">close</span>
+                                        </button>
+                                        <div *ngFor="let item of getNestedConditionSections(sIndex).controls; let iIndex = index" [formGroupName]="iIndex" class="filed-group flex-dirction-column">
+                                            <div class="fields-row">
+                                                <div class="field p-float-label">
+                                                    <p-dropdown formControlName="fileName" [options]="filesList" optionLabel="file_name" [filter]="true" filterBy="file_name" placeholder="Select an Option" [ngClass]="{ 'is-invalid': item.get('fileName')?.touched && item.get('fileName')?.invalid }"></p-dropdown>
+                                                    <label for="isActive">Select File Name</label>
+                                                    <div *ngIf="item.get('fileName')?.touched && item.get('fileName')?.invalid" class="invalid-feedback">
+                                                        <div class="p-error">Field is required</div>
+                                                    </div>
+                                                </div>  
+                                                <div class="field p-float-label" *ngIf="item.get('fileName')?.value !== ''">
+                                                    <p-dropdown formControlName="columnTitle" [options]="getFields(item.get('fileName')?.value)" placeholder="Select an Option" [ngClass]="{ 'is-invalid': item.get('columnTitle')?.touched && item.get('columnTitle')?.invalid }"></p-dropdown>
+                                                    <label for="isActive">Select Column</label>
+                                                    <div *ngIf="item.get('columnTitle')?.touched && item.get('columnTitle')?.invalid" class="invalid-feedback">
+                                                        <div class="p-error">Field is required</div>
+                                                    </div>
+                                                </div> 
+                    
+                                                <div class="field p-float-label">
+                                                    <p-dropdown formControlName="condition" [options]="filterConditions" placeholder="Select a conditions" [ngClass]="{ 'is-invalid': item.get('condition')?.touched && item.get('condition')?.invalid }"></p-dropdown>
+                                                    <label for="isActive">Condition</label>
+                                                    <div *ngIf="item.get('condition')?.touched && item.get('condition')?.invalid" class="invalid-feedback">
+                                                        <div class="p-error">Field is required</div>
+                                                    </div>
+                                                </div>
+                    
+                                                <div class="field p-float-label">
+                                                    <p-chips formControlName="columnValue" separator="," placeholder="Hint: a, b, c" [addOnBlur]="true" [addOnTab]="true" [ngClass]="{ 'is-invalid': item.get('columnValue')?.touched && item.get('columnValue')?.invalid }"></p-chips>
+                                                    <label for="float-input">Column Values<small class="star">*</small></label>
+                                                    <div *ngIf="item.get('columnValue')?.touched && item.get('columnValue')?.invalid" class="invalid-feedback">
+                                                        <div class="p-error">Field is required</div>
+                                                    </div>
+                                                </div>
+                                                <button class="btn secondary-btn removeBtn" (click)="removeNestedFilterItem(sIndex, iIndex)">
+                                                <span class="material-symbols-rounded icon">close</span>
+                                            </button>  
+                                            </div>
+                                            <div class="conditionSection" *ngIf="getNestedConditionSections(sIndex).controls?.length !== iIndex+1">
+                                                <div class="field p-float-label">
+                                                    <p-dropdown formControlName="mainCondition" [options]="filterMainConditions" placeholder="Select a conditions" [ngClass]="{ 'is-invalid': item.get('mainCondition')?.touched && item.get('mainCondition')?.invalid }"></p-dropdown>
+                                                <div *ngIf="item.get('mainCondition')?.touched && item.get('mainCondition')?.invalid" class="invalid-feedback">
+                                                        <div class="p-error">Field is required</div>
+                                                    </div>
+                                                </div>
+                                            </div>                                    
+                                        </div>
+                                        <button class="btn secondary-btn" (click)="addNestedFilterItem(sIndex)">
+                                            <span class="material-symbols-rounded icon">add</span>
+                                            Add
+                                        </button>  
+                                    </div>
+                                    <div class="conditionSection" *ngIf="nestedConditionSections?.controls?.length !== sIndex+1">
+                                        <div class="field p-float-label">
+                                            <p-dropdown formControlName="mainCondition" [options]="filterMainConditions" placeholder="Select a conditions" [ngClass]="{ 'is-invalid': nestedConditionSections.get('mainCondition')?.touched && nestedConditionSections.get('mainCondition')?.invalid }"></p-dropdown>
+                                            <!-- <label for="isActive">Condition</label> -->
+                                            <div *ngIf="nestedConditionSections.get('mainCondition')?.touched && nestedConditionSections.get('mainCondition')?.invalid" class="invalid-feedback">
+                                                <div class="p-error">Field is required</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                              </div>    
+                          </div>
+                          <div class="buttons-container mt-20">
+                            <button class="btn primary-btn" (click)="addFilterItem()">
+                                <span class="material-symbols-rounded icon">add</span>
+                                Add
+                              </button> 
+                          </div>
+                    </div>
+                    <!-- <button type="button" (click)="submitFilterForm()">Submit</button> -->
+                  </div>
+
+                  <div [formGroup]="requestedParamsForm" class="form-container display-column mt-20">
+                    <div class="form-header">
+                        <h1 class="title">Requested Params</h1>
+                    </div>
+                    
+                    <div formArrayName="requestedParamItems" class="form-container-row form-container-body">
+                      <div *ngFor="let item of requestedParamItems?.controls; let i = index" [formGroupName]="i" class="filed-group">
+                        <div class="field p-float-label">
+                            <p-dropdown formControlName="fileName" [options]="filesList" optionLabel="file_name" [filter]="true" filterBy="file_name" placeholder="Select an Option" [ngClass]="{ 'is-invalid': item.get('fileName')?.touched && item.get('fileName')?.invalid }"></p-dropdown>
+                            <label for="isActive">Select File Name</label>
+                            <div *ngIf="item.get('fileName')?.touched && item.get('fileName')?.invalid" class="invalid-feedback">
+                                <div class="p-error">Field is required</div>
+                            </div>
+                        </div> 
+                        
+                        <!-- <div class="field p-float-label">
+                            <input id="float-input" formControlName="newColumnHeader" type="text" pInputText [ngClass]="{ 'is-invalid': item.get('newColumnHeader')?.touched && item.get('newColumnHeader')?.invalid }"> 
+                            <label for="float-input">New Column Header<small class="star">*</small></label>
+                            <div *ngIf="item.get('newColumnHeader')?.touched && item.get('newColumnHeader')?.invalid" class="invalid-feedback">
+                                <div class="p-error">Field is required</div>
+                            </div>
+                        </div> -->
+                        
+                        <div class="field p-float-label" *ngIf="item.get('fileName')?.value !== ''">
+                            <p-multiSelect formControlName="requestedColumns" [options]="getFields(item.get('fileName')?.value)" display="chip" placeholder="Select an Option" [ngClass]="{ 'is-invalid': item.get('requestedColumns')?.touched && item.get('requestedColumns')?.invalid }"></p-multiSelect>
+                            <label for="isActive">Select Columns</label>
+                            <div *ngIf="item.get('requestedColumns')?.touched && item.get('requestedColumns')?.invalid" class="invalid-feedback">
+                                <div class="p-error">Field is required</div>
+                            </div>
+                        </div>
+                        
+                        <button class="btn secondary-btn removeBtn" (click)="removeRequestedParamsItem(i)">
+                            <span class="material-symbols-rounded icon">close</span>
+                        </button>  
+
+                      </div>
+
+                      <button class="btn primary-btn" (click)="addRequestedParamsItem()">
+                        <span class="material-symbols-rounded icon">add</span>
+                        Add
+                      </button>  
+                    </div>
+                  
+                    
+                    <!-- <button type="button" (click)="submitMergeColumns()">Submit</button> -->
+                  </div>
+            </div>
+
+           
+            <!-- <div [formGroup]="form">
+                <div formArrayName="sections">
+                  <div *ngFor="let section of sections.controls; let sIndex = index" [formGroupName]="sIndex" class="section-group">
+                    <input type="text" formControlName="sectionName" placeholder="Section Name">
+                    <div *ngIf="section.get('sectionName')?.touched && section.get('sectionName')?.invalid" class="error">
+                      Section name is required
+                    </div>
+              
+                    <div formArrayName="items">
+                      <div *ngFor="let item of getItems(sIndex).controls; let iIndex = index" [formGroupName]="iIndex" class="item-group">
+                        <input type="text" formControlName="itemName" placeholder="Item Name">
+                        <div *ngIf="item.get('itemName')?.touched && item.get('itemName')?.invalid" class="error">
+                          Item name is required
+                        </div>
+              
+                        <input type="text" formControlName="itemDescription" placeholder="Item Description">
+                        <div *ngIf="item.get('itemDescription')?.touched && item.get('itemDescription')?.invalid" class="error">
+                          Item description is required
+                        </div>
+                        
+                        <button type="button" (click)="removeItem(sIndex, iIndex)">Remove Item</button>
+                      </div>
+                    </div>
+              
+                    <button type="button" (click)="addItem(sIndex)">Add Item</button>
+                    <button type="button" (click)="removeSection(sIndex)">Remove Section</button>
+                  </div>
+                </div>
+              
+                <button type="button" (click)="addSection()">Add Section</button>
+                <button type="button" (click)="onSubmit()">Submit</button>
+            </div> -->
+
+
+        </div>
+        
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <div class="pageActions">
+            <button class="btn secondary-btn" (click)="hideUploadConfigFilesSideBar()">Cancel</button>
+            <button class="btn primary-btn" (click)="submitParameterData()">Submit</button>
+        </div>
+    </ng-template>
+    
+</p-sidebar>
+
+<p-dialog [header]="responceDialogTitle" [modal]="true" [style]="{width: '30vw'}" [(visible)]="successResponcePopup">
+    <!-- {{successResponce?.message}} -->
+    <p>{{submitSuccessMessage}}</p>
+    <ng-template pTemplate="footer">
+      <p-button icon="pi pi-check"  label="Ok" styleClass="p-button-text"></p-button>
+    </ng-template>
+</p-dialog>
+<p-toast></p-toast>
+<p-confirmDialog [style]="{width: '50vw'}" [baseZIndex]="10000" rejectButtonStyleClass="p-button-text"></p-confirmDialog>

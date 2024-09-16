@@ -1,0 +1,30 @@
+@use '/src/assets/styles/vars';
+.sideBarContent{
+    .sidebarFields{
+        padding: 15px;
+        .field{
+            border-bottom: 1px solid #eff2fa;
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0;
+            label{
+                font-size: 10px;
+                color: vars.$fontclr;
+    
+            }
+            span{
+                font-size: 12px;
+                color: vars.$titleClr;
+            }
+        }
+    }
+}
+
+.approved{
+    background: rgba(80,180,145,0.2);
+    color: rgb(80,180,145);
+}
+.pending{
+    background: rgba(232,155,52,0.2);
+    color: rgb(232,155,52);
+}

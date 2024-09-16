@@ -1,0 +1,215 @@
+@use '/src/assets/styles/vars';
+
+.ngx-codemirror {
+  border: 1px solid #ccc;
+}
+
+.markdownContainer {
+    width: 100%;
+    min-height: 100px;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: #fff;
+    padding: 10px 15px 15px 15px;
+    border-radius: 10px;
+}
+
+
+.test-cases-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 15px 10px;
+    border-radius: 10px;
+    .p-float-label{
+        width: calc(100% - 150px);
+        padding-right: 15px;
+    }
+}
+
+.testCasesDataContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.noTestcasesMessage{
+    font-size: 14px;
+    color: vars.$fontclr;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.testCaseCard{
+    border: 1px solid vars.$devider;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.testCasesTabs{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    //margin-bottom: 10px;
+    .testCaseTab{
+        display: flex;
+        align-items: center;
+        border: 0px;
+        padding: 8px 10px;        
+        background: transparent;
+        margin: 0px;
+        cursor: pointer;
+        position: relative;
+        .tab{
+            padding: 10px 15px;
+            font-size: 12px;
+            background: #fff;
+            font-weight: 600;
+            border-radius: 4px;
+            color: vars.$titleClr;
+        }
+        &.active{
+            border: 1px solid vars.$cardBorderColor;
+            border-radius: 4px 4px 0 0;    
+            .tab{
+                background: vars.$primary-color;
+                color: #fff;
+            }    
+            ::after{
+                content: '';
+                position: absolute;
+                bottom: -2px;
+                left: 0px;
+                height: 2px;
+                width: 100%;
+                background: #fff;
+            }
+        }
+        &:hover{
+            .tab{
+                background: vars.$primary-color;
+                color: #fff;
+            }  
+        }
+    }
+}
+
+.accordianHeader{
+    width: 100%;
+    border: 0px;
+    padding: 12px 40px;
+    border-radius: 30px;
+    font-weight: 600;
+    font-size: 14px;
+    position: absolute;
+    left: 0px;
+    //box-shadow: vars.$secondary-box-shoadow;
+    border: 1px solid vars.$cardBorderColor;
+    //background: #f00;
+}
+
+.fileUploadContainer{
+    background: #fff;
+    padding: 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    .fileSelection{
+        width: 70%;
+        display: flex;
+        align-items: center;
+        .mainIcon{
+            font-size: 21px;
+            margin-right: 10px;
+            color: vars.$fontclr;
+        }
+        .fileInput{
+            width: calc(100% - 150px);
+            overflow: hidden;
+            font-size: 21px;
+            margin-right: 10px;
+            input{
+                margin-left: -87px;
+                color: vars.$fontclr;
+                width: 100%;
+            }
+        }
+        .fileSize{
+            font-size: 13px;
+        }
+    }    
+    .fileUploadBtns{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .btn{
+            margin-left: 10px;
+            .icon{
+                font-size: 12px;
+                margin-right: 10px;
+            }
+        }
+        .clearBtn{
+            background: transparent;
+            border: 0px;
+            margin-right: 15px;
+            i{
+                font-size: 14px;
+            }
+        }
+    }
+    &.fileSelected{
+        .fileSelection{
+            .mainIcon{
+                color: vars.$primary-color;
+            }
+            .fileInput{
+                input{
+                    color: vars.$primary-color;
+                }
+            }
+        }
+    }
+}
+
+.codeInputContainer{
+    display: flex;
+    width: 100%;
+    flex-grow: 1;
+    gap: 15px;
+    padding: 15px;
+    .code{
+        width: calc(50% - 15px);
+    }
+}
+
+
+
+.categoryDropdownContainer{
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.header-with-btns{
+    margin-bottom: 15px;
+}
+
+.testCasesAccordian{    
+    &.tabContainer{
+        border: 1px solid vars.$cardBorderColor;
+        padding: 15px 10px;
+        border-radius: 4px;
+        &.firstTabSelected{
+            border-radius: 0px 4px 4px 4px;
+        }
+    }    
+}
